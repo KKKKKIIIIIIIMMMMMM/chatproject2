@@ -98,6 +98,10 @@
   * **หลักฐานที่ 1 (Assets รูปภาพ):** สกัดรูปถ่ายท่าออกกำลังกายจริงได้ **40 ไฟล์** คุณภาพสูง (รวมภาพ Side-by-side ท่าเริ่มต้น+ท่าออกแรง) เซฟลงใน [data/images/](file:///d:/3term1/a.kit/finalproject/data/images)
   * **หลักฐานที่ 2 (Vector Chunks):** สร้างไฟล์ [data/chunks.json](file:///d:/3term1/a.kit/finalproject/data/chunks.json) จำนวน **44 Chunks** ครบทั้ง 39 ท่า/เครื่อง และ 4 กฎเป้าหมายการฝึก 1RM พร้อม Metadata และ Image Path
   * **หลักฐานที่ 3 (Graph Triples):** สร้างตารางความสัมพันธ์ [data/graph_data.csv](file:///d:/3term1/a.kit/finalproject/data/graph_data.csv) จำนวน **221 ความสัมพันธ์ (Triples)** ครอบคลุม Exercise, Muscle, MuscleGroup, Zone, Equipment, Caution, และเงื่อนไขข้อห้ามทางการแพทย์ (Avoid/Recommend)
-  * **หลักฐานที่ 4 (Neo4j Import Script):** สร้างสคริปต์ [data/init_neo4j.cypher](file:///d:/3term1/a.kit/finalproject/data/init_neo4j.cypher) ความยาว **274 บรรทัด** พร้อมรันเข้า Neo4j ได้ทันทีในคลิกเดียว
+* **26 ก.ย. 2569 (02:20 น.) - นำโปรเจกต์ขึ้น GitHub Repository:**
+  * ทำการ Initialize Git Repository และกำหนดโครงสร้างโปรเจกต์พร้อมไฟล์ `.gitignore` และ `README.md`
+  * อัปโหลดไฟล์ทั้งหมดขึ้น GitHub: https://github.com/buzziezylovemelon/chatproject (Branch: `main`)
+  * โค้ด, ข้อมูล Chunks, ชุดความสัมพันธ์ Graph, สคริปต์ และรูปภาพ 40 รูป พร้อมให้เพื่อนร่วมทีม Clone ไปเริ่มงานต่อได้ทันที
+
 
 
