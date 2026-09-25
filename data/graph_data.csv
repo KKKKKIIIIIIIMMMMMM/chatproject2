@@ -1,0 +1,222 @@
+﻿source,source_label,relation,target,target_label
+1. จักรยานคอมพิวเตอร์ (Bike) การใช้ Program Manual,Exercise,LOCATED_IN,Aerobic Exercise Group,Zone
+1. จักรยานคอมพิวเตอร์ (Bike) การใช้ Program Manual,Exercise,TARGETS_GROUP,หัวใจและหลอดเลือด (Cardio),MuscleGroup
+1. จักรยานคอมพิวเตอร์ (Bike) การใช้ Program Manual,Exercise,USES_EQUIPMENT,จักรยานฟิตเนส (Stationary Bike),Equipment
+1. จักรยานคอมพิวเตอร์ (Bike) การใช้ Program Manual,Exercise,TARGETS,กล้ามเนื้อหัวใจ,Muscle
+2. เครื่องเดิน - วิ่งคอมพิวเตอร์ (Treadmill) การใช้ Program Manual,Exercise,LOCATED_IN,Aerobic Exercise Group,Zone
+2. เครื่องเดิน - วิ่งคอมพิวเตอร์ (Treadmill) การใช้ Program Manual,Exercise,TARGETS_GROUP,หัวใจและหลอดเลือด (Cardio),MuscleGroup
+2. เครื่องเดิน - วิ่งคอมพิวเตอร์ (Treadmill) การใช้ Program Manual,Exercise,USES_EQUIPMENT,ลู่วิ่งไฟฟ้า (Treadmill),Equipment
+2. เครื่องเดิน - วิ่งคอมพิวเตอร์ (Treadmill) การใช้ Program Manual,Exercise,TARGETS,กล้ามเนื้อหัวใจ,Muscle
+2. เครื่องเดิน - วิ่งคอมพิวเตอร์ (Treadmill) การใช้ Program Manual,Exercise,HAS_CAUTION,หมายเหตุ: ใกล้ครบเวลาที่กำหนด ควรลดความเร็วเพื่อให้ร่างกายปรับสู่สภาพปกติ,Caution
+3. เครื่องเดินวงรี (Elliptical),Exercise,LOCATED_IN,Aerobic Exercise Group,Zone
+3. เครื่องเดินวงรี (Elliptical),Exercise,TARGETS_GROUP,หัวใจและหลอดเลือด (Cardio),MuscleGroup
+3. เครื่องเดินวงรี (Elliptical),Exercise,USES_EQUIPMENT,เครื่องเดินวงรี (Elliptical),Equipment
+3. เครื่องเดินวงรี (Elliptical),Exercise,TARGETS,กล้ามเนื้อหัวใจ,Muscle
+3. เครื่องเดินวงรี (Elliptical),Exercise,HAS_CAUTION,5. ขึ้นเหยียบบนที่วางเท้าแล้วก้าวเดินสลับขาซ้าย-ขวา(ระวังอย่าให้เข่าตึง),Caution
+4. กรรเชียง (Rower),Exercise,LOCATED_IN,Aerobic Exercise Group,Zone
+4. กรรเชียง (Rower),Exercise,TARGETS_GROUP,หัวใจและหลอดเลือด (Cardio),MuscleGroup
+4. กรรเชียง (Rower),Exercise,USES_EQUIPMENT,เครื่องกรรเชียงบก (Rowing Machine),Equipment
+4. กรรเชียง (Rower),Exercise,TARGETS,กล้ามเนื้อหัวใจ,Muscle
+1. เครื่องบริหารลำตัวด้านข้าง (Torso Twist),Exercise,LOCATED_IN,Weight Machine Zone,Zone
+1. เครื่องบริหารลำตัวด้านข้าง (Torso Twist),Exercise,TARGETS_GROUP,หน้าท้องและลำตัว (Abdominal & Obliques),MuscleGroup
+1. เครื่องบริหารลำตัวด้านข้าง (Torso Twist),Exercise,USES_EQUIPMENT,Machine (Torso Twist),Equipment
+1. เครื่องบริหารลำตัวด้านข้าง (Torso Twist),Exercise,TARGETS,กล้ามเนื้อลำตัวด้านข้าง,Muscle
+1. เครื่องบริหารลำตัวด้านข้าง (Torso Twist),Exercise,TARGETS,Obliques,Muscle
+2. เครื่องบริหารหน้าท้อง (Abdominal Machine),Exercise,LOCATED_IN,Weight Machine Zone,Zone
+2. เครื่องบริหารหน้าท้อง (Abdominal Machine),Exercise,TARGETS_GROUP,หน้าท้องและลำตัว (Abdominal),MuscleGroup
+2. เครื่องบริหารหน้าท้อง (Abdominal Machine),Exercise,USES_EQUIPMENT,Machine (Abdominal),Equipment
+2. เครื่องบริหารหน้าท้อง (Abdominal Machine),Exercise,TARGETS,Abdominal,Muscle
+2. เครื่องบริหารหน้าท้อง (Abdominal Machine),Exercise,TARGETS,กล้ามเนื้อหน้าท้อง,Muscle
+3. เครื่องบริหารต้นขาด้านหน้าและสะโพก (Leg press),Exercise,LOCATED_IN,Weight Machine Zone,Zone
+3. เครื่องบริหารต้นขาด้านหน้าและสะโพก (Leg press),Exercise,TARGETS_GROUP,กลุ่มกล้ามเนื้อขา (Leg Group),MuscleGroup
+3. เครื่องบริหารต้นขาด้านหน้าและสะโพก (Leg press),Exercise,USES_EQUIPMENT,Machine (Leg Press),Equipment
+3. เครื่องบริหารต้นขาด้านหน้าและสะโพก (Leg press),Exercise,TARGETS,Gluteus,Muscle
+3. เครื่องบริหารต้นขาด้านหน้าและสะโพก (Leg press),Exercise,TARGETS,Quadriceps,Muscle
+3. เครื่องบริหารต้นขาด้านหน้าและสะโพก (Leg press),Exercise,TARGETS,กล้ามเนื้อต้นขาด้านหน้า,Muscle
+4. เครื่องบริหารต้นขาด้านหน้า (Leg Extension),Exercise,LOCATED_IN,Weight Machine Zone,Zone
+4. เครื่องบริหารต้นขาด้านหน้า (Leg Extension),Exercise,TARGETS_GROUP,กลุ่มกล้ามเนื้อขา (Leg Group),MuscleGroup
+4. เครื่องบริหารต้นขาด้านหน้า (Leg Extension),Exercise,USES_EQUIPMENT,Machine (Leg Extension),Equipment
+4. เครื่องบริหารต้นขาด้านหน้า (Leg Extension),Exercise,TARGETS,กล้ามเนื้อต้นขาด้านหน้า,Muscle
+4. เครื่องบริหารต้นขาด้านหน้า (Leg Extension),Exercise,TARGETS,Quadriceps,Muscle
+4. เครื่องบริหารต้นขาด้านหน้า (Leg Extension),Exercise,HAS_CAUTION,1-2 และลงมาด้วยจังหวะการนับ 1-2-3-4 ดั้งนั้นการปฏิบัติจะต้องค่อยระวังไม่ให้เครื่องไหวท่า,Caution
+5. เครื่องบริหารต้นขาด้านหลัง (Leg Curl),Exercise,LOCATED_IN,Weight Machine Zone,Zone
+5. เครื่องบริหารต้นขาด้านหลัง (Leg Curl),Exercise,TARGETS_GROUP,กลุ่มกล้ามเนื้อขา (Leg Group),MuscleGroup
+5. เครื่องบริหารต้นขาด้านหลัง (Leg Curl),Exercise,USES_EQUIPMENT,Machine (Leg Curl),Equipment
+5. เครื่องบริหารต้นขาด้านหลัง (Leg Curl),Exercise,TARGETS,กล้ามเนื้อต้นขาด้านหลัง,Muscle
+5. เครื่องบริหารต้นขาด้านหลัง (Leg Curl),Exercise,TARGETS,Hamstrings,Muscle
+6.เครื่องบริหารน่อง (Calf Raise),Exercise,LOCATED_IN,Weight Machine Zone,Zone
+6.เครื่องบริหารน่อง (Calf Raise),Exercise,TARGETS_GROUP,กลุ่มกล้ามเนื้อขา (Leg Group),MuscleGroup
+6.เครื่องบริหารน่อง (Calf Raise),Exercise,USES_EQUIPMENT,Machine (Calf Raise),Equipment
+6.เครื่องบริหารน่อง (Calf Raise),Exercise,TARGETS,กล้ามเนื้อน่อง,Muscle
+6.เครื่องบริหารน่อง (Calf Raise),Exercise,TARGETS,Soleus,Muscle
+6.เครื่องบริหารน่อง (Calf Raise),Exercise,TARGETS,Gastrocnemius,Muscle
+7. เครื่องบริหารต้นขาด้านใน-ด้านนอก (Inner Thigh & Outer Thigh,Exercise,LOCATED_IN,Weight Machine Zone,Zone
+7. เครื่องบริหารต้นขาด้านใน-ด้านนอก (Inner Thigh & Outer Thigh,Exercise,TARGETS_GROUP,กลุ่มกล้ามเนื้อขา (Leg Group),MuscleGroup
+7. เครื่องบริหารต้นขาด้านใน-ด้านนอก (Inner Thigh & Outer Thigh,Exercise,USES_EQUIPMENT,Machine (Thigh Machine),Equipment
+7. เครื่องบริหารต้นขาด้านใน-ด้านนอก (Inner Thigh & Outer Thigh,Exercise,TARGETS,Adductors,Muscle
+7. เครื่องบริหารต้นขาด้านใน-ด้านนอก (Inner Thigh & Outer Thigh,Exercise,TARGETS,Fascia Lata,Muscle
+7. เครื่องบริหารต้นขาด้านใน-ด้านนอก (Inner Thigh & Outer Thigh,Exercise,TARGETS,กล้ามเนื้อต้นขาด้านใน,Muscle
+7. เครื่องบริหารต้นขาด้านใน-ด้านนอก (Inner Thigh & Outer Thigh,Exercise,TARGETS,Gluteal,Muscle
+7. เครื่องบริหารต้นขาด้านใน-ด้านนอก (Inner Thigh & Outer Thigh,Exercise,HAS_CAUTION,หมายเหตุ: ส าหรับ Outer-thigh ให้ปฏิบัติตรงกันข้ามในการปรับเบาะและการหายใจเข้าออก,Caution
+8. เครื่องบริหารต้นขาด้านใน (Inner Thigh),Exercise,LOCATED_IN,Weight Machine Zone,Zone
+8. เครื่องบริหารต้นขาด้านใน (Inner Thigh),Exercise,TARGETS_GROUP,กลุ่มกล้ามเนื้อขา (Leg Group),MuscleGroup
+8. เครื่องบริหารต้นขาด้านใน (Inner Thigh),Exercise,USES_EQUIPMENT,Machine (Inner Thigh),Equipment
+8. เครื่องบริหารต้นขาด้านใน (Inner Thigh),Exercise,TARGETS,กล้ามเนื้อต้นขาด้านใน,Muscle
+8. เครื่องบริหารต้นขาด้านใน (Inner Thigh),Exercise,TARGETS,Adductor,Muscle
+9. เครื่องบริหารต้นขาด้านใน-ด้านนอก (Outer Thigh),Exercise,LOCATED_IN,Weight Machine Zone,Zone
+9. เครื่องบริหารต้นขาด้านใน-ด้านนอก (Outer Thigh),Exercise,TARGETS_GROUP,กลุ่มกล้ามเนื้อขา (Leg Group),MuscleGroup
+9. เครื่องบริหารต้นขาด้านใน-ด้านนอก (Outer Thigh),Exercise,USES_EQUIPMENT,Machine (Outer Thigh),Equipment
+9. เครื่องบริหารต้นขาด้านใน-ด้านนอก (Outer Thigh),Exercise,TARGETS,Gluteal,Muscle
+9. เครื่องบริหารต้นขาด้านใน-ด้านนอก (Outer Thigh),Exercise,TARGETS,Fascia Lata,Muscle
+9. เครื่องบริหารต้นขาด้านใน-ด้านนอก (Outer Thigh),Exercise,TARGETS,กล้ามเนื้อต้นขาด้านนอก,Muscle
+10. เครื่องบริหารกล้ามเนื้อหน้าอกใน (Pec Dek),Exercise,LOCATED_IN,Weight Machine Zone,Zone
+10. เครื่องบริหารกล้ามเนื้อหน้าอกใน (Pec Dek),Exercise,TARGETS_GROUP,กลุ่มกล้ามเนื้ออก (Chest Group),MuscleGroup
+10. เครื่องบริหารกล้ามเนื้อหน้าอกใน (Pec Dek),Exercise,USES_EQUIPMENT,Machine (Pec Dek Fly),Equipment
+10. เครื่องบริหารกล้ามเนื้อหน้าอกใน (Pec Dek),Exercise,TARGETS,Anterior Deltoids,Muscle
+10. เครื่องบริหารกล้ามเนื้อหน้าอกใน (Pec Dek),Exercise,TARGETS,กล้ามเนื้อหน้าอก,Muscle
+11. เครื่องบริหารอกบน (Incline Press,Exercise,LOCATED_IN,Weight Machine Zone,Zone
+11. เครื่องบริหารอกบน (Incline Press,Exercise,TARGETS_GROUP,กลุ่มกล้ามเนื้ออก (Chest Group),MuscleGroup
+11. เครื่องบริหารอกบน (Incline Press,Exercise,USES_EQUIPMENT,Machine (Incline Chest Press),Equipment
+11. เครื่องบริหารอกบน (Incline Press,Exercise,TARGETS,Clavicular head of Pectorals Major,Muscle
+11. เครื่องบริหารอกบน (Incline Press,Exercise,TARGETS,กล้ามเนื้อหน้าอกส่วนบน,Muscle
+12. เครื่องบริหารอกกลาง (Chest Press),Exercise,LOCATED_IN,Weight Machine Zone,Zone
+12. เครื่องบริหารอกกลาง (Chest Press),Exercise,TARGETS_GROUP,กลุ่มกล้ามเนื้ออก (Chest Group),MuscleGroup
+12. เครื่องบริหารอกกลาง (Chest Press),Exercise,USES_EQUIPMENT,Machine (Chest Press),Equipment
+12. เครื่องบริหารอกกลาง (Chest Press),Exercise,TARGETS,กล้ามเนื้ออกส่วนกลาง,Muscle
+12. เครื่องบริหารอกกลาง (Chest Press),Exercise,TARGETS,Pectorals Major,Muscle
+13. เครื่องมือบริการกล้ามเนื้อหัวไหล่ (Shoulder Press),Exercise,LOCATED_IN,Weight Machine Zone,Zone
+13. เครื่องมือบริการกล้ามเนื้อหัวไหล่ (Shoulder Press),Exercise,TARGETS_GROUP,กลุ่มกล้ามเนื้อหัวไหล่ (Shoulder Group),MuscleGroup
+13. เครื่องมือบริการกล้ามเนื้อหัวไหล่ (Shoulder Press),Exercise,USES_EQUIPMENT,Machine (Shoulder Press),Equipment
+13. เครื่องมือบริการกล้ามเนื้อหัวไหล่ (Shoulder Press),Exercise,TARGETS,Triceps,Muscle
+13. เครื่องมือบริการกล้ามเนื้อหัวไหล่ (Shoulder Press),Exercise,TARGETS,Deltoid,Muscle
+13. เครื่องมือบริการกล้ามเนื้อหัวไหล่ (Shoulder Press),Exercise,TARGETS,กล้ามเนื้อหัวไหล่,Muscle
+13. เครื่องมือบริการกล้ามเนื้อหัวไหล่ (Shoulder Press),Exercise,HAS_CAUTION,2. ออกแรงยกหรือดันแขนขึ้นด้านบนอย่างช้าๆให้เกือบสุดแขนระวังในการเล่นห้ามการกระตุก,Caution
+14. เครื่องมือบริการกล้ามเนื้อปีกและสะบักหลัง (Lat Pulldown (Front / Back),Exercise,LOCATED_IN,Weight Machine Zone,Zone
+14. เครื่องมือบริการกล้ามเนื้อปีกและสะบักหลัง (Lat Pulldown (Front / Back),Exercise,TARGETS_GROUP,กลุ่มกล้ามเนื้อปีกและหลัง (Back Group),MuscleGroup
+14. เครื่องมือบริการกล้ามเนื้อปีกและสะบักหลัง (Lat Pulldown (Front / Back),Exercise,USES_EQUIPMENT,Machine (Lat Pulldown),Equipment
+14. เครื่องมือบริการกล้ามเนื้อปีกและสะบักหลัง (Lat Pulldown (Front / Back),Exercise,TARGETS,Latissimus Dorsi,Muscle
+14. เครื่องมือบริการกล้ามเนื้อปีกและสะบักหลัง (Lat Pulldown (Front / Back),Exercise,TARGETS,กล้ามเนื้อหลังหรือปีก,Muscle
+15. เครื่องบริหารกล้ามเนื้อหลังส่วนบน Seated Row,Exercise,LOCATED_IN,Weight Machine Zone,Zone
+15. เครื่องบริหารกล้ามเนื้อหลังส่วนบน Seated Row,Exercise,TARGETS_GROUP,กลุ่มกล้ามเนื้อปีกและหลัง (Back Group),MuscleGroup
+15. เครื่องบริหารกล้ามเนื้อหลังส่วนบน Seated Row,Exercise,USES_EQUIPMENT,Machine (Seated Cable Row),Equipment
+15. เครื่องบริหารกล้ามเนื้อหลังส่วนบน Seated Row,Exercise,TARGETS,Rear deltoid,Muscle
+15. เครื่องบริหารกล้ามเนื้อหลังส่วนบน Seated Row,Exercise,TARGETS,Lattissimus dorsi,Muscle
+15. เครื่องบริหารกล้ามเนื้อหลังส่วนบน Seated Row,Exercise,TARGETS,Trapezius,Muscle
+15. เครื่องบริหารกล้ามเนื้อหลังส่วนบน Seated Row,Exercise,HAS_CAUTION,4. ขณะผ่อนแรงให้สังเกตแผ่นเหล็กระมัดระวังไม่ให้แผ่นเหล็กกระทบกันเพื่อการฝึกอย่างต่อเนื่อง,Caution
+16. เครื่องบริหารกล้ามเนื้อหลังส่วนล่าง (Hyper Extension),Exercise,LOCATED_IN,Weight Machine Zone,Zone
+16. เครื่องบริหารกล้ามเนื้อหลังส่วนล่าง (Hyper Extension),Exercise,TARGETS_GROUP,กลุ่มกล้ามเนื้อปีกและหลัง (Back Group),MuscleGroup
+16. เครื่องบริหารกล้ามเนื้อหลังส่วนล่าง (Hyper Extension),Exercise,USES_EQUIPMENT,Roman Chair (Hyper Extension),Equipment
+16. เครื่องบริหารกล้ามเนื้อหลังส่วนล่าง (Hyper Extension),Exercise,TARGETS,Elector,Muscle
+16. เครื่องบริหารกล้ามเนื้อหลังส่วนล่าง (Hyper Extension),Exercise,TARGETS,กล้ามเนื้อช่วงล่าง,Muscle
+16. เครื่องบริหารกล้ามเนื้อหลังส่วนล่าง (Hyper Extension),Exercise,HAS_CAUTION,ห้ามไม่ให้เกินมุม 180๐ จะทำให้หลังแอ่น อาจเกิดการบาดเจ็บของหลังได้ ทำซ้ำจนครบเซท,Caution
+17. เครื่องมือบริหารกล้ามเนื้อต้นแขนด้านหน้า (Arms Curl),Exercise,LOCATED_IN,Weight Machine Zone,Zone
+17. เครื่องมือบริหารกล้ามเนื้อต้นแขนด้านหน้า (Arms Curl),Exercise,TARGETS_GROUP,กลุ่มกล้ามเนื้อแขน (Biceps Group),MuscleGroup
+17. เครื่องมือบริหารกล้ามเนื้อต้นแขนด้านหน้า (Arms Curl),Exercise,USES_EQUIPMENT,Machine (Arm Curl),Equipment
+17. เครื่องมือบริหารกล้ามเนื้อต้นแขนด้านหน้า (Arms Curl),Exercise,TARGETS,Biceps,Muscle
+18. เครื่องมือบริหารกล้ามเนื้อต้นแขนด้านหลัง (Triceps Extension),Exercise,LOCATED_IN,Weight Machine Zone,Zone
+18. เครื่องมือบริหารกล้ามเนื้อต้นแขนด้านหลัง (Triceps Extension),Exercise,TARGETS_GROUP,กลุ่มกล้ามเนื้อแขน (Triceps Group),MuscleGroup
+18. เครื่องมือบริหารกล้ามเนื้อต้นแขนด้านหลัง (Triceps Extension),Exercise,USES_EQUIPMENT,Machine (Triceps Extension),Equipment
+18. เครื่องมือบริหารกล้ามเนื้อต้นแขนด้านหลัง (Triceps Extension),Exercise,TARGETS,Triceps,Muscle
+19. เครื่องบริหารต้นแขนด้านหลัง (Triceps Press Down),Exercise,LOCATED_IN,Weight Machine Zone,Zone
+19. เครื่องบริหารต้นแขนด้านหลัง (Triceps Press Down),Exercise,TARGETS_GROUP,กลุ่มกล้ามเนื้อแขน (Triceps Group),MuscleGroup
+19. เครื่องบริหารต้นแขนด้านหลัง (Triceps Press Down),Exercise,USES_EQUIPMENT,Cable Machine (Triceps Press Down),Equipment
+19. เครื่องบริหารต้นแขนด้านหลัง (Triceps Press Down),Exercise,TARGETS,Triceps,Muscle
+19. เครื่องบริหารต้นแขนด้านหลัง (Triceps Press Down),Exercise,TARGETS,กล้ามเนื้อต้นขาด้านหลัง,Muscle
+20. เครื่องบริหารท้อง (Sit Up),Exercise,LOCATED_IN,Weight Machine Zone,Zone
+20. เครื่องบริหารท้อง (Sit Up),Exercise,TARGETS_GROUP,หน้าท้องและลำตัว (Abdominal),MuscleGroup
+20. เครื่องบริหารท้อง (Sit Up),Exercise,USES_EQUIPMENT,Abdominal Bench (Sit Up Bench),Equipment
+20. เครื่องบริหารท้อง (Sit Up),Exercise,TARGETS,กล้ามเนื้อท้องส่วนบน,Muscle
+21. เครื่องบริหารกล้ามเนื้อหน้าท้องส่วนล่าง (Verticals Knee Raise),Exercise,LOCATED_IN,Weight Machine Zone,Zone
+21. เครื่องบริหารกล้ามเนื้อหน้าท้องส่วนล่าง (Verticals Knee Raise),Exercise,TARGETS_GROUP,หน้าท้องและลำตัว (Abdominal),MuscleGroup
+21. เครื่องบริหารกล้ามเนื้อหน้าท้องส่วนล่าง (Verticals Knee Raise),Exercise,USES_EQUIPMENT,Captain's Chair (Knee Raise Station),Equipment
+21. เครื่องบริหารกล้ามเนื้อหน้าท้องส่วนล่าง (Verticals Knee Raise),Exercise,TARGETS,กล้ามเนื้อหน้าท้องส่วนล่าง,Muscle
+21. เครื่องบริหารกล้ามเนื้อหน้าท้องส่วนล่าง (Verticals Knee Raise),Exercise,TARGETS,Lower Abdominis,Muscle
+ต้นแขนด้านหน้า (Biceps),Exercise,LOCATED_IN,Free Weight Zone,Zone
+ต้นแขนด้านหน้า (Biceps),Exercise,TARGETS_GROUP,กลุ่มกล้ามเนื้อแขน (Biceps Group),MuscleGroup
+ต้นแขนด้านหน้า (Biceps),Exercise,USES_EQUIPMENT,Dumbbell,Equipment
+ต้นแขนด้านหน้า (Biceps),Exercise,TARGETS,Brachioradialis,Muscle
+ต้นแขนด้านหน้า (Biceps),Exercise,TARGETS,Biceps Brachialis,Muscle
+ต้นแขนด้านหน้า (Biceps),Exercise,HAS_CAUTION,หมายเหตุ: ALT.  DB.CURL (sit) เปลี่ยนจากท่ายืน เป็นท่านั่งวิธีปฏิบัติต่อไปเหมือนท่ายืน,Caution
+2.  Dumbbell Curl,Exercise,LOCATED_IN,Free Weight Zone,Zone
+2.  Dumbbell Curl,Exercise,TARGETS_GROUP,กลุ่มกล้ามเนื้อแขน (Biceps Group),MuscleGroup
+2.  Dumbbell Curl,Exercise,USES_EQUIPMENT,Dumbbell,Equipment
+2.  Dumbbell Curl,Exercise,TARGETS,Brachioradialis,Muscle
+2.  Dumbbell Curl,Exercise,TARGETS,Biceps Brachialis,Muscle
+2.  Dumbbell Curl,Exercise,HAS_CAUTION,หมายเหตุ  Dumbell Curl (sit)  เปลี่ยนจากท่ายืนเป็นท่านั่งเก้าอี้แทนต่อจากนั้นปฏิบัติเหมือนท่ายืน  INCLINE,Caution
+3.  Dumbbell Concentration Curl,Exercise,LOCATED_IN,Free Weight Zone,Zone
+3.  Dumbbell Concentration Curl,Exercise,TARGETS_GROUP,กลุ่มกล้ามเนื้อแขน (Biceps Group),MuscleGroup
+3.  Dumbbell Concentration Curl,Exercise,USES_EQUIPMENT,Dumbbell,Equipment
+3.  Dumbbell Concentration Curl,Exercise,TARGETS,Brachioradialis,Muscle
+3.  Dumbbell Concentration Curl,Exercise,TARGETS,Biceps Brachialis,Muscle
+ต้นแขนด้านหลัง (Triceps),Exercise,LOCATED_IN,Free Weight Zone,Zone
+ต้นแขนด้านหลัง (Triceps),Exercise,TARGETS_GROUP,กลุ่มกล้ามเนื้อแขน (Triceps Group),MuscleGroup
+ต้นแขนด้านหลัง (Triceps),Exercise,USES_EQUIPMENT,Dumbbell,Equipment
+ต้นแขนด้านหลัง (Triceps),Exercise,TARGETS,กล้ามเนื้อต้นแขนด้านหลัง,Muscle
+ต้นแขนด้านหลัง (Triceps),Exercise,TARGETS,Triceps,Muscle
+2. ท่าบริหารต้นแขน (Two Arm Ext.) (Sit/ST.),Exercise,LOCATED_IN,Free Weight Zone,Zone
+2. ท่าบริหารต้นแขน (Two Arm Ext.) (Sit/ST.),Exercise,TARGETS_GROUP,กลุ่มกล้ามเนื้อแขน (Triceps Group),MuscleGroup
+2. ท่าบริหารต้นแขน (Two Arm Ext.) (Sit/ST.),Exercise,USES_EQUIPMENT,Dumbbell,Equipment
+2. ท่าบริหารต้นแขน (Two Arm Ext.) (Sit/ST.),Exercise,TARGETS,กล้ามเนื้อต้นแขนด้านหลัง,Muscle
+2. ท่าบริหารต้นแขน (Two Arm Ext.) (Sit/ST.),Exercise,TARGETS,Triceps,Muscle
+2. ท่าบริหารต้นแขน (Two Arm Ext.) (Sit/ST.),Exercise,HAS_CAUTION,หมายเหตุ: Two Arm Extensions เปลี่ยนจากท่านั่งเป็นท่ายืน,Caution
+3. ท่าบริหารต้นแขน (Kick back),Exercise,LOCATED_IN,Free Weight Zone,Zone
+3. ท่าบริหารต้นแขน (Kick back),Exercise,TARGETS_GROUP,กลุ่มกล้ามเนื้อแขน (Triceps Group),MuscleGroup
+3. ท่าบริหารต้นแขน (Kick back),Exercise,USES_EQUIPMENT,Dumbbell & Bench,Equipment
+3. ท่าบริหารต้นแขน (Kick back),Exercise,TARGETS,Kick back,Muscle
+3. ท่าบริหารต้นแขน (Kick back),Exercise,TARGETS,กล้ามเนื้อต้นแขนด้านหลัง,Muscle
+1. ท่าบริหารหัวไหล่ Dumbbell Press,Exercise,LOCATED_IN,Free Weight Zone,Zone
+1. ท่าบริหารหัวไหล่ Dumbbell Press,Exercise,TARGETS_GROUP,กลุ่มกล้ามเนื้อหัวไหล่ (Shoulder Group),MuscleGroup
+1. ท่าบริหารหัวไหล่ Dumbbell Press,Exercise,USES_EQUIPMENT,Dumbbell,Equipment
+1. ท่าบริหารหัวไหล่ Dumbbell Press,Exercise,TARGETS,Deltoids,Muscle
+2. ท่าบริหารหัวไหล่ด้านหน้า (Dumbbell Raise Front),Exercise,LOCATED_IN,Free Weight Zone,Zone
+2. ท่าบริหารหัวไหล่ด้านหน้า (Dumbbell Raise Front),Exercise,TARGETS_GROUP,กลุ่มกล้ามเนื้อหัวไหล่ (Shoulder Group),MuscleGroup
+2. ท่าบริหารหัวไหล่ด้านหน้า (Dumbbell Raise Front),Exercise,USES_EQUIPMENT,Dumbbell,Equipment
+2. ท่าบริหารหัวไหล่ด้านหน้า (Dumbbell Raise Front),Exercise,TARGETS,Front Deltoids,Muscle
+3. ท่าบริหารหัวไหล่ด้านข้าง (Dumbbell Side Rosie & Lateral Raise),Exercise,LOCATED_IN,Free Weight Zone,Zone
+3. ท่าบริหารหัวไหล่ด้านข้าง (Dumbbell Side Rosie & Lateral Raise),Exercise,TARGETS_GROUP,กลุ่มกล้ามเนื้อหัวไหล่ (Shoulder Group),MuscleGroup
+3. ท่าบริหารหัวไหล่ด้านข้าง (Dumbbell Side Rosie & Lateral Raise),Exercise,USES_EQUIPMENT,Dumbbell,Equipment
+3. ท่าบริหารหัวไหล่ด้านข้าง (Dumbbell Side Rosie & Lateral Raise),Exercise,TARGETS,Side Deltoids,Muscle
+1.  ท่าบริหารกล้ามเนื้อปีกและหลัง Dumbbell Row,Exercise,LOCATED_IN,Free Weight Zone,Zone
+1.  ท่าบริหารกล้ามเนื้อปีกและหลัง Dumbbell Row,Exercise,TARGETS_GROUP,กลุ่มกล้ามเนื้อปีกและหลัง (Back Group),MuscleGroup
+1.  ท่าบริหารกล้ามเนื้อปีกและหลัง Dumbbell Row,Exercise,USES_EQUIPMENT,Dumbbell & Bench,Equipment
+1.  ท่าบริหารกล้ามเนื้อปีกและหลัง Dumbbell Row,Exercise,TARGETS,Latissimus dorsi and Rhomboids,Muscle
+2.  ท่า  Two Arm Dumbbell Row,Exercise,LOCATED_IN,Free Weight Zone,Zone
+2.  ท่า  Two Arm Dumbbell Row,Exercise,TARGETS_GROUP,กลุ่มกล้ามเนื้อปีกและหลัง (Back Group),MuscleGroup
+2.  ท่า  Two Arm Dumbbell Row,Exercise,USES_EQUIPMENT,Dumbbell,Equipment
+2.  ท่า  Two Arm Dumbbell Row,Exercise,TARGETS,Latissimus dorsi and Rhomboids,Muscle
+1. ท่าบริหารกล้ามเนื้ออก (Dumbbell Bench Press),Exercise,LOCATED_IN,Free Weight Zone,Zone
+1. ท่าบริหารกล้ามเนื้ออก (Dumbbell Bench Press),Exercise,TARGETS_GROUP,กลุ่มกล้ามเนื้ออก (Chest Group),MuscleGroup
+1. ท่าบริหารกล้ามเนื้ออก (Dumbbell Bench Press),Exercise,USES_EQUIPMENT,Dumbbell & Flat Bench,Equipment
+1. ท่าบริหารกล้ามเนื้ออก (Dumbbell Bench Press),Exercise,TARGETS,Pectrolaris,Muscle
+1. ท่าบริหารกล้ามเนื้ออก (Dumbbell Bench Press),Exercise,TARGETS,กล้ามเนื้ออกด้านหน้า,Muscle
+2. บริหารกล้ามเนื้ออกใน (Dumbbell Flies),Exercise,LOCATED_IN,Free Weight Zone,Zone
+2. บริหารกล้ามเนื้ออกใน (Dumbbell Flies),Exercise,TARGETS_GROUP,กลุ่มกล้ามเนื้ออก (Chest Group),MuscleGroup
+2. บริหารกล้ามเนื้ออกใน (Dumbbell Flies),Exercise,USES_EQUIPMENT,Dumbbell & Flat Bench,Equipment
+3. บริหารกล้ามเนื้ออกล่าง (Pullovers),Exercise,LOCATED_IN,Free Weight Zone,Zone
+3. บริหารกล้ามเนื้ออกล่าง (Pullovers),Exercise,TARGETS_GROUP,กลุ่มกล้ามเนื้ออก (Chest Group),MuscleGroup
+3. บริหารกล้ามเนื้ออกล่าง (Pullovers),Exercise,USES_EQUIPMENT,Dumbbell & Bench,Equipment
+4. บริหารกล้ามเนื้ออกล่าง (Decline Dumbbell Bent press),Exercise,LOCATED_IN,Free Weight Zone,Zone
+4. บริหารกล้ามเนื้ออกล่าง (Decline Dumbbell Bent press),Exercise,TARGETS_GROUP,กลุ่มกล้ามเนื้ออก (Chest Group),MuscleGroup
+4. บริหารกล้ามเนื้ออกล่าง (Decline Dumbbell Bent press),Exercise,USES_EQUIPMENT,Dumbbell & Decline Bench,Equipment
+4. บริหารกล้ามเนื้ออกล่าง (Decline Dumbbell Bent press),Exercise,TARGETS,กล้ามเนื้ออกล่าง,Muscle
+ปวดหลังล่าง (Lower Back Pain),Condition,AVOID,16. เครื่องบริหารกล้ามเนื้อหลังส่วนล่าง (Hyper Extension),Exercise
+ปวดหลังล่าง (Lower Back Pain),Condition,AVOID,1.  ท่าบริหารกล้ามเนื้อปีกและหลัง Dumbbell Row,Exercise
+ปวดหลังล่าง (Lower Back Pain),Condition,RECOMMEND,14. เครื่องมือบริการกล้ามเนื้อปีกและสะบักหลัง (Lat Pulldown (Front / Back),Exercise
+ปวดหลังล่าง (Lower Back Pain),Condition,RECOMMEND,15. เครื่องบริหารกล้ามเนื้อหลังส่วนบน Seated Row,Exercise
+ปวดหลังล่าง (Lower Back Pain),Condition,RECOMMEND,3. เครื่องเดินวงรี (Elliptical),Exercise
+ปวดข้อเข่า (Knee Pain),Condition,AVOID,3. เครื่องบริหารต้นขาด้านหน้าและสะโพก (Leg press),Exercise
+ปวดข้อเข่า (Knee Pain),Condition,AVOID,4. เครื่องบริหารต้นขาด้านหน้า (Leg Extension),Exercise
+ปวดข้อเข่า (Knee Pain),Condition,AVOID,2. เครื่องเดิน - วิ่งคอมพิวเตอร์ (Treadmill) การใช้ Program Manual,Exercise
+ปวดข้อเข่า (Knee Pain),Condition,RECOMMEND,1. จักรยานคอมพิวเตอร์ (Bike) การใช้ Program Manual,Exercise
+ปวดข้อเข่า (Knee Pain),Condition,RECOMMEND,3. เครื่องเดินวงรี (Elliptical),Exercise
+ปวดข้อเข่า (Knee Pain),Condition,RECOMMEND,6.เครื่องบริหารน่อง (Calf Raise),Exercise
+ปวดหัวไหล่ / ข้อต่อไหล่ติด (Shoulder Impingement),Condition,AVOID,13. เครื่องมือบริการกล้ามเนื้อหัวไหล่ (Shoulder Press),Exercise
+ปวดหัวไหล่ / ข้อต่อไหล่ติด (Shoulder Impingement),Condition,AVOID,1. ท่าบริหารหัวไหล่ Dumbbell Press,Exercise
+ปวดหัวไหล่ / ข้อต่อไหล่ติด (Shoulder Impingement),Condition,RECOMMEND,12. เครื่องบริหารอกกลาง (Chest Press),Exercise
+ปวดหัวไหล่ / ข้อต่อไหล่ติด (Shoulder Impingement),Condition,RECOMMEND,17. เครื่องมือบริหารกล้ามเนื้อต้นแขนด้านหน้า (Arms Curl),Exercise
+ผู้เริ่มต้นฝึกออกกำลังกาย (Beginner),Condition,AVOID,3. ท่าบริหารหัวไหล่ด้านข้าง (Dumbbell Side Rosie & Lateral Raise),Exercise
+ผู้เริ่มต้นฝึกออกกำลังกาย (Beginner),Condition,AVOID,4. บริหารกล้ามเนื้ออกล่าง (Decline Dumbbell Bent press),Exercise
+ผู้เริ่มต้นฝึกออกกำลังกาย (Beginner),Condition,RECOMMEND,1. จักรยานคอมพิวเตอร์ (Bike) การใช้ Program Manual,Exercise
+ผู้เริ่มต้นฝึกออกกำลังกาย (Beginner),Condition,RECOMMEND,3. เครื่องบริหารต้นขาด้านหน้าและสะโพก (Leg press),Exercise
+ผู้เริ่มต้นฝึกออกกำลังกาย (Beginner),Condition,RECOMMEND,12. เครื่องบริหารอกกลาง (Chest Press),Exercise
+ผู้เริ่มต้นฝึกออกกำลังกาย (Beginner),Condition,RECOMMEND,14. เครื่องมือบริการกล้ามเนื้อปีกและสะบักหลัง (Lat Pulldown (Front / Back),Exercise
