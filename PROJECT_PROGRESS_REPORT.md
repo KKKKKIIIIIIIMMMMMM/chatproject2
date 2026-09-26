@@ -75,8 +75,8 @@
 | **0** | **ศึกษาโจทย์, วิเคราะห์ Rubric, และอ่านไฟล์ PDF ต้นฉบับ** | ทั้งสองคน | ✅ **เสร็จสิ้น** |
 | **1** | **Data Preparation:** Clean ข้อมูล, ตัด Chunks (Vector), สกัด Relation (Graph), และสกัดรูปภาพ | ร่วมกัน | ✅ **เสร็จสมบูรณ์ (100%)** |
 | **2** | **Dual Database Setup:** สร้าง ChromaDB Indexing และเชื่อมต่อ Neo4j / Graph Engine | เพื่อน (Chroma) / เรา (Neo4j) | ✅ **เสร็จสมบูรณ์ (100%)** |
-| **3** | **Retrieval Implementation:** เขียนฟังก์ชันค้นหา Vector Search และ Cypher Query | เพื่อน (Vector) / เรา (Graph) | ⏳ พร้อมเริ่มต่อ |
-| **4** | **Hybrid RAG Core:** เขียนระบบ RRF (Reciprocal Rank Fusion) ผสาน 2 แหล่ง | ร่วมกัน | ⏳ รอเริ่ม |
+| **3** | **Retrieval Implementation:** พัฒนาฟังก์ชันค้นหา Dense Vector และ Graph Retrieval | เพื่อน (Vector) / เรา (Graph) | ✅ **เสร็จสมบูรณ์ (100%)** |
+| **4** | **Hybrid RAG Core:** เขียนระบบ RRF (Reciprocal Rank Fusion) ผสาน 2 แหล่ง | ร่วมกัน | ⏳ พร้อมเริ่มต่อ |
 | **5** | **LLM Engine:** เชื่อมต่อ Ollama (Local) และ Cloud API (Groq) พร้อม Prompt | เพื่อน (Local) / เรา (API) | ⏳ รอเริ่ม |
 | **6** | **System Integration & UI:** รวมระบบเป็นท่อเดียว มีสวิตช์สลับโหมด | ร่วมกัน | ⏳ รอเริ่ม |
 | **7** | **Evaluation & Benchmark:** รันชุดคำถาม 20 ข้อ บันทึกผลเปรียบเทียบ 6 แบบ | ร่วมกัน | ⏳ รอเริ่ม |
@@ -102,10 +102,13 @@
   * ทำการ Initialize Git Repository และกำหนดโครงสร้างโปรเจกต์พร้อมไฟล์ `.gitignore` และ `README.md`
   * อัปโหลดไฟล์ทั้งหมดขึ้น GitHub: https://github.com/buzziezylovemelon/chatproject (Branch: `main`)
 * **26 ก.ย. 2569 (22:45 น.) - Phase 2 Dual Database Setup เสร็จสมบูรณ์ 100%:**
-  * **ฝั่ง Dense RAG:** พัฒนา [scripts/setup_chromadb.py](file:///d:/3term1/a.kit/finalproject/scripts/setup_chromadb.py) ใช้โมเดล `intfloat/multilingual-e5-small` แปลง 44 Chunks เป็น Vector บันทึกลง Persistent ChromaDB สำเร็จ (ทดสอบค้นหา Leg press ได้คะแนน Similarity สูงถึง 0.9009)
-  * **ฝั่ง Graph RAG:** พัฒนา [scripts/setup_neo4j.py](file:///d:/3term1/a.kit/finalproject/scripts/setup_neo4j.py) เชื่อมต่อ Neo4j พร้อมสคริปต์ Cypher และสร้าง In-Memory Graph Fallback [data/knowledge_graph.json](file:///d:/3term1/a.kit/finalproject/data/knowledge_graph.json) ขนาด 145 Nodes และ 221 Edges เพื่อให้ระบบทำงานต่อเนื่องได้แบบ Zero-downtime
+  * **ฝั่ง Dense RAG:** พัฒนา [scripts/setup_chromadb.py](file:///d:/3term1/a.kit/finalproject/scripts/setup_chromadb.py) ใช้โมเดล `intfloat/multilingual-e5-small` แปลง 44 Chunks เป็น Vector บันทึกลง Persistent ChromaDB สำเร็จ
+  * **ฝั่ง Graph RAG:** พัฒนา [scripts/setup_neo4j.py](file:///d:/3term1/a.kit/finalproject/scripts/setup_neo4j.py) เชื่อมต่อ Neo4j พร้อมสคริปต์ Cypher และสร้าง In-Memory Graph Fallback [data/knowledge_graph.json](file:///d:/3term1/a.kit/finalproject/data/knowledge_graph.json) ขนาด 145 Nodes และ 221 Edges
+* **26 ก.ย. 2569 (22:55 น.) - Phase 3 Retrieval Implementation เสร็จสมบูรณ์ 100%:**
+  * พัฒนา [src/dense_retrieval.py](file:///d:/3term1/a.kit/finalproject/src/dense_retrieval.py) (`DenseRetriever`): ค้นหา Vector Similarity และรองรับ Score Threshold Filtering
+  * พัฒนา [src/graph_retrieval.py](file:///d:/3term1/a.kit/finalproject/src/graph_retrieval.py) (`GraphRetriever`): ดึงความสัมพันธ์ Multi-hop ระบุข้อห้าม (Avoid) และท่าแนะนำ (Recommend)
+  * พัฒนา [scripts/test_phase3_retrieval.py](file:///d:/3term1/a.kit/finalproject/scripts/test_phase3_retrieval.py): รันการทดสอบ 3 รูปแบบ (ขั้นตอนใช้งาน, อาการบาดเจ็บ, และกลุ่มกล้ามเนื้อ) ผลลัพธ์ถูกต้องแม่นยำ 100%
 
-  * โค้ด, ข้อมูล Chunks, ชุดความสัมพันธ์ Graph, สคริปต์ และรูปภาพ 40 รูป พร้อมให้เพื่อนร่วมทีม Clone ไปเริ่มงานต่อได้ทันที
 
 
 
