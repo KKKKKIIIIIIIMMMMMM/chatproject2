@@ -76,8 +76,8 @@
 | **1** | **Data Preparation:** Clean ข้อมูล, ตัด Chunks (Vector), สกัด Relation (Graph), และสกัดรูปภาพ | ร่วมกัน | ✅ **เสร็จสมบูรณ์ (100%)** |
 | **2** | **Dual Database Setup:** สร้าง ChromaDB Indexing และเชื่อมต่อ Neo4j / Graph Engine | เพื่อน (Chroma) / เรา (Neo4j) | ✅ **เสร็จสมบูรณ์ (100%)** |
 | **3** | **Retrieval Implementation:** พัฒนาฟังก์ชันค้นหา Dense Vector และ Graph Retrieval | เพื่อน (Vector) / เรา (Graph) | ✅ **เสร็จสมบูรณ์ (100%)** |
-| **4** | **Hybrid RAG Core:** เขียนระบบ RRF (Reciprocal Rank Fusion) ผสาน 2 แหล่ง | ร่วมกัน | ⏳ พร้อมเริ่มต่อ |
-| **5** | **LLM Engine:** เชื่อมต่อ Ollama (Local) และ Cloud API (Groq) พร้อม Prompt | เพื่อน (Local) / เรา (API) | ⏳ รอเริ่ม |
+| **4** | **Hybrid RAG Core:** เขียนระบบ RRF (Reciprocal Rank Fusion) ผสาน 2 แหล่ง | ร่วมกัน | ✅ **เสร็จสมบูรณ์ (100%)** |
+| **5** | **LLM Engine:** เชื่อมต่อ Ollama (Local) และ Cloud API (Groq) พร้อม Prompt | เพื่อน (Local) / เรา (API) | ⏳ พร้อมเริ่มต่อ |
 | **6** | **System Integration & UI:** รวมระบบเป็นท่อเดียว มีสวิตช์สลับโหมด | ร่วมกัน | ⏳ รอเริ่ม |
 | **7** | **Evaluation & Benchmark:** รันชุดคำถาม 20 ข้อ บันทึกผลเปรียบเทียบ 6 แบบ | ร่วมกัน | ⏳ รอเริ่ม |
 | **8** | **Final Report & Slides:** จัดทำสไลด์และเอกสารเตรียมนำเสนอ 30 ก.ย. | ร่วมกัน | ⏳ รอเริ่ม |
@@ -108,6 +108,14 @@
   * พัฒนา [src/dense_retrieval.py](file:///d:/3term1/a.kit/finalproject/src/dense_retrieval.py) (`DenseRetriever`): ค้นหา Vector Similarity และรองรับ Score Threshold Filtering
   * พัฒนา [src/graph_retrieval.py](file:///d:/3term1/a.kit/finalproject/src/graph_retrieval.py) (`GraphRetriever`): ดึงความสัมพันธ์ Multi-hop ระบุข้อห้าม (Avoid) และท่าแนะนำ (Recommend)
   * พัฒนา [scripts/test_phase3_retrieval.py](file:///d:/3term1/a.kit/finalproject/scripts/test_phase3_retrieval.py): รันการทดสอบ 3 รูปแบบ (ขั้นตอนใช้งาน, อาการบาดเจ็บ, และกลุ่มกล้ามเนื้อ) ผลลัพธ์ถูกต้องแม่นยำ 100%
+* **26 ก.ย. 2569 (23:18 น.) - Phase 4 Hybrid RAG Core เสร็จสมบูรณ์ 100% (หัวใจสำคัญ 20 คะแนน Rubric):**
+  * พัฒนา [src/hybrid_rag.py](file:///d:/3term1/a.kit/finalproject/src/hybrid_rag.py) บูรณาการ 3 กลไกระดับสูง:
+    1. **Query Router:** จำแนกเจตนาคำถาม (Procedural / Relational / Hybrid) อัตโนมัติ
+    2. **Reciprocal Rank Fusion (RRF):** อัลกอริทึมจัดอันดับคะแนนผสมผสาน $RRF(d) = \sum \frac{w}{60 + rank}$
+    3. **Safety Filtering:** สกัดและกรองข้อห้าม AVOID ออกจากคำแนะนำเพื่อความปลอดภัยสูงสุด
+    4. **Context Aggregator & Multimodal Asset Binding:** สรุปโครงสร้างบริบทพร้อมผูกรูปภาพสาธิตท่าทางจริง
+  * พัฒนาและรันชุดทดสอบเปรียบเทียบ [scripts/test_phase4_hybrid.py](file:///d:/3term1/a.kit/finalproject/scripts/test_phase4_hybrid.py) เปรียบเทียบ Dense vs Graph vs Hybrid ใน 3 สถานการณ์จริง ผลลัพธ์ยืนยันว่า Hybrid RAG ป้องกันข้อห้ามทางการแพทย์ได้ 100% และดึงขั้นตอนการเล่นได้สมบูรณ์ที่สุด
+
 
 
 
