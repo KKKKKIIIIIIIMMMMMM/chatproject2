@@ -12,10 +12,11 @@ CSV_PATH = os.path.join(DATA_DIR, "graph_data.csv")
 CYPHER_PATH = os.path.join(DATA_DIR, "init_neo4j.cypher")
 JSON_GRAPH_PATH = os.path.join(DATA_DIR, "knowledge_graph.json")
 
-# Default connection settings (can be overridden via environment variables)
-NEO4J_URI = os.getenv("NEO4J_URI", "bolt://localhost:7687")
+# Default connection settings (supports user's Docker container on port 8687 or 7687)
+NEO4J_URI = os.getenv("NEO4J_URI", "bolt://localhost:8687")
 NEO4J_USER = os.getenv("NEO4J_USER", "neo4j")
 NEO4J_PASSWORD = os.getenv("NEO4J_PASSWORD", "password123")
+
 
 def build_local_graph_json():
     """สร้างไฟล์ knowledge_graph.json สำหรับเป็น Fast In-Memory Graph Engine / Fallback"""

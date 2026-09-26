@@ -15,9 +15,11 @@ class GraphRetriever:
     def __init__(self, neo4j_uri=None, neo4j_user=None, neo4j_password=None, json_path=None):
         base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         
-        self.neo4j_uri = neo4j_uri or os.getenv("NEO4J_URI", "bolt://localhost:7687")
+        # Try Docker port 8687 first, fallback to standard 7687
+        self.neo4j_uri = neo4j_uri or os.getenv("NEO4J_URI", "bolt://localhost:8687")
         self.neo4j_user = neo4j_user or os.getenv("NEO4J_USER", "neo4j")
         self.neo4j_password = neo4j_password or os.getenv("NEO4J_PASSWORD", "password123")
+
         
         self.json_path = json_path or os.path.join(base_dir, "data", "knowledge_graph.json")
         self.chunks_path = os.path.join(base_dir, "data", "chunks.json")
