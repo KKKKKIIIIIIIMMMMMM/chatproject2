@@ -39,7 +39,7 @@ chatproject/
 
 ### 1. ติดตั้ง Library พื้นฐาน
 ```bash
-pip install pymupdf pillow
+pip install -r requirements.txt
 ```
 
 ### 2. สถานะปัจจุบัน (Current Progress)
@@ -47,6 +47,26 @@ pip install pymupdf pillow
   * สกัดรูปภาพ 40 รูปเก็บไว้ใน `data/images/`
   * สร้าง `data/chunks.json` (44 chunks) พร้อม Metadata
   * สร้าง `data/graph_data.csv` (221 relations) และ `data/init_neo4j.cypher`
-* **Phase 2: Dual Database Setup:** ⏳ **เตรียมเริ่มต่อ**
-  * ฝั่ง Vector: นำ `data/chunks.json` เข้าสู่ ChromaDB
-  * ฝั่ง Graph: นำ `data/init_neo4j.cypher` เข้าสู่ Neo4j
+* **Phase 2: Dual Database Setup:** ✅ **เสร็จสมบูรณ์ 100%**
+  * Vector: ChromaDB เก็บ Persistent Vector Indexing ไว้ใน `data/chroma_db/`
+  * Graph: นำข้อมูลเข้า Neo4j พร้อมไฟล์ In-Memory Fallback `data/knowledge_graph.json` (145 nodes, 221 edges)
+* **Phase 3: Retrieval Implementation:** ✅ **เสร็จสมบูรณ์ 100%**
+  * `src/dense_retrieval.py` (`DenseRetriever`) ค้นหาเวกเตอร์ Cosine Similarity + Threshold Cutoff
+  * `src/graph_retrieval.py` (`GraphRetriever`) Multi-hop traversal ตรวจสอบข้อห้าม AVOID และท่าทดแทน
+* **Phase 4: Hybrid RAG Core (20 คะแนนเต็ม):** ✅ **เสร็จสมบูรณ์ 100%**
+  * `src/hybrid_rag.py` (`HybridRAG`): รวม QueryRouter, Reciprocal Rank Fusion (RRF), Safety Filtering, และ Context Aggregator
+  * รันสคริปต์ทดสอบ: `python scripts/test_phase4_hybrid.py`
+* **Phase 5: Dual LLM Engine:** ⏳ **ขั้นตอนถัดไปที่พร้อมเริ่มทำต่อ**
+  * เชื่อมต่อ Local LLM (Ollama: `qwen2.5`) และ Cloud API (Groq/Gemini)
+
+---
+
+## 🧪 คำสั่งทดสอบระบบ (How to Run Tests)
+
+```bash
+# 1. ทดสอบการค้นหาแยกสาย (Dense Vector vs Graph)
+python scripts/test_phase3_retrieval.py
+
+# 2. ทดสอบระบบรวมพลัง Hybrid RAG (RRF + Safety Filter + Auto Attached Images)
+python scripts/test_phase4_hybrid.py
+```

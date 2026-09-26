@@ -1,0 +1,15 @@
+# Core Embedding & Vector Database
+chromadb>=0.4.22
+sentence-transformers>=2.2.2
+torch>=2.0.0
+
+# Graph Database
+neo4j>=5.14.0
+
+# PDF & Image Processing
+pymupdf>=1.23.0
+pillow>=10.0.0
+
+# LLM & Web App (Upcoming Phases)
+requests>=2.31.0
+streamlit>=1.30.0
