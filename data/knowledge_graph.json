@@ -1,0 +1,1693 @@
+{
+  "nodes": {
+    "1. จักรยานคอมพิวเตอร์ (Bike) การใช้ Program Manual": {
+      "name": "1. จักรยานคอมพิวเตอร์ (Bike) การใช้ Program Manual",
+      "label": "Exercise"
+    },
+    "Aerobic Exercise Group": {
+      "name": "Aerobic Exercise Group",
+      "label": "Zone"
+    },
+    "หัวใจและหลอดเลือด (Cardio)": {
+      "name": "หัวใจและหลอดเลือด (Cardio)",
+      "label": "MuscleGroup"
+    },
+    "จักรยานฟิตเนส (Stationary Bike)": {
+      "name": "จักรยานฟิตเนส (Stationary Bike)",
+      "label": "Equipment"
+    },
+    "กล้ามเนื้อหัวใจ": {
+      "name": "กล้ามเนื้อหัวใจ",
+      "label": "Muscle"
+    },
+    "2. เครื่องเดิน - วิ่งคอมพิวเตอร์ (Treadmill) การใช้ Program Manual": {
+      "name": "2. เครื่องเดิน - วิ่งคอมพิวเตอร์ (Treadmill) การใช้ Program Manual",
+      "label": "Exercise"
+    },
+    "ลู่วิ่งไฟฟ้า (Treadmill)": {
+      "name": "ลู่วิ่งไฟฟ้า (Treadmill)",
+      "label": "Equipment"
+    },
+    "หมายเหตุ: ใกล้ครบเวลาที่กำหนด ควรลดความเร็วเพื่อให้ร่างกายปรับสู่สภาพปกติ": {
+      "name": "หมายเหตุ: ใกล้ครบเวลาที่กำหนด ควรลดความเร็วเพื่อให้ร่างกายปรับสู่สภาพปกติ",
+      "label": "Caution"
+    },
+    "3. เครื่องเดินวงรี (Elliptical)": {
+      "name": "3. เครื่องเดินวงรี (Elliptical)",
+      "label": "Exercise"
+    },
+    "เครื่องเดินวงรี (Elliptical)": {
+      "name": "เครื่องเดินวงรี (Elliptical)",
+      "label": "Equipment"
+    },
+    "5. ขึ้นเหยียบบนที่วางเท้าแล้วก้าวเดินสลับขาซ้าย-ขวา(ระวังอย่าให้เข่าตึง)": {
+      "name": "5. ขึ้นเหยียบบนที่วางเท้าแล้วก้าวเดินสลับขาซ้าย-ขวา(ระวังอย่าให้เข่าตึง)",
+      "label": "Caution"
+    },
+    "4. กรรเชียง (Rower)": {
+      "name": "4. กรรเชียง (Rower)",
+      "label": "Exercise"
+    },
+    "เครื่องกรรเชียงบก (Rowing Machine)": {
+      "name": "เครื่องกรรเชียงบก (Rowing Machine)",
+      "label": "Equipment"
+    },
+    "1. เครื่องบริหารลำตัวด้านข้าง (Torso Twist)": {
+      "name": "1. เครื่องบริหารลำตัวด้านข้าง (Torso Twist)",
+      "label": "Exercise"
+    },
+    "Weight Machine Zone": {
+      "name": "Weight Machine Zone",
+      "label": "Zone"
+    },
+    "หน้าท้องและลำตัว (Abdominal & Obliques)": {
+      "name": "หน้าท้องและลำตัว (Abdominal & Obliques)",
+      "label": "MuscleGroup"
+    },
+    "Machine (Torso Twist)": {
+      "name": "Machine (Torso Twist)",
+      "label": "Equipment"
+    },
+    "กล้ามเนื้อลำตัวด้านข้าง": {
+      "name": "กล้ามเนื้อลำตัวด้านข้าง",
+      "label": "Muscle"
+    },
+    "Obliques": {
+      "name": "Obliques",
+      "label": "Muscle"
+    },
+    "2. เครื่องบริหารหน้าท้อง (Abdominal Machine)": {
+      "name": "2. เครื่องบริหารหน้าท้อง (Abdominal Machine)",
+      "label": "Exercise"
+    },
+    "หน้าท้องและลำตัว (Abdominal)": {
+      "name": "หน้าท้องและลำตัว (Abdominal)",
+      "label": "MuscleGroup"
+    },
+    "Machine (Abdominal)": {
+      "name": "Machine (Abdominal)",
+      "label": "Equipment"
+    },
+    "Abdominal": {
+      "name": "Abdominal",
+      "label": "Muscle"
+    },
+    "กล้ามเนื้อหน้าท้อง": {
+      "name": "กล้ามเนื้อหน้าท้อง",
+      "label": "Muscle"
+    },
+    "3. เครื่องบริหารต้นขาด้านหน้าและสะโพก (Leg press)": {
+      "name": "3. เครื่องบริหารต้นขาด้านหน้าและสะโพก (Leg press)",
+      "label": "Exercise"
+    },
+    "กลุ่มกล้ามเนื้อขา (Leg Group)": {
+      "name": "กลุ่มกล้ามเนื้อขา (Leg Group)",
+      "label": "MuscleGroup"
+    },
+    "Machine (Leg Press)": {
+      "name": "Machine (Leg Press)",
+      "label": "Equipment"
+    },
+    "Gluteus": {
+      "name": "Gluteus",
+      "label": "Muscle"
+    },
+    "Quadriceps": {
+      "name": "Quadriceps",
+      "label": "Muscle"
+    },
+    "กล้ามเนื้อต้นขาด้านหน้า": {
+      "name": "กล้ามเนื้อต้นขาด้านหน้า",
+      "label": "Muscle"
+    },
+    "4. เครื่องบริหารต้นขาด้านหน้า (Leg Extension)": {
+      "name": "4. เครื่องบริหารต้นขาด้านหน้า (Leg Extension)",
+      "label": "Exercise"
+    },
+    "Machine (Leg Extension)": {
+      "name": "Machine (Leg Extension)",
+      "label": "Equipment"
+    },
+    "1-2 และลงมาด้วยจังหวะการนับ 1-2-3-4 ดั้งนั้นการปฏิบัติจะต้องค่อยระวังไม่ให้เครื่องไหวท่า": {
+      "name": "1-2 และลงมาด้วยจังหวะการนับ 1-2-3-4 ดั้งนั้นการปฏิบัติจะต้องค่อยระวังไม่ให้เครื่องไหวท่า",
+      "label": "Caution"
+    },
+    "5. เครื่องบริหารต้นขาด้านหลัง (Leg Curl)": {
+      "name": "5. เครื่องบริหารต้นขาด้านหลัง (Leg Curl)",
+      "label": "Exercise"
+    },
+    "Machine (Leg Curl)": {
+      "name": "Machine (Leg Curl)",
+      "label": "Equipment"
+    },
+    "กล้ามเนื้อต้นขาด้านหลัง": {
+      "name": "กล้ามเนื้อต้นขาด้านหลัง",
+      "label": "Muscle"
+    },
+    "Hamstrings": {
+      "name": "Hamstrings",
+      "label": "Muscle"
+    },
+    "6.เครื่องบริหารน่อง (Calf Raise)": {
+      "name": "6.เครื่องบริหารน่อง (Calf Raise)",
+      "label": "Exercise"
+    },
+    "Machine (Calf Raise)": {
+      "name": "Machine (Calf Raise)",
+      "label": "Equipment"
+    },
+    "กล้ามเนื้อน่อง": {
+      "name": "กล้ามเนื้อน่อง",
+      "label": "Muscle"
+    },
+    "Soleus": {
+      "name": "Soleus",
+      "label": "Muscle"
+    },
+    "Gastrocnemius": {
+      "name": "Gastrocnemius",
+      "label": "Muscle"
+    },
+    "7. เครื่องบริหารต้นขาด้านใน-ด้านนอก (Inner Thigh & Outer Thigh": {
+      "name": "7. เครื่องบริหารต้นขาด้านใน-ด้านนอก (Inner Thigh & Outer Thigh",
+      "label": "Exercise"
+    },
+    "Machine (Thigh Machine)": {
+      "name": "Machine (Thigh Machine)",
+      "label": "Equipment"
+    },
+    "Adductors": {
+      "name": "Adductors",
+      "label": "Muscle"
+    },
+    "Fascia Lata": {
+      "name": "Fascia Lata",
+      "label": "Muscle"
+    },
+    "กล้ามเนื้อต้นขาด้านใน": {
+      "name": "กล้ามเนื้อต้นขาด้านใน",
+      "label": "Muscle"
+    },
+    "Gluteal": {
+      "name": "Gluteal",
+      "label": "Muscle"
+    },
+    "หมายเหตุ: ส าหรับ Outer-thigh ให้ปฏิบัติตรงกันข้ามในการปรับเบาะและการหายใจเข้าออก": {
+      "name": "หมายเหตุ: ส าหรับ Outer-thigh ให้ปฏิบัติตรงกันข้ามในการปรับเบาะและการหายใจเข้าออก",
+      "label": "Caution"
+    },
+    "8. เครื่องบริหารต้นขาด้านใน (Inner Thigh)": {
+      "name": "8. เครื่องบริหารต้นขาด้านใน (Inner Thigh)",
+      "label": "Exercise"
+    },
+    "Machine (Inner Thigh)": {
+      "name": "Machine (Inner Thigh)",
+      "label": "Equipment"
+    },
+    "Adductor": {
+      "name": "Adductor",
+      "label": "Muscle"
+    },
+    "9. เครื่องบริหารต้นขาด้านใน-ด้านนอก (Outer Thigh)": {
+      "name": "9. เครื่องบริหารต้นขาด้านใน-ด้านนอก (Outer Thigh)",
+      "label": "Exercise"
+    },
+    "Machine (Outer Thigh)": {
+      "name": "Machine (Outer Thigh)",
+      "label": "Equipment"
+    },
+    "กล้ามเนื้อต้นขาด้านนอก": {
+      "name": "กล้ามเนื้อต้นขาด้านนอก",
+      "label": "Muscle"
+    },
+    "10. เครื่องบริหารกล้ามเนื้อหน้าอกใน (Pec Dek)": {
+      "name": "10. เครื่องบริหารกล้ามเนื้อหน้าอกใน (Pec Dek)",
+      "label": "Exercise"
+    },
+    "กลุ่มกล้ามเนื้ออก (Chest Group)": {
+      "name": "กลุ่มกล้ามเนื้ออก (Chest Group)",
+      "label": "MuscleGroup"
+    },
+    "Machine (Pec Dek Fly)": {
+      "name": "Machine (Pec Dek Fly)",
+      "label": "Equipment"
+    },
+    "Anterior Deltoids": {
+      "name": "Anterior Deltoids",
+      "label": "Muscle"
+    },
+    "กล้ามเนื้อหน้าอก": {
+      "name": "กล้ามเนื้อหน้าอก",
+      "label": "Muscle"
+    },
+    "11. เครื่องบริหารอกบน (Incline Press": {
+      "name": "11. เครื่องบริหารอกบน (Incline Press",
+      "label": "Exercise"
+    },
+    "Machine (Incline Chest Press)": {
+      "name": "Machine (Incline Chest Press)",
+      "label": "Equipment"
+    },
+    "Clavicular head of Pectorals Major": {
+      "name": "Clavicular head of Pectorals Major",
+      "label": "Muscle"
+    },
+    "กล้ามเนื้อหน้าอกส่วนบน": {
+      "name": "กล้ามเนื้อหน้าอกส่วนบน",
+      "label": "Muscle"
+    },
+    "12. เครื่องบริหารอกกลาง (Chest Press)": {
+      "name": "12. เครื่องบริหารอกกลาง (Chest Press)",
+      "label": "Exercise"
+    },
+    "Machine (Chest Press)": {
+      "name": "Machine (Chest Press)",
+      "label": "Equipment"
+    },
+    "กล้ามเนื้ออกส่วนกลาง": {
+      "name": "กล้ามเนื้ออกส่วนกลาง",
+      "label": "Muscle"
+    },
+    "Pectorals Major": {
+      "name": "Pectorals Major",
+      "label": "Muscle"
+    },
+    "13. เครื่องมือบริการกล้ามเนื้อหัวไหล่ (Shoulder Press)": {
+      "name": "13. เครื่องมือบริการกล้ามเนื้อหัวไหล่ (Shoulder Press)",
+      "label": "Exercise"
+    },
+    "กลุ่มกล้ามเนื้อหัวไหล่ (Shoulder Group)": {
+      "name": "กลุ่มกล้ามเนื้อหัวไหล่ (Shoulder Group)",
+      "label": "MuscleGroup"
+    },
+    "Machine (Shoulder Press)": {
+      "name": "Machine (Shoulder Press)",
+      "label": "Equipment"
+    },
+    "Triceps": {
+      "name": "Triceps",
+      "label": "Muscle"
+    },
+    "Deltoid": {
+      "name": "Deltoid",
+      "label": "Muscle"
+    },
+    "กล้ามเนื้อหัวไหล่": {
+      "name": "กล้ามเนื้อหัวไหล่",
+      "label": "Muscle"
+    },
+    "2. ออกแรงยกหรือดันแขนขึ้นด้านบนอย่างช้าๆให้เกือบสุดแขนระวังในการเล่นห้ามการกระตุก": {
+      "name": "2. ออกแรงยกหรือดันแขนขึ้นด้านบนอย่างช้าๆให้เกือบสุดแขนระวังในการเล่นห้ามการกระตุก",
+      "label": "Caution"
+    },
+    "14. เครื่องมือบริการกล้ามเนื้อปีกและสะบักหลัง (Lat Pulldown (Front / Back)": {
+      "name": "14. เครื่องมือบริการกล้ามเนื้อปีกและสะบักหลัง (Lat Pulldown (Front / Back)",
+      "label": "Exercise"
+    },
+    "กลุ่มกล้ามเนื้อปีกและหลัง (Back Group)": {
+      "name": "กลุ่มกล้ามเนื้อปีกและหลัง (Back Group)",
+      "label": "MuscleGroup"
+    },
+    "Machine (Lat Pulldown)": {
+      "name": "Machine (Lat Pulldown)",
+      "label": "Equipment"
+    },
+    "Latissimus Dorsi": {
+      "name": "Latissimus Dorsi",
+      "label": "Muscle"
+    },
+    "กล้ามเนื้อหลังหรือปีก": {
+      "name": "กล้ามเนื้อหลังหรือปีก",
+      "label": "Muscle"
+    },
+    "15. เครื่องบริหารกล้ามเนื้อหลังส่วนบน Seated Row": {
+      "name": "15. เครื่องบริหารกล้ามเนื้อหลังส่วนบน Seated Row",
+      "label": "Exercise"
+    },
+    "Machine (Seated Cable Row)": {
+      "name": "Machine (Seated Cable Row)",
+      "label": "Equipment"
+    },
+    "Rear deltoid": {
+      "name": "Rear deltoid",
+      "label": "Muscle"
+    },
+    "Lattissimus dorsi": {
+      "name": "Lattissimus dorsi",
+      "label": "Muscle"
+    },
+    "Trapezius": {
+      "name": "Trapezius",
+      "label": "Muscle"
+    },
+    "4. ขณะผ่อนแรงให้สังเกตแผ่นเหล็กระมัดระวังไม่ให้แผ่นเหล็กกระทบกันเพื่อการฝึกอย่างต่อเนื่อง": {
+      "name": "4. ขณะผ่อนแรงให้สังเกตแผ่นเหล็กระมัดระวังไม่ให้แผ่นเหล็กกระทบกันเพื่อการฝึกอย่างต่อเนื่อง",
+      "label": "Caution"
+    },
+    "16. เครื่องบริหารกล้ามเนื้อหลังส่วนล่าง (Hyper Extension)": {
+      "name": "16. เครื่องบริหารกล้ามเนื้อหลังส่วนล่าง (Hyper Extension)",
+      "label": "Exercise"
+    },
+    "Roman Chair (Hyper Extension)": {
+      "name": "Roman Chair (Hyper Extension)",
+      "label": "Equipment"
+    },
+    "Elector": {
+      "name": "Elector",
+      "label": "Muscle"
+    },
+    "กล้ามเนื้อช่วงล่าง": {
+      "name": "กล้ามเนื้อช่วงล่าง",
+      "label": "Muscle"
+    },
+    "ห้ามไม่ให้เกินมุม 180๐ จะทำให้หลังแอ่น อาจเกิดการบาดเจ็บของหลังได้ ทำซ้ำจนครบเซท": {
+      "name": "ห้ามไม่ให้เกินมุม 180๐ จะทำให้หลังแอ่น อาจเกิดการบาดเจ็บของหลังได้ ทำซ้ำจนครบเซท",
+      "label": "Caution"
+    },
+    "17. เครื่องมือบริหารกล้ามเนื้อต้นแขนด้านหน้า (Arms Curl)": {
+      "name": "17. เครื่องมือบริหารกล้ามเนื้อต้นแขนด้านหน้า (Arms Curl)",
+      "label": "Exercise"
+    },
+    "กลุ่มกล้ามเนื้อแขน (Biceps Group)": {
+      "name": "กลุ่มกล้ามเนื้อแขน (Biceps Group)",
+      "label": "MuscleGroup"
+    },
+    "Machine (Arm Curl)": {
+      "name": "Machine (Arm Curl)",
+      "label": "Equipment"
+    },
+    "Biceps": {
+      "name": "Biceps",
+      "label": "Muscle"
+    },
+    "18. เครื่องมือบริหารกล้ามเนื้อต้นแขนด้านหลัง (Triceps Extension)": {
+      "name": "18. เครื่องมือบริหารกล้ามเนื้อต้นแขนด้านหลัง (Triceps Extension)",
+      "label": "Exercise"
+    },
+    "กลุ่มกล้ามเนื้อแขน (Triceps Group)": {
+      "name": "กลุ่มกล้ามเนื้อแขน (Triceps Group)",
+      "label": "MuscleGroup"
+    },
+    "Machine (Triceps Extension)": {
+      "name": "Machine (Triceps Extension)",
+      "label": "Equipment"
+    },
+    "19. เครื่องบริหารต้นแขนด้านหลัง (Triceps Press Down)": {
+      "name": "19. เครื่องบริหารต้นแขนด้านหลัง (Triceps Press Down)",
+      "label": "Exercise"
+    },
+    "Cable Machine (Triceps Press Down)": {
+      "name": "Cable Machine (Triceps Press Down)",
+      "label": "Equipment"
+    },
+    "20. เครื่องบริหารท้อง (Sit Up)": {
+      "name": "20. เครื่องบริหารท้อง (Sit Up)",
+      "label": "Exercise"
+    },
+    "Abdominal Bench (Sit Up Bench)": {
+      "name": "Abdominal Bench (Sit Up Bench)",
+      "label": "Equipment"
+    },
+    "กล้ามเนื้อท้องส่วนบน": {
+      "name": "กล้ามเนื้อท้องส่วนบน",
+      "label": "Muscle"
+    },
+    "21. เครื่องบริหารกล้ามเนื้อหน้าท้องส่วนล่าง (Verticals Knee Raise)": {
+      "name": "21. เครื่องบริหารกล้ามเนื้อหน้าท้องส่วนล่าง (Verticals Knee Raise)",
+      "label": "Exercise"
+    },
+    "Captain's Chair (Knee Raise Station)": {
+      "name": "Captain's Chair (Knee Raise Station)",
+      "label": "Equipment"
+    },
+    "กล้ามเนื้อหน้าท้องส่วนล่าง": {
+      "name": "กล้ามเนื้อหน้าท้องส่วนล่าง",
+      "label": "Muscle"
+    },
+    "Lower Abdominis": {
+      "name": "Lower Abdominis",
+      "label": "Muscle"
+    },
+    "ต้นแขนด้านหน้า (Biceps)": {
+      "name": "ต้นแขนด้านหน้า (Biceps)",
+      "label": "Exercise"
+    },
+    "Free Weight Zone": {
+      "name": "Free Weight Zone",
+      "label": "Zone"
+    },
+    "Dumbbell": {
+      "name": "Dumbbell",
+      "label": "Equipment"
+    },
+    "Brachioradialis": {
+      "name": "Brachioradialis",
+      "label": "Muscle"
+    },
+    "Biceps Brachialis": {
+      "name": "Biceps Brachialis",
+      "label": "Muscle"
+    },
+    "หมายเหตุ: ALT.  DB.CURL (sit) เปลี่ยนจากท่ายืน เป็นท่านั่งวิธีปฏิบัติต่อไปเหมือนท่ายืน": {
+      "name": "หมายเหตุ: ALT.  DB.CURL (sit) เปลี่ยนจากท่ายืน เป็นท่านั่งวิธีปฏิบัติต่อไปเหมือนท่ายืน",
+      "label": "Caution"
+    },
+    "2.  Dumbbell Curl": {
+      "name": "2.  Dumbbell Curl",
+      "label": "Exercise"
+    },
+    "หมายเหตุ  Dumbell Curl (sit)  เปลี่ยนจากท่ายืนเป็นท่านั่งเก้าอี้แทนต่อจากนั้นปฏิบัติเหมือนท่ายืน  INCLINE": {
+      "name": "หมายเหตุ  Dumbell Curl (sit)  เปลี่ยนจากท่ายืนเป็นท่านั่งเก้าอี้แทนต่อจากนั้นปฏิบัติเหมือนท่ายืน  INCLINE",
+      "label": "Caution"
+    },
+    "3.  Dumbbell Concentration Curl": {
+      "name": "3.  Dumbbell Concentration Curl",
+      "label": "Exercise"
+    },
+    "ต้นแขนด้านหลัง (Triceps)": {
+      "name": "ต้นแขนด้านหลัง (Triceps)",
+      "label": "Exercise"
+    },
+    "กล้ามเนื้อต้นแขนด้านหลัง": {
+      "name": "กล้ามเนื้อต้นแขนด้านหลัง",
+      "label": "Muscle"
+    },
+    "2. ท่าบริหารต้นแขน (Two Arm Ext.) (Sit/ST.)": {
+      "name": "2. ท่าบริหารต้นแขน (Two Arm Ext.) (Sit/ST.)",
+      "label": "Exercise"
+    },
+    "หมายเหตุ: Two Arm Extensions เปลี่ยนจากท่านั่งเป็นท่ายืน": {
+      "name": "หมายเหตุ: Two Arm Extensions เปลี่ยนจากท่านั่งเป็นท่ายืน",
+      "label": "Caution"
+    },
+    "3. ท่าบริหารต้นแขน (Kick back)": {
+      "name": "3. ท่าบริหารต้นแขน (Kick back)",
+      "label": "Exercise"
+    },
+    "Dumbbell & Bench": {
+      "name": "Dumbbell & Bench",
+      "label": "Equipment"
+    },
+    "Kick back": {
+      "name": "Kick back",
+      "label": "Muscle"
+    },
+    "1. ท่าบริหารหัวไหล่ Dumbbell Press": {
+      "name": "1. ท่าบริหารหัวไหล่ Dumbbell Press",
+      "label": "Exercise"
+    },
+    "Deltoids": {
+      "name": "Deltoids",
+      "label": "Muscle"
+    },
+    "2. ท่าบริหารหัวไหล่ด้านหน้า (Dumbbell Raise Front)": {
+      "name": "2. ท่าบริหารหัวไหล่ด้านหน้า (Dumbbell Raise Front)",
+      "label": "Exercise"
+    },
+    "Front Deltoids": {
+      "name": "Front Deltoids",
+      "label": "Muscle"
+    },
+    "3. ท่าบริหารหัวไหล่ด้านข้าง (Dumbbell Side Rosie & Lateral Raise)": {
+      "name": "3. ท่าบริหารหัวไหล่ด้านข้าง (Dumbbell Side Rosie & Lateral Raise)",
+      "label": "Exercise"
+    },
+    "Side Deltoids": {
+      "name": "Side Deltoids",
+      "label": "Muscle"
+    },
+    "1.  ท่าบริหารกล้ามเนื้อปีกและหลัง Dumbbell Row": {
+      "name": "1.  ท่าบริหารกล้ามเนื้อปีกและหลัง Dumbbell Row",
+      "label": "Exercise"
+    },
+    "Latissimus dorsi and Rhomboids": {
+      "name": "Latissimus dorsi and Rhomboids",
+      "label": "Muscle"
+    },
+    "2.  ท่า  Two Arm Dumbbell Row": {
+      "name": "2.  ท่า  Two Arm Dumbbell Row",
+      "label": "Exercise"
+    },
+    "1. ท่าบริหารกล้ามเนื้ออก (Dumbbell Bench Press)": {
+      "name": "1. ท่าบริหารกล้ามเนื้ออก (Dumbbell Bench Press)",
+      "label": "Exercise"
+    },
+    "Dumbbell & Flat Bench": {
+      "name": "Dumbbell & Flat Bench",
+      "label": "Equipment"
+    },
+    "Pectrolaris": {
+      "name": "Pectrolaris",
+      "label": "Muscle"
+    },
+    "กล้ามเนื้ออกด้านหน้า": {
+      "name": "กล้ามเนื้ออกด้านหน้า",
+      "label": "Muscle"
+    },
+    "2. บริหารกล้ามเนื้ออกใน (Dumbbell Flies)": {
+      "name": "2. บริหารกล้ามเนื้ออกใน (Dumbbell Flies)",
+      "label": "Exercise"
+    },
+    "3. บริหารกล้ามเนื้ออกล่าง (Pullovers)": {
+      "name": "3. บริหารกล้ามเนื้ออกล่าง (Pullovers)",
+      "label": "Exercise"
+    },
+    "4. บริหารกล้ามเนื้ออกล่าง (Decline Dumbbell Bent press)": {
+      "name": "4. บริหารกล้ามเนื้ออกล่าง (Decline Dumbbell Bent press)",
+      "label": "Exercise"
+    },
+    "Dumbbell & Decline Bench": {
+      "name": "Dumbbell & Decline Bench",
+      "label": "Equipment"
+    },
+    "กล้ามเนื้ออกล่าง": {
+      "name": "กล้ามเนื้ออกล่าง",
+      "label": "Muscle"
+    },
+    "ปวดหลังล่าง (Lower Back Pain)": {
+      "name": "ปวดหลังล่าง (Lower Back Pain)",
+      "label": "Condition"
+    },
+    "ปวดข้อเข่า (Knee Pain)": {
+      "name": "ปวดข้อเข่า (Knee Pain)",
+      "label": "Condition"
+    },
+    "ปวดหัวไหล่ / ข้อต่อไหล่ติด (Shoulder Impingement)": {
+      "name": "ปวดหัวไหล่ / ข้อต่อไหล่ติด (Shoulder Impingement)",
+      "label": "Condition"
+    },
+    "ผู้เริ่มต้นฝึกออกกำลังกาย (Beginner)": {
+      "name": "ผู้เริ่มต้นฝึกออกกำลังกาย (Beginner)",
+      "label": "Condition"
+    }
+  },
+  "edges": [
+    {
+      "source": "1. จักรยานคอมพิวเตอร์ (Bike) การใช้ Program Manual",
+      "relation": "LOCATED_IN",
+      "target": "Aerobic Exercise Group"
+    },
+    {
+      "source": "1. จักรยานคอมพิวเตอร์ (Bike) การใช้ Program Manual",
+      "relation": "TARGETS_GROUP",
+      "target": "หัวใจและหลอดเลือด (Cardio)"
+    },
+    {
+      "source": "1. จักรยานคอมพิวเตอร์ (Bike) การใช้ Program Manual",
+      "relation": "USES_EQUIPMENT",
+      "target": "จักรยานฟิตเนส (Stationary Bike)"
+    },
+    {
+      "source": "1. จักรยานคอมพิวเตอร์ (Bike) การใช้ Program Manual",
+      "relation": "TARGETS",
+      "target": "กล้ามเนื้อหัวใจ"
+    },
+    {
+      "source": "2. เครื่องเดิน - วิ่งคอมพิวเตอร์ (Treadmill) การใช้ Program Manual",
+      "relation": "LOCATED_IN",
+      "target": "Aerobic Exercise Group"
+    },
+    {
+      "source": "2. เครื่องเดิน - วิ่งคอมพิวเตอร์ (Treadmill) การใช้ Program Manual",
+      "relation": "TARGETS_GROUP",
+      "target": "หัวใจและหลอดเลือด (Cardio)"
+    },
+    {
+      "source": "2. เครื่องเดิน - วิ่งคอมพิวเตอร์ (Treadmill) การใช้ Program Manual",
+      "relation": "USES_EQUIPMENT",
+      "target": "ลู่วิ่งไฟฟ้า (Treadmill)"
+    },
+    {
+      "source": "2. เครื่องเดิน - วิ่งคอมพิวเตอร์ (Treadmill) การใช้ Program Manual",
+      "relation": "TARGETS",
+      "target": "กล้ามเนื้อหัวใจ"
+    },
+    {
+      "source": "2. เครื่องเดิน - วิ่งคอมพิวเตอร์ (Treadmill) การใช้ Program Manual",
+      "relation": "HAS_CAUTION",
+      "target": "หมายเหตุ: ใกล้ครบเวลาที่กำหนด ควรลดความเร็วเพื่อให้ร่างกายปรับสู่สภาพปกติ"
+    },
+    {
+      "source": "3. เครื่องเดินวงรี (Elliptical)",
+      "relation": "LOCATED_IN",
+      "target": "Aerobic Exercise Group"
+    },
+    {
+      "source": "3. เครื่องเดินวงรี (Elliptical)",
+      "relation": "TARGETS_GROUP",
+      "target": "หัวใจและหลอดเลือด (Cardio)"
+    },
+    {
+      "source": "3. เครื่องเดินวงรี (Elliptical)",
+      "relation": "USES_EQUIPMENT",
+      "target": "เครื่องเดินวงรี (Elliptical)"
+    },
+    {
+      "source": "3. เครื่องเดินวงรี (Elliptical)",
+      "relation": "TARGETS",
+      "target": "กล้ามเนื้อหัวใจ"
+    },
+    {
+      "source": "3. เครื่องเดินวงรี (Elliptical)",
+      "relation": "HAS_CAUTION",
+      "target": "5. ขึ้นเหยียบบนที่วางเท้าแล้วก้าวเดินสลับขาซ้าย-ขวา(ระวังอย่าให้เข่าตึง)"
+    },
+    {
+      "source": "4. กรรเชียง (Rower)",
+      "relation": "LOCATED_IN",
+      "target": "Aerobic Exercise Group"
+    },
+    {
+      "source": "4. กรรเชียง (Rower)",
+      "relation": "TARGETS_GROUP",
+      "target": "หัวใจและหลอดเลือด (Cardio)"
+    },
+    {
+      "source": "4. กรรเชียง (Rower)",
+      "relation": "USES_EQUIPMENT",
+      "target": "เครื่องกรรเชียงบก (Rowing Machine)"
+    },
+    {
+      "source": "4. กรรเชียง (Rower)",
+      "relation": "TARGETS",
+      "target": "กล้ามเนื้อหัวใจ"
+    },
+    {
+      "source": "1. เครื่องบริหารลำตัวด้านข้าง (Torso Twist)",
+      "relation": "LOCATED_IN",
+      "target": "Weight Machine Zone"
+    },
+    {
+      "source": "1. เครื่องบริหารลำตัวด้านข้าง (Torso Twist)",
+      "relation": "TARGETS_GROUP",
+      "target": "หน้าท้องและลำตัว (Abdominal & Obliques)"
+    },
+    {
+      "source": "1. เครื่องบริหารลำตัวด้านข้าง (Torso Twist)",
+      "relation": "USES_EQUIPMENT",
+      "target": "Machine (Torso Twist)"
+    },
+    {
+      "source": "1. เครื่องบริหารลำตัวด้านข้าง (Torso Twist)",
+      "relation": "TARGETS",
+      "target": "กล้ามเนื้อลำตัวด้านข้าง"
+    },
+    {
+      "source": "1. เครื่องบริหารลำตัวด้านข้าง (Torso Twist)",
+      "relation": "TARGETS",
+      "target": "Obliques"
+    },
+    {
+      "source": "2. เครื่องบริหารหน้าท้อง (Abdominal Machine)",
+      "relation": "LOCATED_IN",
+      "target": "Weight Machine Zone"
+    },
+    {
+      "source": "2. เครื่องบริหารหน้าท้อง (Abdominal Machine)",
+      "relation": "TARGETS_GROUP",
+      "target": "หน้าท้องและลำตัว (Abdominal)"
+    },
+    {
+      "source": "2. เครื่องบริหารหน้าท้อง (Abdominal Machine)",
+      "relation": "USES_EQUIPMENT",
+      "target": "Machine (Abdominal)"
+    },
+    {
+      "source": "2. เครื่องบริหารหน้าท้อง (Abdominal Machine)",
+      "relation": "TARGETS",
+      "target": "Abdominal"
+    },
+    {
+      "source": "2. เครื่องบริหารหน้าท้อง (Abdominal Machine)",
+      "relation": "TARGETS",
+      "target": "กล้ามเนื้อหน้าท้อง"
+    },
+    {
+      "source": "3. เครื่องบริหารต้นขาด้านหน้าและสะโพก (Leg press)",
+      "relation": "LOCATED_IN",
+      "target": "Weight Machine Zone"
+    },
+    {
+      "source": "3. เครื่องบริหารต้นขาด้านหน้าและสะโพก (Leg press)",
+      "relation": "TARGETS_GROUP",
+      "target": "กลุ่มกล้ามเนื้อขา (Leg Group)"
+    },
+    {
+      "source": "3. เครื่องบริหารต้นขาด้านหน้าและสะโพก (Leg press)",
+      "relation": "USES_EQUIPMENT",
+      "target": "Machine (Leg Press)"
+    },
+    {
+      "source": "3. เครื่องบริหารต้นขาด้านหน้าและสะโพก (Leg press)",
+      "relation": "TARGETS",
+      "target": "Gluteus"
+    },
+    {
+      "source": "3. เครื่องบริหารต้นขาด้านหน้าและสะโพก (Leg press)",
+      "relation": "TARGETS",
+      "target": "Quadriceps"
+    },
+    {
+      "source": "3. เครื่องบริหารต้นขาด้านหน้าและสะโพก (Leg press)",
+      "relation": "TARGETS",
+      "target": "กล้ามเนื้อต้นขาด้านหน้า"
+    },
+    {
+      "source": "4. เครื่องบริหารต้นขาด้านหน้า (Leg Extension)",
+      "relation": "LOCATED_IN",
+      "target": "Weight Machine Zone"
+    },
+    {
+      "source": "4. เครื่องบริหารต้นขาด้านหน้า (Leg Extension)",
+      "relation": "TARGETS_GROUP",
+      "target": "กลุ่มกล้ามเนื้อขา (Leg Group)"
+    },
+    {
+      "source": "4. เครื่องบริหารต้นขาด้านหน้า (Leg Extension)",
+      "relation": "USES_EQUIPMENT",
+      "target": "Machine (Leg Extension)"
+    },
+    {
+      "source": "4. เครื่องบริหารต้นขาด้านหน้า (Leg Extension)",
+      "relation": "TARGETS",
+      "target": "กล้ามเนื้อต้นขาด้านหน้า"
+    },
+    {
+      "source": "4. เครื่องบริหารต้นขาด้านหน้า (Leg Extension)",
+      "relation": "TARGETS",
+      "target": "Quadriceps"
+    },
+    {
+      "source": "4. เครื่องบริหารต้นขาด้านหน้า (Leg Extension)",
+      "relation": "HAS_CAUTION",
+      "target": "1-2 และลงมาด้วยจังหวะการนับ 1-2-3-4 ดั้งนั้นการปฏิบัติจะต้องค่อยระวังไม่ให้เครื่องไหวท่า"
+    },
+    {
+      "source": "5. เครื่องบริหารต้นขาด้านหลัง (Leg Curl)",
+      "relation": "LOCATED_IN",
+      "target": "Weight Machine Zone"
+    },
+    {
+      "source": "5. เครื่องบริหารต้นขาด้านหลัง (Leg Curl)",
+      "relation": "TARGETS_GROUP",
+      "target": "กลุ่มกล้ามเนื้อขา (Leg Group)"
+    },
+    {
+      "source": "5. เครื่องบริหารต้นขาด้านหลัง (Leg Curl)",
+      "relation": "USES_EQUIPMENT",
+      "target": "Machine (Leg Curl)"
+    },
+    {
+      "source": "5. เครื่องบริหารต้นขาด้านหลัง (Leg Curl)",
+      "relation": "TARGETS",
+      "target": "กล้ามเนื้อต้นขาด้านหลัง"
+    },
+    {
+      "source": "5. เครื่องบริหารต้นขาด้านหลัง (Leg Curl)",
+      "relation": "TARGETS",
+      "target": "Hamstrings"
+    },
+    {
+      "source": "6.เครื่องบริหารน่อง (Calf Raise)",
+      "relation": "LOCATED_IN",
+      "target": "Weight Machine Zone"
+    },
+    {
+      "source": "6.เครื่องบริหารน่อง (Calf Raise)",
+      "relation": "TARGETS_GROUP",
+      "target": "กลุ่มกล้ามเนื้อขา (Leg Group)"
+    },
+    {
+      "source": "6.เครื่องบริหารน่อง (Calf Raise)",
+      "relation": "USES_EQUIPMENT",
+      "target": "Machine (Calf Raise)"
+    },
+    {
+      "source": "6.เครื่องบริหารน่อง (Calf Raise)",
+      "relation": "TARGETS",
+      "target": "กล้ามเนื้อน่อง"
+    },
+    {
+      "source": "6.เครื่องบริหารน่อง (Calf Raise)",
+      "relation": "TARGETS",
+      "target": "Soleus"
+    },
+    {
+      "source": "6.เครื่องบริหารน่อง (Calf Raise)",
+      "relation": "TARGETS",
+      "target": "Gastrocnemius"
+    },
+    {
+      "source": "7. เครื่องบริหารต้นขาด้านใน-ด้านนอก (Inner Thigh & Outer Thigh",
+      "relation": "LOCATED_IN",
+      "target": "Weight Machine Zone"
+    },
+    {
+      "source": "7. เครื่องบริหารต้นขาด้านใน-ด้านนอก (Inner Thigh & Outer Thigh",
+      "relation": "TARGETS_GROUP",
+      "target": "กลุ่มกล้ามเนื้อขา (Leg Group)"
+    },
+    {
+      "source": "7. เครื่องบริหารต้นขาด้านใน-ด้านนอก (Inner Thigh & Outer Thigh",
+      "relation": "USES_EQUIPMENT",
+      "target": "Machine (Thigh Machine)"
+    },
+    {
+      "source": "7. เครื่องบริหารต้นขาด้านใน-ด้านนอก (Inner Thigh & Outer Thigh",
+      "relation": "TARGETS",
+      "target": "Adductors"
+    },
+    {
+      "source": "7. เครื่องบริหารต้นขาด้านใน-ด้านนอก (Inner Thigh & Outer Thigh",
+      "relation": "TARGETS",
+      "target": "Fascia Lata"
+    },
+    {
+      "source": "7. เครื่องบริหารต้นขาด้านใน-ด้านนอก (Inner Thigh & Outer Thigh",
+      "relation": "TARGETS",
+      "target": "กล้ามเนื้อต้นขาด้านใน"
+    },
+    {
+      "source": "7. เครื่องบริหารต้นขาด้านใน-ด้านนอก (Inner Thigh & Outer Thigh",
+      "relation": "TARGETS",
+      "target": "Gluteal"
+    },
+    {
+      "source": "7. เครื่องบริหารต้นขาด้านใน-ด้านนอก (Inner Thigh & Outer Thigh",
+      "relation": "HAS_CAUTION",
+      "target": "หมายเหตุ: ส าหรับ Outer-thigh ให้ปฏิบัติตรงกันข้ามในการปรับเบาะและการหายใจเข้าออก"
+    },
+    {
+      "source": "8. เครื่องบริหารต้นขาด้านใน (Inner Thigh)",
+      "relation": "LOCATED_IN",
+      "target": "Weight Machine Zone"
+    },
+    {
+      "source": "8. เครื่องบริหารต้นขาด้านใน (Inner Thigh)",
+      "relation": "TARGETS_GROUP",
+      "target": "กลุ่มกล้ามเนื้อขา (Leg Group)"
+    },
+    {
+      "source": "8. เครื่องบริหารต้นขาด้านใน (Inner Thigh)",
+      "relation": "USES_EQUIPMENT",
+      "target": "Machine (Inner Thigh)"
+    },
+    {
+      "source": "8. เครื่องบริหารต้นขาด้านใน (Inner Thigh)",
+      "relation": "TARGETS",
+      "target": "กล้ามเนื้อต้นขาด้านใน"
+    },
+    {
+      "source": "8. เครื่องบริหารต้นขาด้านใน (Inner Thigh)",
+      "relation": "TARGETS",
+      "target": "Adductor"
+    },
+    {
+      "source": "9. เครื่องบริหารต้นขาด้านใน-ด้านนอก (Outer Thigh)",
+      "relation": "LOCATED_IN",
+      "target": "Weight Machine Zone"
+    },
+    {
+      "source": "9. เครื่องบริหารต้นขาด้านใน-ด้านนอก (Outer Thigh)",
+      "relation": "TARGETS_GROUP",
+      "target": "กลุ่มกล้ามเนื้อขา (Leg Group)"
+    },
+    {
+      "source": "9. เครื่องบริหารต้นขาด้านใน-ด้านนอก (Outer Thigh)",
+      "relation": "USES_EQUIPMENT",
+      "target": "Machine (Outer Thigh)"
+    },
+    {
+      "source": "9. เครื่องบริหารต้นขาด้านใน-ด้านนอก (Outer Thigh)",
+      "relation": "TARGETS",
+      "target": "Gluteal"
+    },
+    {
+      "source": "9. เครื่องบริหารต้นขาด้านใน-ด้านนอก (Outer Thigh)",
+      "relation": "TARGETS",
+      "target": "Fascia Lata"
+    },
+    {
+      "source": "9. เครื่องบริหารต้นขาด้านใน-ด้านนอก (Outer Thigh)",
+      "relation": "TARGETS",
+      "target": "กล้ามเนื้อต้นขาด้านนอก"
+    },
+    {
+      "source": "10. เครื่องบริหารกล้ามเนื้อหน้าอกใน (Pec Dek)",
+      "relation": "LOCATED_IN",
+      "target": "Weight Machine Zone"
+    },
+    {
+      "source": "10. เครื่องบริหารกล้ามเนื้อหน้าอกใน (Pec Dek)",
+      "relation": "TARGETS_GROUP",
+      "target": "กลุ่มกล้ามเนื้ออก (Chest Group)"
+    },
+    {
+      "source": "10. เครื่องบริหารกล้ามเนื้อหน้าอกใน (Pec Dek)",
+      "relation": "USES_EQUIPMENT",
+      "target": "Machine (Pec Dek Fly)"
+    },
+    {
+      "source": "10. เครื่องบริหารกล้ามเนื้อหน้าอกใน (Pec Dek)",
+      "relation": "TARGETS",
+      "target": "Anterior Deltoids"
+    },
+    {
+      "source": "10. เครื่องบริหารกล้ามเนื้อหน้าอกใน (Pec Dek)",
+      "relation": "TARGETS",
+      "target": "กล้ามเนื้อหน้าอก"
+    },
+    {
+      "source": "11. เครื่องบริหารอกบน (Incline Press",
+      "relation": "LOCATED_IN",
+      "target": "Weight Machine Zone"
+    },
+    {
+      "source": "11. เครื่องบริหารอกบน (Incline Press",
+      "relation": "TARGETS_GROUP",
+      "target": "กลุ่มกล้ามเนื้ออก (Chest Group)"
+    },
+    {
+      "source": "11. เครื่องบริหารอกบน (Incline Press",
+      "relation": "USES_EQUIPMENT",
+      "target": "Machine (Incline Chest Press)"
+    },
+    {
+      "source": "11. เครื่องบริหารอกบน (Incline Press",
+      "relation": "TARGETS",
+      "target": "Clavicular head of Pectorals Major"
+    },
+    {
+      "source": "11. เครื่องบริหารอกบน (Incline Press",
+      "relation": "TARGETS",
+      "target": "กล้ามเนื้อหน้าอกส่วนบน"
+    },
+    {
+      "source": "12. เครื่องบริหารอกกลาง (Chest Press)",
+      "relation": "LOCATED_IN",
+      "target": "Weight Machine Zone"
+    },
+    {
+      "source": "12. เครื่องบริหารอกกลาง (Chest Press)",
+      "relation": "TARGETS_GROUP",
+      "target": "กลุ่มกล้ามเนื้ออก (Chest Group)"
+    },
+    {
+      "source": "12. เครื่องบริหารอกกลาง (Chest Press)",
+      "relation": "USES_EQUIPMENT",
+      "target": "Machine (Chest Press)"
+    },
+    {
+      "source": "12. เครื่องบริหารอกกลาง (Chest Press)",
+      "relation": "TARGETS",
+      "target": "กล้ามเนื้ออกส่วนกลาง"
+    },
+    {
+      "source": "12. เครื่องบริหารอกกลาง (Chest Press)",
+      "relation": "TARGETS",
+      "target": "Pectorals Major"
+    },
+    {
+      "source": "13. เครื่องมือบริการกล้ามเนื้อหัวไหล่ (Shoulder Press)",
+      "relation": "LOCATED_IN",
+      "target": "Weight Machine Zone"
+    },
+    {
+      "source": "13. เครื่องมือบริการกล้ามเนื้อหัวไหล่ (Shoulder Press)",
+      "relation": "TARGETS_GROUP",
+      "target": "กลุ่มกล้ามเนื้อหัวไหล่ (Shoulder Group)"
+    },
+    {
+      "source": "13. เครื่องมือบริการกล้ามเนื้อหัวไหล่ (Shoulder Press)",
+      "relation": "USES_EQUIPMENT",
+      "target": "Machine (Shoulder Press)"
+    },
+    {
+      "source": "13. เครื่องมือบริการกล้ามเนื้อหัวไหล่ (Shoulder Press)",
+      "relation": "TARGETS",
+      "target": "Triceps"
+    },
+    {
+      "source": "13. เครื่องมือบริการกล้ามเนื้อหัวไหล่ (Shoulder Press)",
+      "relation": "TARGETS",
+      "target": "Deltoid"
+    },
+    {
+      "source": "13. เครื่องมือบริการกล้ามเนื้อหัวไหล่ (Shoulder Press)",
+      "relation": "TARGETS",
+      "target": "กล้ามเนื้อหัวไหล่"
+    },
+    {
+      "source": "13. เครื่องมือบริการกล้ามเนื้อหัวไหล่ (Shoulder Press)",
+      "relation": "HAS_CAUTION",
+      "target": "2. ออกแรงยกหรือดันแขนขึ้นด้านบนอย่างช้าๆให้เกือบสุดแขนระวังในการเล่นห้ามการกระตุก"
+    },
+    {
+      "source": "14. เครื่องมือบริการกล้ามเนื้อปีกและสะบักหลัง (Lat Pulldown (Front / Back)",
+      "relation": "LOCATED_IN",
+      "target": "Weight Machine Zone"
+    },
+    {
+      "source": "14. เครื่องมือบริการกล้ามเนื้อปีกและสะบักหลัง (Lat Pulldown (Front / Back)",
+      "relation": "TARGETS_GROUP",
+      "target": "กลุ่มกล้ามเนื้อปีกและหลัง (Back Group)"
+    },
+    {
+      "source": "14. เครื่องมือบริการกล้ามเนื้อปีกและสะบักหลัง (Lat Pulldown (Front / Back)",
+      "relation": "USES_EQUIPMENT",
+      "target": "Machine (Lat Pulldown)"
+    },
+    {
+      "source": "14. เครื่องมือบริการกล้ามเนื้อปีกและสะบักหลัง (Lat Pulldown (Front / Back)",
+      "relation": "TARGETS",
+      "target": "Latissimus Dorsi"
+    },
+    {
+      "source": "14. เครื่องมือบริการกล้ามเนื้อปีกและสะบักหลัง (Lat Pulldown (Front / Back)",
+      "relation": "TARGETS",
+      "target": "กล้ามเนื้อหลังหรือปีก"
+    },
+    {
+      "source": "15. เครื่องบริหารกล้ามเนื้อหลังส่วนบน Seated Row",
+      "relation": "LOCATED_IN",
+      "target": "Weight Machine Zone"
+    },
+    {
+      "source": "15. เครื่องบริหารกล้ามเนื้อหลังส่วนบน Seated Row",
+      "relation": "TARGETS_GROUP",
+      "target": "กลุ่มกล้ามเนื้อปีกและหลัง (Back Group)"
+    },
+    {
+      "source": "15. เครื่องบริหารกล้ามเนื้อหลังส่วนบน Seated Row",
+      "relation": "USES_EQUIPMENT",
+      "target": "Machine (Seated Cable Row)"
+    },
+    {
+      "source": "15. เครื่องบริหารกล้ามเนื้อหลังส่วนบน Seated Row",
+      "relation": "TARGETS",
+      "target": "Rear deltoid"
+    },
+    {
+      "source": "15. เครื่องบริหารกล้ามเนื้อหลังส่วนบน Seated Row",
+      "relation": "TARGETS",
+      "target": "Lattissimus dorsi"
+    },
+    {
+      "source": "15. เครื่องบริหารกล้ามเนื้อหลังส่วนบน Seated Row",
+      "relation": "TARGETS",
+      "target": "Trapezius"
+    },
+    {
+      "source": "15. เครื่องบริหารกล้ามเนื้อหลังส่วนบน Seated Row",
+      "relation": "HAS_CAUTION",
+      "target": "4. ขณะผ่อนแรงให้สังเกตแผ่นเหล็กระมัดระวังไม่ให้แผ่นเหล็กกระทบกันเพื่อการฝึกอย่างต่อเนื่อง"
+    },
+    {
+      "source": "16. เครื่องบริหารกล้ามเนื้อหลังส่วนล่าง (Hyper Extension)",
+      "relation": "LOCATED_IN",
+      "target": "Weight Machine Zone"
+    },
+    {
+      "source": "16. เครื่องบริหารกล้ามเนื้อหลังส่วนล่าง (Hyper Extension)",
+      "relation": "TARGETS_GROUP",
+      "target": "กลุ่มกล้ามเนื้อปีกและหลัง (Back Group)"
+    },
+    {
+      "source": "16. เครื่องบริหารกล้ามเนื้อหลังส่วนล่าง (Hyper Extension)",
+      "relation": "USES_EQUIPMENT",
+      "target": "Roman Chair (Hyper Extension)"
+    },
+    {
+      "source": "16. เครื่องบริหารกล้ามเนื้อหลังส่วนล่าง (Hyper Extension)",
+      "relation": "TARGETS",
+      "target": "Elector"
+    },
+    {
+      "source": "16. เครื่องบริหารกล้ามเนื้อหลังส่วนล่าง (Hyper Extension)",
+      "relation": "TARGETS",
+      "target": "กล้ามเนื้อช่วงล่าง"
+    },
+    {
+      "source": "16. เครื่องบริหารกล้ามเนื้อหลังส่วนล่าง (Hyper Extension)",
+      "relation": "HAS_CAUTION",
+      "target": "ห้ามไม่ให้เกินมุม 180๐ จะทำให้หลังแอ่น อาจเกิดการบาดเจ็บของหลังได้ ทำซ้ำจนครบเซท"
+    },
+    {
+      "source": "17. เครื่องมือบริหารกล้ามเนื้อต้นแขนด้านหน้า (Arms Curl)",
+      "relation": "LOCATED_IN",
+      "target": "Weight Machine Zone"
+    },
+    {
+      "source": "17. เครื่องมือบริหารกล้ามเนื้อต้นแขนด้านหน้า (Arms Curl)",
+      "relation": "TARGETS_GROUP",
+      "target": "กลุ่มกล้ามเนื้อแขน (Biceps Group)"
+    },
+    {
+      "source": "17. เครื่องมือบริหารกล้ามเนื้อต้นแขนด้านหน้า (Arms Curl)",
+      "relation": "USES_EQUIPMENT",
+      "target": "Machine (Arm Curl)"
+    },
+    {
+      "source": "17. เครื่องมือบริหารกล้ามเนื้อต้นแขนด้านหน้า (Arms Curl)",
+      "relation": "TARGETS",
+      "target": "Biceps"
+    },
+    {
+      "source": "18. เครื่องมือบริหารกล้ามเนื้อต้นแขนด้านหลัง (Triceps Extension)",
+      "relation": "LOCATED_IN",
+      "target": "Weight Machine Zone"
+    },
+    {
+      "source": "18. เครื่องมือบริหารกล้ามเนื้อต้นแขนด้านหลัง (Triceps Extension)",
+      "relation": "TARGETS_GROUP",
+      "target": "กลุ่มกล้ามเนื้อแขน (Triceps Group)"
+    },
+    {
+      "source": "18. เครื่องมือบริหารกล้ามเนื้อต้นแขนด้านหลัง (Triceps Extension)",
+      "relation": "USES_EQUIPMENT",
+      "target": "Machine (Triceps Extension)"
+    },
+    {
+      "source": "18. เครื่องมือบริหารกล้ามเนื้อต้นแขนด้านหลัง (Triceps Extension)",
+      "relation": "TARGETS",
+      "target": "Triceps"
+    },
+    {
+      "source": "19. เครื่องบริหารต้นแขนด้านหลัง (Triceps Press Down)",
+      "relation": "LOCATED_IN",
+      "target": "Weight Machine Zone"
+    },
+    {
+      "source": "19. เครื่องบริหารต้นแขนด้านหลัง (Triceps Press Down)",
+      "relation": "TARGETS_GROUP",
+      "target": "กลุ่มกล้ามเนื้อแขน (Triceps Group)"
+    },
+    {
+      "source": "19. เครื่องบริหารต้นแขนด้านหลัง (Triceps Press Down)",
+      "relation": "USES_EQUIPMENT",
+      "target": "Cable Machine (Triceps Press Down)"
+    },
+    {
+      "source": "19. เครื่องบริหารต้นแขนด้านหลัง (Triceps Press Down)",
+      "relation": "TARGETS",
+      "target": "Triceps"
+    },
+    {
+      "source": "19. เครื่องบริหารต้นแขนด้านหลัง (Triceps Press Down)",
+      "relation": "TARGETS",
+      "target": "กล้ามเนื้อต้นขาด้านหลัง"
+    },
+    {
+      "source": "20. เครื่องบริหารท้อง (Sit Up)",
+      "relation": "LOCATED_IN",
+      "target": "Weight Machine Zone"
+    },
+    {
+      "source": "20. เครื่องบริหารท้อง (Sit Up)",
+      "relation": "TARGETS_GROUP",
+      "target": "หน้าท้องและลำตัว (Abdominal)"
+    },
+    {
+      "source": "20. เครื่องบริหารท้อง (Sit Up)",
+      "relation": "USES_EQUIPMENT",
+      "target": "Abdominal Bench (Sit Up Bench)"
+    },
+    {
+      "source": "20. เครื่องบริหารท้อง (Sit Up)",
+      "relation": "TARGETS",
+      "target": "กล้ามเนื้อท้องส่วนบน"
+    },
+    {
+      "source": "21. เครื่องบริหารกล้ามเนื้อหน้าท้องส่วนล่าง (Verticals Knee Raise)",
+      "relation": "LOCATED_IN",
+      "target": "Weight Machine Zone"
+    },
+    {
+      "source": "21. เครื่องบริหารกล้ามเนื้อหน้าท้องส่วนล่าง (Verticals Knee Raise)",
+      "relation": "TARGETS_GROUP",
+      "target": "หน้าท้องและลำตัว (Abdominal)"
+    },
+    {
+      "source": "21. เครื่องบริหารกล้ามเนื้อหน้าท้องส่วนล่าง (Verticals Knee Raise)",
+      "relation": "USES_EQUIPMENT",
+      "target": "Captain's Chair (Knee Raise Station)"
+    },
+    {
+      "source": "21. เครื่องบริหารกล้ามเนื้อหน้าท้องส่วนล่าง (Verticals Knee Raise)",
+      "relation": "TARGETS",
+      "target": "กล้ามเนื้อหน้าท้องส่วนล่าง"
+    },
+    {
+      "source": "21. เครื่องบริหารกล้ามเนื้อหน้าท้องส่วนล่าง (Verticals Knee Raise)",
+      "relation": "TARGETS",
+      "target": "Lower Abdominis"
+    },
+    {
+      "source": "ต้นแขนด้านหน้า (Biceps)",
+      "relation": "LOCATED_IN",
+      "target": "Free Weight Zone"
+    },
+    {
+      "source": "ต้นแขนด้านหน้า (Biceps)",
+      "relation": "TARGETS_GROUP",
+      "target": "กลุ่มกล้ามเนื้อแขน (Biceps Group)"
+    },
+    {
+      "source": "ต้นแขนด้านหน้า (Biceps)",
+      "relation": "USES_EQUIPMENT",
+      "target": "Dumbbell"
+    },
+    {
+      "source": "ต้นแขนด้านหน้า (Biceps)",
+      "relation": "TARGETS",
+      "target": "Brachioradialis"
+    },
+    {
+      "source": "ต้นแขนด้านหน้า (Biceps)",
+      "relation": "TARGETS",
+      "target": "Biceps Brachialis"
+    },
+    {
+      "source": "ต้นแขนด้านหน้า (Biceps)",
+      "relation": "HAS_CAUTION",
+      "target": "หมายเหตุ: ALT.  DB.CURL (sit) เปลี่ยนจากท่ายืน เป็นท่านั่งวิธีปฏิบัติต่อไปเหมือนท่ายืน"
+    },
+    {
+      "source": "2.  Dumbbell Curl",
+      "relation": "LOCATED_IN",
+      "target": "Free Weight Zone"
+    },
+    {
+      "source": "2.  Dumbbell Curl",
+      "relation": "TARGETS_GROUP",
+      "target": "กลุ่มกล้ามเนื้อแขน (Biceps Group)"
+    },
+    {
+      "source": "2.  Dumbbell Curl",
+      "relation": "USES_EQUIPMENT",
+      "target": "Dumbbell"
+    },
+    {
+      "source": "2.  Dumbbell Curl",
+      "relation": "TARGETS",
+      "target": "Brachioradialis"
+    },
+    {
+      "source": "2.  Dumbbell Curl",
+      "relation": "TARGETS",
+      "target": "Biceps Brachialis"
+    },
+    {
+      "source": "2.  Dumbbell Curl",
+      "relation": "HAS_CAUTION",
+      "target": "หมายเหตุ  Dumbell Curl (sit)  เปลี่ยนจากท่ายืนเป็นท่านั่งเก้าอี้แทนต่อจากนั้นปฏิบัติเหมือนท่ายืน  INCLINE"
+    },
+    {
+      "source": "3.  Dumbbell Concentration Curl",
+      "relation": "LOCATED_IN",
+      "target": "Free Weight Zone"
+    },
+    {
+      "source": "3.  Dumbbell Concentration Curl",
+      "relation": "TARGETS_GROUP",
+      "target": "กลุ่มกล้ามเนื้อแขน (Biceps Group)"
+    },
+    {
+      "source": "3.  Dumbbell Concentration Curl",
+      "relation": "USES_EQUIPMENT",
+      "target": "Dumbbell"
+    },
+    {
+      "source": "3.  Dumbbell Concentration Curl",
+      "relation": "TARGETS",
+      "target": "Brachioradialis"
+    },
+    {
+      "source": "3.  Dumbbell Concentration Curl",
+      "relation": "TARGETS",
+      "target": "Biceps Brachialis"
+    },
+    {
+      "source": "ต้นแขนด้านหลัง (Triceps)",
+      "relation": "LOCATED_IN",
+      "target": "Free Weight Zone"
+    },
+    {
+      "source": "ต้นแขนด้านหลัง (Triceps)",
+      "relation": "TARGETS_GROUP",
+      "target": "กลุ่มกล้ามเนื้อแขน (Triceps Group)"
+    },
+    {
+      "source": "ต้นแขนด้านหลัง (Triceps)",
+      "relation": "USES_EQUIPMENT",
+      "target": "Dumbbell"
+    },
+    {
+      "source": "ต้นแขนด้านหลัง (Triceps)",
+      "relation": "TARGETS",
+      "target": "กล้ามเนื้อต้นแขนด้านหลัง"
+    },
+    {
+      "source": "ต้นแขนด้านหลัง (Triceps)",
+      "relation": "TARGETS",
+      "target": "Triceps"
+    },
+    {
+      "source": "2. ท่าบริหารต้นแขน (Two Arm Ext.) (Sit/ST.)",
+      "relation": "LOCATED_IN",
+      "target": "Free Weight Zone"
+    },
+    {
+      "source": "2. ท่าบริหารต้นแขน (Two Arm Ext.) (Sit/ST.)",
+      "relation": "TARGETS_GROUP",
+      "target": "กลุ่มกล้ามเนื้อแขน (Triceps Group)"
+    },
+    {
+      "source": "2. ท่าบริหารต้นแขน (Two Arm Ext.) (Sit/ST.)",
+      "relation": "USES_EQUIPMENT",
+      "target": "Dumbbell"
+    },
+    {
+      "source": "2. ท่าบริหารต้นแขน (Two Arm Ext.) (Sit/ST.)",
+      "relation": "TARGETS",
+      "target": "กล้ามเนื้อต้นแขนด้านหลัง"
+    },
+    {
+      "source": "2. ท่าบริหารต้นแขน (Two Arm Ext.) (Sit/ST.)",
+      "relation": "TARGETS",
+      "target": "Triceps"
+    },
+    {
+      "source": "2. ท่าบริหารต้นแขน (Two Arm Ext.) (Sit/ST.)",
+      "relation": "HAS_CAUTION",
+      "target": "หมายเหตุ: Two Arm Extensions เปลี่ยนจากท่านั่งเป็นท่ายืน"
+    },
+    {
+      "source": "3. ท่าบริหารต้นแขน (Kick back)",
+      "relation": "LOCATED_IN",
+      "target": "Free Weight Zone"
+    },
+    {
+      "source": "3. ท่าบริหารต้นแขน (Kick back)",
+      "relation": "TARGETS_GROUP",
+      "target": "กลุ่มกล้ามเนื้อแขน (Triceps Group)"
+    },
+    {
+      "source": "3. ท่าบริหารต้นแขน (Kick back)",
+      "relation": "USES_EQUIPMENT",
+      "target": "Dumbbell & Bench"
+    },
+    {
+      "source": "3. ท่าบริหารต้นแขน (Kick back)",
+      "relation": "TARGETS",
+      "target": "Kick back"
+    },
+    {
+      "source": "3. ท่าบริหารต้นแขน (Kick back)",
+      "relation": "TARGETS",
+      "target": "กล้ามเนื้อต้นแขนด้านหลัง"
+    },
+    {
+      "source": "1. ท่าบริหารหัวไหล่ Dumbbell Press",
+      "relation": "LOCATED_IN",
+      "target": "Free Weight Zone"
+    },
+    {
+      "source": "1. ท่าบริหารหัวไหล่ Dumbbell Press",
+      "relation": "TARGETS_GROUP",
+      "target": "กลุ่มกล้ามเนื้อหัวไหล่ (Shoulder Group)"
+    },
+    {
+      "source": "1. ท่าบริหารหัวไหล่ Dumbbell Press",
+      "relation": "USES_EQUIPMENT",
+      "target": "Dumbbell"
+    },
+    {
+      "source": "1. ท่าบริหารหัวไหล่ Dumbbell Press",
+      "relation": "TARGETS",
+      "target": "Deltoids"
+    },
+    {
+      "source": "2. ท่าบริหารหัวไหล่ด้านหน้า (Dumbbell Raise Front)",
+      "relation": "LOCATED_IN",
+      "target": "Free Weight Zone"
+    },
+    {
+      "source": "2. ท่าบริหารหัวไหล่ด้านหน้า (Dumbbell Raise Front)",
+      "relation": "TARGETS_GROUP",
+      "target": "กลุ่มกล้ามเนื้อหัวไหล่ (Shoulder Group)"
+    },
+    {
+      "source": "2. ท่าบริหารหัวไหล่ด้านหน้า (Dumbbell Raise Front)",
+      "relation": "USES_EQUIPMENT",
+      "target": "Dumbbell"
+    },
+    {
+      "source": "2. ท่าบริหารหัวไหล่ด้านหน้า (Dumbbell Raise Front)",
+      "relation": "TARGETS",
+      "target": "Front Deltoids"
+    },
+    {
+      "source": "3. ท่าบริหารหัวไหล่ด้านข้าง (Dumbbell Side Rosie & Lateral Raise)",
+      "relation": "LOCATED_IN",
+      "target": "Free Weight Zone"
+    },
+    {
+      "source": "3. ท่าบริหารหัวไหล่ด้านข้าง (Dumbbell Side Rosie & Lateral Raise)",
+      "relation": "TARGETS_GROUP",
+      "target": "กลุ่มกล้ามเนื้อหัวไหล่ (Shoulder Group)"
+    },
+    {
+      "source": "3. ท่าบริหารหัวไหล่ด้านข้าง (Dumbbell Side Rosie & Lateral Raise)",
+      "relation": "USES_EQUIPMENT",
+      "target": "Dumbbell"
+    },
+    {
+      "source": "3. ท่าบริหารหัวไหล่ด้านข้าง (Dumbbell Side Rosie & Lateral Raise)",
+      "relation": "TARGETS",
+      "target": "Side Deltoids"
+    },
+    {
+      "source": "1.  ท่าบริหารกล้ามเนื้อปีกและหลัง Dumbbell Row",
+      "relation": "LOCATED_IN",
+      "target": "Free Weight Zone"
+    },
+    {
+      "source": "1.  ท่าบริหารกล้ามเนื้อปีกและหลัง Dumbbell Row",
+      "relation": "TARGETS_GROUP",
+      "target": "กลุ่มกล้ามเนื้อปีกและหลัง (Back Group)"
+    },
+    {
+      "source": "1.  ท่าบริหารกล้ามเนื้อปีกและหลัง Dumbbell Row",
+      "relation": "USES_EQUIPMENT",
+      "target": "Dumbbell & Bench"
+    },
+    {
+      "source": "1.  ท่าบริหารกล้ามเนื้อปีกและหลัง Dumbbell Row",
+      "relation": "TARGETS",
+      "target": "Latissimus dorsi and Rhomboids"
+    },
+    {
+      "source": "2.  ท่า  Two Arm Dumbbell Row",
+      "relation": "LOCATED_IN",
+      "target": "Free Weight Zone"
+    },
+    {
+      "source": "2.  ท่า  Two Arm Dumbbell Row",
+      "relation": "TARGETS_GROUP",
+      "target": "กลุ่มกล้ามเนื้อปีกและหลัง (Back Group)"
+    },
+    {
+      "source": "2.  ท่า  Two Arm Dumbbell Row",
+      "relation": "USES_EQUIPMENT",
+      "target": "Dumbbell"
+    },
+    {
+      "source": "2.  ท่า  Two Arm Dumbbell Row",
+      "relation": "TARGETS",
+      "target": "Latissimus dorsi and Rhomboids"
+    },
+    {
+      "source": "1. ท่าบริหารกล้ามเนื้ออก (Dumbbell Bench Press)",
+      "relation": "LOCATED_IN",
+      "target": "Free Weight Zone"
+    },
+    {
+      "source": "1. ท่าบริหารกล้ามเนื้ออก (Dumbbell Bench Press)",
+      "relation": "TARGETS_GROUP",
+      "target": "กลุ่มกล้ามเนื้ออก (Chest Group)"
+    },
+    {
+      "source": "1. ท่าบริหารกล้ามเนื้ออก (Dumbbell Bench Press)",
+      "relation": "USES_EQUIPMENT",
+      "target": "Dumbbell & Flat Bench"
+    },
+    {
+      "source": "1. ท่าบริหารกล้ามเนื้ออก (Dumbbell Bench Press)",
+      "relation": "TARGETS",
+      "target": "Pectrolaris"
+    },
+    {
+      "source": "1. ท่าบริหารกล้ามเนื้ออก (Dumbbell Bench Press)",
+      "relation": "TARGETS",
+      "target": "กล้ามเนื้ออกด้านหน้า"
+    },
+    {
+      "source": "2. บริหารกล้ามเนื้ออกใน (Dumbbell Flies)",
+      "relation": "LOCATED_IN",
+      "target": "Free Weight Zone"
+    },
+    {
+      "source": "2. บริหารกล้ามเนื้ออกใน (Dumbbell Flies)",
+      "relation": "TARGETS_GROUP",
+      "target": "กลุ่มกล้ามเนื้ออก (Chest Group)"
+    },
+    {
+      "source": "2. บริหารกล้ามเนื้ออกใน (Dumbbell Flies)",
+      "relation": "USES_EQUIPMENT",
+      "target": "Dumbbell & Flat Bench"
+    },
+    {
+      "source": "3. บริหารกล้ามเนื้ออกล่าง (Pullovers)",
+      "relation": "LOCATED_IN",
+      "target": "Free Weight Zone"
+    },
+    {
+      "source": "3. บริหารกล้ามเนื้ออกล่าง (Pullovers)",
+      "relation": "TARGETS_GROUP",
+      "target": "กลุ่มกล้ามเนื้ออก (Chest Group)"
+    },
+    {
+      "source": "3. บริหารกล้ามเนื้ออกล่าง (Pullovers)",
+      "relation": "USES_EQUIPMENT",
+      "target": "Dumbbell & Bench"
+    },
+    {
+      "source": "4. บริหารกล้ามเนื้ออกล่าง (Decline Dumbbell Bent press)",
+      "relation": "LOCATED_IN",
+      "target": "Free Weight Zone"
+    },
+    {
+      "source": "4. บริหารกล้ามเนื้ออกล่าง (Decline Dumbbell Bent press)",
+      "relation": "TARGETS_GROUP",
+      "target": "กลุ่มกล้ามเนื้ออก (Chest Group)"
+    },
+    {
+      "source": "4. บริหารกล้ามเนื้ออกล่าง (Decline Dumbbell Bent press)",
+      "relation": "USES_EQUIPMENT",
+      "target": "Dumbbell & Decline Bench"
+    },
+    {
+      "source": "4. บริหารกล้ามเนื้ออกล่าง (Decline Dumbbell Bent press)",
+      "relation": "TARGETS",
+      "target": "กล้ามเนื้ออกล่าง"
+    },
+    {
+      "source": "ปวดหลังล่าง (Lower Back Pain)",
+      "relation": "AVOID",
+      "target": "16. เครื่องบริหารกล้ามเนื้อหลังส่วนล่าง (Hyper Extension)"
+    },
+    {
+      "source": "ปวดหลังล่าง (Lower Back Pain)",
+      "relation": "AVOID",
+      "target": "1.  ท่าบริหารกล้ามเนื้อปีกและหลัง Dumbbell Row"
+    },
+    {
+      "source": "ปวดหลังล่าง (Lower Back Pain)",
+      "relation": "RECOMMEND",
+      "target": "14. เครื่องมือบริการกล้ามเนื้อปีกและสะบักหลัง (Lat Pulldown (Front / Back)"
+    },
+    {
+      "source": "ปวดหลังล่าง (Lower Back Pain)",
+      "relation": "RECOMMEND",
+      "target": "15. เครื่องบริหารกล้ามเนื้อหลังส่วนบน Seated Row"
+    },
+    {
+      "source": "ปวดหลังล่าง (Lower Back Pain)",
+      "relation": "RECOMMEND",
+      "target": "3. เครื่องเดินวงรี (Elliptical)"
+    },
+    {
+      "source": "ปวดข้อเข่า (Knee Pain)",
+      "relation": "AVOID",
+      "target": "3. เครื่องบริหารต้นขาด้านหน้าและสะโพก (Leg press)"
+    },
+    {
+      "source": "ปวดข้อเข่า (Knee Pain)",
+      "relation": "AVOID",
+      "target": "4. เครื่องบริหารต้นขาด้านหน้า (Leg Extension)"
+    },
+    {
+      "source": "ปวดข้อเข่า (Knee Pain)",
+      "relation": "AVOID",
+      "target": "2. เครื่องเดิน - วิ่งคอมพิวเตอร์ (Treadmill) การใช้ Program Manual"
+    },
+    {
+      "source": "ปวดข้อเข่า (Knee Pain)",
+      "relation": "RECOMMEND",
+      "target": "1. จักรยานคอมพิวเตอร์ (Bike) การใช้ Program Manual"
+    },
+    {
+      "source": "ปวดข้อเข่า (Knee Pain)",
+      "relation": "RECOMMEND",
+      "target": "3. เครื่องเดินวงรี (Elliptical)"
+    },
+    {
+      "source": "ปวดข้อเข่า (Knee Pain)",
+      "relation": "RECOMMEND",
+      "target": "6.เครื่องบริหารน่อง (Calf Raise)"
+    },
+    {
+      "source": "ปวดหัวไหล่ / ข้อต่อไหล่ติด (Shoulder Impingement)",
+      "relation": "AVOID",
+      "target": "13. เครื่องมือบริการกล้ามเนื้อหัวไหล่ (Shoulder Press)"
+    },
+    {
+      "source": "ปวดหัวไหล่ / ข้อต่อไหล่ติด (Shoulder Impingement)",
+      "relation": "AVOID",
+      "target": "1. ท่าบริหารหัวไหล่ Dumbbell Press"
+    },
+    {
+      "source": "ปวดหัวไหล่ / ข้อต่อไหล่ติด (Shoulder Impingement)",
+      "relation": "RECOMMEND",
+      "target": "12. เครื่องบริหารอกกลาง (Chest Press)"
+    },
+    {
+      "source": "ปวดหัวไหล่ / ข้อต่อไหล่ติด (Shoulder Impingement)",
+      "relation": "RECOMMEND",
+      "target": "17. เครื่องมือบริหารกล้ามเนื้อต้นแขนด้านหน้า (Arms Curl)"
+    },
+    {
+      "source": "ผู้เริ่มต้นฝึกออกกำลังกาย (Beginner)",
+      "relation": "AVOID",
+      "target": "3. ท่าบริหารหัวไหล่ด้านข้าง (Dumbbell Side Rosie & Lateral Raise)"
+    },
+    {
+      "source": "ผู้เริ่มต้นฝึกออกกำลังกาย (Beginner)",
+      "relation": "AVOID",
+      "target": "4. บริหารกล้ามเนื้ออกล่าง (Decline Dumbbell Bent press)"
+    },
+    {
+      "source": "ผู้เริ่มต้นฝึกออกกำลังกาย (Beginner)",
+      "relation": "RECOMMEND",
+      "target": "1. จักรยานคอมพิวเตอร์ (Bike) การใช้ Program Manual"
+    },
+    {
+      "source": "ผู้เริ่มต้นฝึกออกกำลังกาย (Beginner)",
+      "relation": "RECOMMEND",
+      "target": "3. เครื่องบริหารต้นขาด้านหน้าและสะโพก (Leg press)"
+    },
+    {
+      "source": "ผู้เริ่มต้นฝึกออกกำลังกาย (Beginner)",
+      "relation": "RECOMMEND",
+      "target": "12. เครื่องบริหารอกกลาง (Chest Press)"
+    },
+    {
+      "source": "ผู้เริ่มต้นฝึกออกกำลังกาย (Beginner)",
+      "relation": "RECOMMEND",
+      "target": "14. เครื่องมือบริการกล้ามเนื้อปีกและสะบักหลัง (Lat Pulldown (Front / Back)"
+    }
+  ],
+  "total_nodes": 145,
+  "total_edges": 221
+}
