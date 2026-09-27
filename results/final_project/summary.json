@@ -1,0 +1,86 @@
+{
+  "dataset_questions": 20,
+  "expected_full_run": 120,
+  "recorded_runs": 166,
+  "configurations": {
+    "local+dense": {
+      "completed_questions": 20,
+      "failed_attempts": 0,
+      "mean_latency_ms": 6830.206,
+      "p95_latency_ms": 9531.99,
+      "mean_retrieval_coverage": 0.6867,
+      "mean_avoid_recall": 0.0,
+      "cases_with_avoid_page_overlap": 7,
+      "cases_with_unsupported_page": 0,
+      "prompt_tokens": 54082,
+      "completion_tokens": 5498,
+      "reported_api_cost_usd": null
+    },
+    "local+graph": {
+      "completed_questions": 20,
+      "failed_attempts": 0,
+      "mean_latency_ms": 7550.0265,
+      "p95_latency_ms": 10663.22,
+      "mean_retrieval_coverage": 0.8775,
+      "mean_avoid_recall": 1.0,
+      "cases_with_avoid_page_overlap": 0,
+      "cases_with_unsupported_page": 0,
+      "prompt_tokens": 56940,
+      "completion_tokens": 6236,
+      "reported_api_cost_usd": null
+    },
+    "local+hybrid": {
+      "completed_questions": 20,
+      "failed_attempts": 0,
+      "mean_latency_ms": 7912.587,
+      "p95_latency_ms": 10625.27,
+      "mean_retrieval_coverage": 0.955,
+      "mean_avoid_recall": 1.0,
+      "cases_with_avoid_page_overlap": 0,
+      "cases_with_unsupported_page": 0,
+      "prompt_tokens": 62426,
+      "completion_tokens": 7009,
+      "reported_api_cost_usd": null
+    },
+    "openrouter+dense": {
+      "completed_questions": 20,
+      "failed_attempts": 0,
+      "mean_latency_ms": 7259.6735,
+      "p95_latency_ms": 11916.41,
+      "mean_retrieval_coverage": 0.6867,
+      "mean_avoid_recall": 0.0,
+      "cases_with_avoid_page_overlap": 7,
+      "cases_with_unsupported_page": 0,
+      "prompt_tokens": 167932,
+      "completion_tokens": 19423,
+      "reported_api_cost_usd": 0.023437
+    },
+    "openrouter+graph": {
+      "completed_questions": 20,
+      "failed_attempts": 0,
+      "mean_latency_ms": 7280.232,
+      "p95_latency_ms": 10233.92,
+      "mean_retrieval_coverage": 0.8775,
+      "mean_avoid_recall": 1.0,
+      "cases_with_avoid_page_overlap": 0,
+      "cases_with_unsupported_page": 1,
+      "prompt_tokens": 174447,
+      "completion_tokens": 19625,
+      "reported_api_cost_usd": 0.024016
+    },
+    "openrouter+hybrid": {
+      "completed_questions": 20,
+      "failed_attempts": 0,
+      "mean_latency_ms": 7352.772,
+      "p95_latency_ms": 10381.79,
+      "mean_retrieval_coverage": 0.955,
+      "mean_avoid_recall": 1.0,
+      "cases_with_avoid_page_overlap": 0,
+      "cases_with_unsupported_page": 4,
+      "prompt_tokens": 188394,
+      "completion_tokens": 19625,
+      "reported_api_cost_usd": 0.024664
+    }
+  },
+  "note": "Automated retrieval metrics do not measure factual answer accuracy; fill human_review.csv."
+}

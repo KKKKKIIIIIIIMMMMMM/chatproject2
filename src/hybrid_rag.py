@@ -277,6 +277,7 @@ class HybridRAG:
         return {
             "query": query,
             "selected_mode": selected_mode,
+            "graph_backend": graph_results.get("source") if selected_mode in ["graph", "hybrid"] else None,
             "routing_info": routing_info,
             "total_latency_ms": total_time_ms,
             "latency_breakdown_ms": {

@@ -19,3 +19,7 @@ ENV/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Generated presentation validation artifacts and runtime dependency junction
+.presentation-build/
+reports/.deck-build/

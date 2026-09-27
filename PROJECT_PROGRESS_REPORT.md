@@ -45,7 +45,7 @@
                                   │
          ┌────────────────────────┴────────────────────────┐
          ▼                                                 ▼
-[Local LLM (Ollama)]                               [API LLM (Groq / Gemini)]
+[Local LLM (Ollama)]                               [API LLM (OpenRouter)]
 • รันโมเดลในเครื่อง (Llama-3 / Qwen)               • ยิงผ่าน Cloud API
 • บันทึก VRAM, Latency, Resource                  • บันทึก Token, Latency, Cost
 ```
@@ -61,7 +61,7 @@
 | **3. Graph RAG** | 15 | โครงสร้าง Neo4j เชื่อมโยง ท่า-กล้ามเนื้อ-ข้อควรระวัง พร้อมฟังก์ชัน Cypher Query |
 | **4. Hybrid RAG (หัวใจสำคัญ)** | 20 | รวมผลลัพธ์ Dense + Graph ด้วยสูตร RRF (Reciprocal Rank Fusion) |
 | **5. Local LLM** | 7.5 | ต่อ Ollama ในเครื่อง, ปรับ Prompt, วัดการกิน VRAM และเวลาตอบ |
-| **6. API LLM** | 7.5 | ต่อ Cloud API (Groq/Gemini), จัดการ Token, วัดค่าใช้จ่ายและเวลาตอบ |
+| **6. API LLM** | 7.5 | ต่อ Cloud API (OpenRouter), จัดการ Token, วัดค่าใช้จ่ายและเวลาตอบ |
 | **7. System Integration** | 10 | รวมระบบเป็นท่อเดียวกัน (Pipeline) มี Architecture ชัดเจน และ Error Handling |
 | **8. Evaluation & Analysis** | 10 | ชุดคำถาม 20 ข้อ รันเทียบ 6 Configurations พร้อมตารางและบทวิเคราะห์ |
 | **Documentation & Presentation** | 5 | รายงานสรุปผลเชิงเทคนิค และสไลด์นำเสนอสำหรับวันพุธที่ 30 ก.ย. |
@@ -77,14 +77,20 @@
 | **2** | **Dual Database Setup:** สร้าง ChromaDB Indexing และเชื่อมต่อ Neo4j / Graph Engine | เพื่อน (Chroma) / เรา (Neo4j) | ✅ **เสร็จสมบูรณ์ (100%)** |
 | **3** | **Retrieval Implementation:** พัฒนาฟังก์ชันค้นหา Dense Vector และ Graph Retrieval | เพื่อน (Vector) / เรา (Graph) | ✅ **เสร็จสมบูรณ์ (100%)** |
 | **4** | **Hybrid RAG Core:** เขียนระบบ RRF (Reciprocal Rank Fusion) ผสาน 2 แหล่ง | ร่วมกัน | ✅ **เสร็จสมบูรณ์ (100%)** |
-| **5** | **LLM Engine:** เชื่อมต่อ Ollama (Local) และ Cloud API (Groq) พร้อม Prompt | เพื่อน (Local) / เรา (API) | ⏳ พร้อมเริ่มต่อ |
-| **6** | **System Integration & UI:** รวมระบบเป็นท่อเดียว มีสวิตช์สลับโหมด | ร่วมกัน | ⏳ รอเริ่ม |
-| **7** | **Evaluation & Benchmark:** รันชุดคำถาม 20 ข้อ บันทึกผลเปรียบเทียบ 6 แบบ | ร่วมกัน | ⏳ รอเริ่ม |
-| **8** | **Final Report & Slides:** จัดทำสไลด์และเอกสารเตรียมนำเสนอ 30 ก.ย. | ร่วมกัน | ⏳ รอเริ่ม |
+| **5** | **LLM Engine:** เชื่อมต่อ Ollama `qwen2.5:3b` (Local) และ OpenRouter (API) พร้อม Prompt | เพื่อน (Local) / เรา (API) | ✅ Local และ OpenRouter รันจริงอย่างละ 60 คู่คำถาม-รูปแบบ |
+| **6** | **System Integration & UI:** รวมระบบเป็นท่อเดียว มีสวิตช์สลับโหมด | ร่วมกัน | ✅ `app.py` เปิดผ่าน Streamlit ได้ และ AppTest ไม่พบ exception |
+| **7** | **Evaluation & Benchmark:** รันชุดคำถาม 20 ข้อ บันทึกผลเปรียบเทียบ 6 แบบ | ร่วมกัน | 🟡 รันครบ 120/120, Graph/Hybrid ใช้ Neo4j สด 80/80; คะแนนคำตอบ 0/120 รอคนตรวจ |
+| **8** | **Final Report & Slides:** จัดทำสไลด์และเอกสารเตรียมนำเสนอ 30 ก.ย. | ร่วมกัน | 🟡 รายงานผลจริงและสไลด์ 8 หน้าอัปเดตครบ 6 รูปแบบ; รอผล human review |
 
 ---
 
 ## 5. บันทึกประวัติการทำงาน (Activity Log)
+
+* **27 ก.ย. 2569 - ผลทดลองครบ:** เชื่อม Docker Neo4j และนำเข้ากราฟฟิตเนสแบบแยก `project_id` โดยไม่ลบข้อมูลโปรเจกต์อื่น ตรวจ 145 โหนด / 221 ความสัมพันธ์ และรัน Graph/Hybrid ใหม่จนผลล่าสุด 80/80 คู่เป็น `graph_backend=neo4j` ทดสอบ OpenRouter ด้วย key ที่เก็บใน `.env` จนครบ 60/60 รวม Local + API เป็น 120/120 คู่ ไม่มี error หรือคำตอบว่าง ค่าใช้จ่าย API ที่รายงานรวม $0.0721 สร้างรายงานและสไลด์ใหม่จากข้อมูลนี้ เหลืองานที่คนต้องตรวจคำตอบ 120 แถว และให้ผู้เชี่ยวชาญตรวจคำแนะนำสุขภาพก่อนนำไปใช้จริง
+
+* **27 ก.ย. 2569 - Phase 6–8:** สร้างหน้า Streamlit, ชุดคำถาม 20 ข้อ, ตัวประเมินแบบ resume, รายงานและสไลด์ 8 หน้า ทดสอบ Local ครบ 60/60 คู่คำถาม-รูปแบบ (Dense/Graph/Hybrid) โดยไม่พบรอบที่โปรแกรมล้ม; รันซ้ำ 2 คำถาม × 3 รูปแบบหลังแก้การจับคำ “ปวดหัวไหล่” และใช้ผลล่าสุดรวม 60 คู่สำหรับสรุป Graph/Hybrid ใช้ `json_fallback` เพราะไม่มี Neo4j ที่เชื่อมต่อได้ในสภาพแวดล้อมนี้ ผลครอบคลุมหน้าแหล่งข้อมูลเฉลี่ย Dense 68.7%, Graph 87.8%, Hybrid 98.0% เป็นตัวชี้วัด retrieval ไม่ใช่ความถูกต้องของคำตอบ การตรวจคำตอบโดยคนยังเป็น 0/60 และ OpenRouter ยังเป็น 0/60 เพราะไม่มี key ใน `.env` หน้าเว็บผ่าน Streamlit AppTest โดยไม่พบ exception สไลด์ผ่าน package/layout validation; ต้องอัปเดตผลหลัง API และคนตรวจครบ
+
+* **27 ก.ย. 2569 - Phase 5 เริ่มทำ:** เพิ่ม `src/llm_engine.py`, CLI `scripts/chat_phase5.py`, `.env.example` และ unit tests 5 กรณี (ผ่านทั้งหมด) ทดสอบ Local end-to-end ด้วยคำถามเรื่องปวดเข่าผ่าน Hybrid Retrieval → Ollama `qwen2.5:3b` ได้คำตอบและเลขหน้าอ้างอิง; latency รอบเดียว 5,565 ms (retrieval 215 ms, LLM 5,350 ms) ตัวเลขนี้เป็น smoke test ไม่ใช่ผล benchmark ส่วน OpenRouter ยังไม่ทดสอบสด เพราะยังไม่มี key ในสภาพแวดล้อมทดสอบ
 
 * **26 ก.ย. 2569 (00:25 น.) - Phase 0 เสร็จสมบูรณ์:**
   * ศึกษาเกณฑ์การให้คะแนนอย่างละเอียดจาก [Rubric ระดับคุณภาพสำหรับประเมิน Final Project.md](file:///d:/3term1/a.kit/finalproject/exercise/Rubric%20%E0%B8%A3%E0%B8%B0%E0%B8%94%E0%B8%B1%E0%B8%9A%E0%B8%84%E0%B8%B8%E0%B8%93%E0%B8%A0%E0%B8%B2%E0%B8%9E%E0%B8%AA%E0%B8%B3%E0%B8%AB%E0%B8%A3%E0%B8%B1%E0%B8%9A%E0%B8%9B%E0%B8%A3%E0%B8%B0%E0%B9%80%E0%B8%A1%E0%B8%B4%E0%B8%99%20Final%20Project.md)

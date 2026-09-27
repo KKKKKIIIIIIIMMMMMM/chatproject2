@@ -1,0 +1,24 @@
+[
+  {"id":"P01","category":"procedural","question":"วิธีใช้จักรยานคอมพิวเตอร์ Bike แบบ Program Manual เป็นอย่างไร","expected_source_pages":[6],"expected_avoid_pages":[]},
+  {"id":"P02","category":"procedural","question":"วิธีเล่นเครื่องเดินวงรี Elliptical และจัดท่าทางอย่างไร","expected_source_pages":[8],"expected_avoid_pages":[]},
+  {"id":"P03","category":"procedural","question":"วิธีเล่นเครื่อง Leg press ต้องวางเท้าและหายใจอย่างไร","expected_source_pages":[12],"expected_avoid_pages":[]},
+  {"id":"P04","category":"procedural","question":"วิธีเล่น Chest Press และการปรับเบาะทำอย่างไร","expected_source_pages":[21],"expected_avoid_pages":[]},
+  {"id":"P05","category":"procedural","question":"วิธีเล่น Dumbbell Curl สำหรับต้นแขนด้านหน้าเป็นอย่างไร","expected_source_pages":[32],"expected_avoid_pages":[]},
+
+  {"id":"R01","category":"relational","question":"ถ้าปวดข้อเข่า กราฟระบุให้หลีกเลี่ยงเครื่องไหน และแนะนำท่าใด","expected_source_pages":[6,8],"expected_avoid_pages":[7,12,13]},
+  {"id":"R02","category":"relational","question":"ถ้าปวดหลังล่าง กราฟระบุให้เลี่ยงท่าไหนและมีท่าใดเป็นทางเลือก","expected_source_pages":[8,23,24],"expected_avoid_pages":[25,40]},
+  {"id":"R03","category":"relational","question":"ถ้าปวดหัวไหล่ กราฟระบุให้หลีกเลี่ยงท่าใด","expected_source_pages":[21,26],"expected_avoid_pages":[22,37]},
+  {"id":"R04","category":"relational","question":"ผู้เริ่มต้นฝึกออกกำลังกาย กราฟแนะนำและห้ามเล่นท่าใด","expected_source_pages":[6,12,21],"expected_avoid_pages":[39,45]},
+  {"id":"R05","category":"relational","question":"ท่าไหนบ้างที่บริหารกลุ่มกล้ามเนื้ออก","expected_source_pages":[19,20,21,42,43],"expected_avoid_pages":[]},
+
+  {"id":"C01","category":"complex","question":"ปวดเข่าแต่อยากทำคาร์ดิโอ ควรหลีกเลี่ยงเครื่องไหนและวิธีใช้เครื่องที่แนะนำเป็นอย่างไร","expected_source_pages":[6,8],"expected_avoid_pages":[7,12,13]},
+  {"id":"C02","category":"complex","question":"ปวดหลังล่างแต่อยากฝึกกล้ามเนื้อหลัง มีท่าใดควรเลี่ยงและเล่นเครื่องทดแทนอย่างไร","expected_source_pages":[23,24],"expected_avoid_pages":[25,40]},
+  {"id":"C03","category":"complex","question":"ปวดหัวไหล่และอยากฝึกอก มีท่าใดควรหลีกเลี่ยงและวิธีเล่น Chest Press เป็นอย่างไร","expected_source_pages":[21],"expected_avoid_pages":[22,37]},
+  {"id":"C04","category":"complex","question":"มือใหม่อยากฝึกขา กราฟแนะนำ Leg press หรือไม่ และควรเล่นอย่างไร","expected_source_pages":[12],"expected_avoid_pages":[39,45]},
+  {"id":"C05","category":"complex","question":"อยากฝึกกล้ามเนื้อปีกและหลัง มีทั้งเครื่องและท่าดัมเบลใดบ้างพร้อมวิธีทำ","expected_source_pages":[23,24,40,41],"expected_avoid_pages":[]},
+  {"id":"C06","category":"complex","question":"อยากฝึกต้นแขนด้านหน้า มีเครื่อง Arms Curl และท่า Dumbbell Curl ต่างกันอย่างไร พร้อมวิธีทำ","expected_source_pages":[26,32],"expected_avoid_pages":[]},
+  {"id":"C07","category":"complex","question":"อยากฝึกหน้าท้อง มีเครื่อง Sit Up กับ Verticals Knee Raise อย่างไรและควรระวังอะไร","expected_source_pages":[29,30],"expected_avoid_pages":[]},
+  {"id":"C08","category":"complex","question":"อยากฝึกอก มีเครื่อง Chest Press และ Dumbbell Bench Press อย่างไร พร้อมวิธีเล่น","expected_source_pages":[21,42],"expected_avoid_pages":[]},
+  {"id":"C09","category":"complex","question":"อยากฝึกขา มี Leg press และ Leg Extension บริหารส่วนไหนพร้อมวิธีใช้","expected_source_pages":[12,13],"expected_avoid_pages":[]},
+  {"id":"C10","category":"complex","question":"ปวดเข่าแต่สนใจ Leg press กราฟเตือนอะไรและมีทางเลือกที่เล่นได้อย่างไร","expected_source_pages":[6,8],"expected_avoid_pages":[7,12,13]}
+]

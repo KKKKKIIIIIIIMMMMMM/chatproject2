@@ -15,10 +15,10 @@ class GraphRetriever:
     def __init__(self, neo4j_uri=None, neo4j_user=None, neo4j_password=None, json_path=None):
         base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         
-        # Try Docker port 8687 first, fallback to standard 7687
-        self.neo4j_uri = neo4j_uri or os.getenv("NEO4J_URI", "bolt://localhost:8687")
+        self.neo4j_uri = neo4j_uri or os.getenv("NEO4J_URI", "bolt://localhost:7687")
         self.neo4j_user = neo4j_user or os.getenv("NEO4J_USER", "neo4j")
         self.neo4j_password = neo4j_password or os.getenv("NEO4J_PASSWORD", "password123")
+        self.project_id = os.getenv("NEO4J_PROJECT_ID", "fitness_rag_final_2026")
 
         
         self.json_path = json_path or os.path.join(base_dir, "data", "knowledge_graph.json")
@@ -48,11 +48,48 @@ class GraphRetriever:
         except Exception:
             self.neo4j_active = False
             
-        # Load local In-Memory graph
+        # Load local In-Memory graph for entity matching and offline fallback
         self.local_graph = {"nodes": {}, "edges": []}
         if os.path.exists(self.json_path):
             with open(self.json_path, "r", encoding="utf-8") as f:
                 self.local_graph = json.load(f)
+
+    def _relevant_edges(self, entities):
+        """Query Neo4j with parameters; use the JSON graph only when unavailable."""
+        if self.neo4j_active and any(entities.values()):
+            cypher = """
+            MATCH (a:FitnessEntity {project_id: $project_id})-[r]->
+                  (b:FitnessEntity {project_id: $project_id})
+            WHERE (a.name IN $conditions AND type(r) IN ['AVOID', 'RECOMMEND'])
+               OR (b.name IN $muscles AND type(r) = 'TARGETS_GROUP')
+               OR (a.name IN $exercises AND type(r) = 'HAS_CAUTION')
+            RETURN a.name AS source, type(r) AS relation, b.name AS target
+            ORDER BY source, relation, target
+            """
+            try:
+                with self.driver.session() as session:
+                    rows = [dict(record) for record in session.run(
+                        cypher,
+                        conditions=entities["conditions"],
+                        muscles=entities["muscles"],
+                        exercises=entities["exercises"],
+                        project_id=self.project_id,
+                    )]
+                if rows:
+                    return rows, "neo4j"
+            except Exception:
+                self.neo4j_active = False
+
+        conditions = set(entities["conditions"])
+        muscles = set(entities["muscles"])
+        exercises = set(entities["exercises"])
+        rows = [
+            edge for edge in self.local_graph.get("edges", [])
+            if (edge["source"] in conditions and edge["relation"] in ("AVOID", "RECOMMEND"))
+            or (edge["target"] in muscles and edge["relation"] == "TARGETS_GROUP")
+            or (edge["source"] in exercises and edge["relation"] == "HAS_CAUTION")
+        ]
+        return rows, "json_fallback"
                 
     def extract_entities_from_query(self, query: str):
         """วิเคราะห์สกัด Entity และคำสำคัญจากคำถามของผู้ใช้"""
@@ -68,7 +105,7 @@ class GraphRetriever:
         condition_rules = {
             "ปวดหลังล่าง (Lower Back Pain)": ["ปวดหลัง", "เจ็บหลัง", "หลังล่าง", "หลังแอ่น", "back pain", "lower back"],
             "ปวดข้อเข่า (Knee Pain)": ["ปวดเข่า", "เจ็บเข่า", "ข้อเข่า", "เข่าตึง", "knee pain"],
-            "ปวดหัวไหล่ / ข้อต่อไหล่ติด (Shoulder Impingement)": ["ปวดไหล่", "เจ็บไหล่", "หัวไหล่ติด", "กระตุกข้อต่อ", "shoulder pain"],
+            "ปวดหัวไหล่ / ข้อต่อไหล่ติด (Shoulder Impingement)": ["ปวดไหล่", "เจ็บไหล่", "ปวดหัวไหล่", "เจ็บหัวไหล่", "หัวไหล่ติด", "กระตุกข้อต่อ", "shoulder pain"],
             "ผู้เริ่มต้นฝึกออกกำลังกาย (Beginner)": ["ผู้เริ่มต้น", "มือใหม่", "เพิ่งเริ่ม", "ไม่เคยเล่น", "beginner"]
         }
         for cond, keywords in condition_rules.items():
@@ -122,7 +159,7 @@ class GraphRetriever:
         target_exercises = []
         cautions_found = []
         
-        edges = self.local_graph.get("edges", [])
+        edges, graph_source = self._relevant_edges(entities)
         
         # 1. Traverse Condition Relationships (AVOID & RECOMMEND)
         for cond in entities["conditions"]:
@@ -139,7 +176,7 @@ class GraphRetriever:
                         recommend_list.append({
                             "exercise": e["target"],
                             "condition": cond,
-                            "reason": "ปลอดภัยและช่วยฟื้นฟูหรือฝึกทดแทนได้โดยไม่กระทบจุดบาดเจ็บ",
+                            "reason": "กราฟต้นแบบระบุเป็นทางเลือก โปรดตรวจสอบความเหมาะสมกับผู้เชี่ยวชาญ",
                             "metadata": self.exercise_metadata.get(e["target"], {})
                         })
                         
@@ -202,7 +239,7 @@ class GraphRetriever:
             "cautions": cautions_found,
             "subgraph_text": subgraph_text,
             "has_graph_facts": len(fact_lines) > 0,
-            "source": "knowledge_graph"
+            "source": graph_source
         }
 
 if __name__ == "__main__":
