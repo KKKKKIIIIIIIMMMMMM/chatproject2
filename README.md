@@ -53,9 +53,17 @@ python scripts/project_launcher.py start
 
 ค่าเริ่มต้น LINE คือ `LINE_PROVIDER=local`, `LINE_RETRIEVAL_MODE=auto`, `LINE_TOP_K=4`, `LINE_PORT=8000` และ Ollama `qwen2.5:3b` เปลี่ยนเป็น API ได้ด้วย `LINE_PROVIDER=openrouter` (ต้องมี API key) หรือเปลี่ยน Local model ด้วย `OLLAMA_MODEL=qwen3.5:9b-q4_K_M` ใน `.env` แล้วรีสตาร์ตบอต Qwen3.5 ถูกส่ง `think: false` เพื่อปิด thinking mode
 
+### LINE: ถามได้ทุกหมวดและดูรูปจากคู่มือ
+
+พิมพ์ `เมนู` เพื่อดู Flex Carousel ของ 8 หมวด หรือพิมพ์ตรง ๆ เช่น `อยากเล่นขา`, `อยากเล่นอก`, `อยากเล่นหลัง`, `อยากเล่นไหล่`, `อยากเล่นหน้าแขน`, `อยากเล่นหลังแขน`, `อยากเล่นท้อง`, `อยากเล่นคาร์ดิโอ` บอตสรุปภาพรวมจากรายชื่อท่าในหมวดและแสดง Carousel ของท่าที่มีในคู่มือ แต่ละการ์ดมีรูป เลขหน้า และปุ่ม `ดูวิธีฝึก` กดแล้วบอตให้ LLM อธิบายโดยใช้ chunk ของท่านั้นเท่านั้น พร้อมการ์ดรูปและปุ่มกลับไปเลือกท่าอื่น เมื่อพิมพ์ชื่อท่าอังกฤษชัดเจน เช่น `วิธีเล่น Leg Extension` ระบบก็เลือก chunk เดียวและรูปเดียวโดยตรง เพื่อไม่ให้ผลค้นคืนของท่าอื่นมาปน ส่วนคำถามที่ไม่ระบุท่าชัดเจนยังใช้ RAG เดิมและตอบเป็นข้อความ โดยไม่แนบรูปที่อาจไม่ตรงคำถาม
+
+บนมือถือมี Quick Reply สำหรับเลือกหมวดหรือหมวดย่อย เช่น `ต้นขาด้านหน้า` / `น่อง` และ `อกบน` / `อกล่าง` ส่วน LINE PC อาจไม่แสดง Quick Reply จึงมีปุ่มอยู่บน Flex Card ด้วย ข้อมูลรูป/หน้ามาจาก `data/chunks.json` โดยตรง: ท่าออกกำลังกาย 40 รายการ หน้า 6–45 พร้อมรูป 40 รูป ส่วนหัวข้อความรู้หน้า 46 มีแต่ข้อความและไม่แนบรูป อย่านำตัวเลขหรือข้อห้ามจาก checklist ภายนอกมาเขียนทับข้อมูลนี้โดยไม่ตรวจหลักฐาน (ดู `docs/LINE_CATALOG_AUDIT.md`)
+
+รูปถูกเสิร์ฟที่ `https://<LINE webhook host>/images/<ชื่อรูป>.jpg` และจำกัดเฉพาะ 40 ภาพใน catalogue URL ต้องเป็น HTTPS ที่ LINE เข้าถึงได้ เมื่อรัน `START_PROJECT.cmd` ตัวเปิดระบบจะบันทึก tunnel URL ปัจจุบันไว้ใน `.runtime/line_public_base_url.txt` ให้อัตโนมัติ (ไฟล์นี้ถูก Git ignore) ถ้ารัน webhook/tunnel แยกเอง ให้กำหนด `LINE_PUBLIC_BASE_URL=https://<host>` ใน `.env` โดยไม่ใส่ `/webhook` หากยังไม่มี URL สาธารณะ บอตจะส่งคำตอบข้อความกับปุ่ม แต่จะไม่ส่งการ์ดรูป หากโมเดลสรุปไม่สำเร็จ บอตจะบอกข้อผิดพลาดโดยไม่แต่งขั้นตอนฝึกขึ้นเอง
+
 Quick Tunnel ใช้สำหรับสาธิตเท่านั้น URL เปลี่ยนเมื่อเปิดใหม่และอาจหลุดเมื่อเครือข่ายขัดข้อง ถ้าเปิดระบบแล้ว LINE ไม่ตอบ ให้ดู `.runtime/cloudflared.err.log`, ตรวจ `http://127.0.0.1:8000/healthz` และตรวจว่า LINE Developers เปิด **Use webhook** อยู่ ไฟล์เปิดระบบจะพยายามเริ่ม tunnel ของโครงงานใหม่หากตัวเดิมค้างแต่ไม่พร้อมใช้งาน สำหรับงานที่ต้องออนไลน์ต่อเนื่องควรใช้ endpoint ถาวรและคิวงานที่เก็บสถานะข้ามการรีสตาร์ต
 
-ไม่ต้องใช้ launcher หากจะรันแยกเอง: `python scripts/run_with_neo4j.py -- python scripts/line_webhook.py` แล้วเปิด tunnel `cloudflared tunnel --url http://127.0.0.1:8000` และตั้ง `https://<tunnel>.trycloudflare.com/webhook` ใน LINE Developers บอตตรวจลายเซ็น `x-line-signature` ก่อนอ่าน JSON รับเฉพาะข้อความตัวอักษร กัน event ซ้ำในหน่วยความจำ และตอบจาก RAG เดียวกับเว็บ
+ไม่ต้องใช้ launcher หากจะรันแยกเอง: `python scripts/run_with_neo4j.py -- python scripts/line_webhook.py` แล้วเปิด tunnel `cloudflared tunnel --url http://127.0.0.1:8000` และตั้ง `https://<tunnel>.trycloudflare.com/webhook` ใน LINE Developers บอตตรวจลายเซ็น `x-line-signature` ก่อนอ่าน JSON รับข้อความตัวอักษรและ postback ที่รู้จัก กัน event ซ้ำในหน่วยความจำ คำถามทั่วไปตอบจาก RAG เดียวกับเว็บ ส่วนเมนูการ์ดใช้รายการที่ตรวจหน้า/รูปแล้ว
 
 ## สิ่งที่ทำเสร็จแล้วและสิ่งที่เพิ่มจาก repo เดิม
 

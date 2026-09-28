@@ -15,6 +15,7 @@ import hashlib
 import hmac
 import json
 import os
+import re
 import sys
 import threading
 import time
@@ -23,6 +24,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import Any, Callable
 from urllib.error import HTTPError, URLError
+from urllib.parse import urlsplit
 from urllib.request import Request, urlopen
 
 
@@ -30,13 +32,21 @@ ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from src.llm_engine import RAGChatService, load_project_env  # noqa: E402
+from src.line_chest import (  # noqa: E402
+    ChestExercise, load_chest_exercises, prompt_for_exercise,
+)
+from src.line_catalog import (  # noqa: E402
+    Exercise, ExerciseCatalog, GROUPS, SUBGROUPS, overview_prompt, safety_sensitive,
+    text_action, unsupported_topic,
+)
+from src.llm_engine import RAGChatService, generate_answer, load_project_env  # noqa: E402
 
 
 LINE_REPLY_URL = "https://api.line.me/v2/bot/message/reply"
 MAX_WEBHOOK_BYTES = 1_000_000
 MAX_QUESTION_CHARS = 800
 MAX_LINE_TEXT_UNITS = 5000
+PUBLIC_URL_FILE = ROOT / ".runtime" / "line_public_base_url.txt"
 
 
 def valid_signature(body: bytes, signature: str, channel_secret: str) -> bool:
@@ -71,6 +81,42 @@ def text_events(payload: dict[str, Any]) -> list[dict[str, str]]:
             "reply_token": reply_token,
             "question": question.strip(),
             "replay_key": str(replay_key),
+        })
+    return selected
+
+
+def chat_events(payload: dict[str, Any]) -> list[dict[str, str]]:
+    """Accept text and allowlisted navigation postbacks in their original order."""
+    events = payload.get("events")
+    if not isinstance(events, list):
+        raise ValueError("events must be an array")
+    selected = []
+    for event in events:
+        if isinstance(event, dict) and event.get("type") == "message":
+            selected.extend(text_events({"events": [event]}))
+            continue
+        if not isinstance(event, dict) or event.get("type") != "postback":
+            continue
+        postback = event.get("postback")
+        token = event.get("replyToken")
+        data = postback.get("data") if isinstance(postback, dict) else None
+        if not isinstance(token, str) or not token or not isinstance(data, str):
+            continue
+        legacy = {"chest:menu", "chest:all", "chest:upper", "chest:middle", "chest:lower"}
+        valid = (
+            data in legacy or data in {"menu:groups", "menu:arms"}
+            or (data.startswith("group:") and data[6:] in GROUPS)
+            or (data.startswith("sub:") and any(
+                data == f"sub:{group}:{sub}" for group, subs in SUBGROUPS.items() for sub in subs
+            ))
+            or (data.startswith("exercise:") and bool(re.fullmatch(r"[a-z0-9_]+", data[9:])))
+        )
+        if not valid:
+            continue
+        selected.append({
+            "reply_token": token,
+            "action": data,
+            "replay_key": str(event.get("webhookEventId") or token),
         })
     return selected
 
@@ -110,8 +156,108 @@ def format_answer(result: dict[str, Any]) -> str:
     return limit_line_text(answer)
 
 
-def send_line_reply(access_token: str, reply_token: str, text: str) -> None:
-    payload = {"replyToken": reply_token, "messages": [{"type": "text", "text": text}]}
+def public_base_url() -> str | None:
+    """Read the current HTTPS tunnel URL at reply time, after launcher setup."""
+    configured = os.getenv("LINE_PUBLIC_BASE_URL", "").strip()
+    if not configured and PUBLIC_URL_FILE.is_file():
+        configured = PUBLIC_URL_FILE.read_text(encoding="utf-8").strip()
+    parsed = urlsplit(configured)
+    if parsed.scheme != "https" or not parsed.hostname or parsed.username or parsed.password:
+        return None
+    if parsed.path not in ("", "/") or parsed.query or parsed.fragment:
+        return None
+    return f"https://{parsed.netloc}"
+
+
+def quick_reply() -> dict[str, Any]:
+    buttons = [
+        ("อกบน", "chest:upper"),
+        ("อกกลาง", "chest:middle"),
+        ("อกล่าง", "chest:lower"),
+        ("ดูทั้งหมด", "chest:all"),
+    ]
+    return {"items": [
+        {"type": "action", "action": {
+            "type": "postback", "label": label, "data": action, "displayText": label,
+        }} for label, action in buttons
+    ]}
+
+
+def navigation_quick_reply(group: str | None = None) -> dict[str, Any]:
+    if group and group in SUBGROUPS:
+        buttons = [
+            (label, f"sub:{group}:{subkey}")
+            for subkey, (label, _pages, _aliases) in SUBGROUPS[group].items()
+        ]
+        buttons.append(("ทุกท่าในหมวด", f"group:{group}"))
+    elif group:
+        buttons = [("ทุกท่าในหมวด", f"group:{group}")]
+    else:
+        buttons = [(spec[0], f"group:{key}") for key, spec in GROUPS.items()]
+    buttons.append(("เมนูหลัก", "menu:groups"))
+    return {"items": [{"type": "action", "action": {
+        "type": "postback", "label": label, "data": action, "displayText": label,
+    }} for label, action in buttons]}
+
+
+def menu_message() -> dict[str, Any]:
+    return {
+        "type": "text",
+        "text": (
+            "อยากเล่นอกส่วนไหนครับ? เลือกด้านล่างได้เลย — "
+            "แต่ละตัวเลือกอ้างอิงท่าและรูปจากคู่มือจริง\n"
+            "อกบน: Incline Press · อกกลาง: Chest Press · อกล่าง: Decline Dumbbell Press"
+        ),
+        "quickReply": quick_reply(),
+    }
+
+
+def exercise_card(exercise: ChestExercise | Exercise, base_url: str, *, selected: bool = False) -> dict[str, Any]:
+    group = getattr(exercise, "group", "chest")
+    exercise_id = getattr(exercise, "exercise_id", None)
+    if selected:
+        buttons = [
+            ("ท่าอื่นในหมวด", f"group:{group}"), ("เมนูหลัก", "menu:groups"),
+        ]
+    elif exercise_id:
+        buttons = [("ดูวิธีฝึก", f"exercise:{exercise_id}")]
+    else:
+        buttons = [("เลือกอกส่วนอื่น", "chest:menu")]
+    return {
+        "type": "flex",
+        "altText": f"{exercise.label}: {exercise.title} (คู่มือหน้า {exercise.page})",
+        "contents": {
+            "type": "bubble",
+            "hero": {
+                "type": "image", "url": f"{base_url}/images/{exercise.image_name}",
+                "size": "full", "aspectRatio": "20:13", "aspectMode": "fit",
+            },
+            "body": {
+                "type": "box", "layout": "vertical", "contents": [
+                    {"type": "text", "text": exercise.label, "weight": "bold", "size": "lg"},
+                    {"type": "text", "text": exercise.title, "wrap": True, "size": "sm", "margin": "md"},
+                    {"type": "text", "text": f"ภาพจากคู่มือ หน้า {exercise.page}",
+                     "size": "xs", "color": "#666666", "margin": "md"},
+                    *([{"type": "text", "text": exercise.target_muscles,
+                        "size": "xs", "color": "#666666", "wrap": True, "margin": "sm"}]
+                      if isinstance(exercise, Exercise) else []),
+                ],
+            },
+            "footer": {
+                "type": "box", "layout": "vertical", "contents": [
+                    {"type": "button", "style": "primary" if index == 0 else "secondary", "action": {
+                        "type": "postback", "label": label, "data": action, "displayText": label,
+                    }} for index, (label, action) in enumerate(buttons)
+                ],
+            },
+        },
+    }
+
+
+def send_line_messages(access_token: str, reply_token: str, messages: list[dict[str, Any]]) -> None:
+    if not 1 <= len(messages) <= 5:
+        raise ValueError("LINE replies require 1-5 messages")
+    payload = {"replyToken": reply_token, "messages": messages}
     request = Request(
         LINE_REPLY_URL,
         data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
@@ -127,6 +273,11 @@ def send_line_reply(access_token: str, reply_token: str, text: str) -> None:
             raise RuntimeError(f"LINE reply returned HTTP {response.status}")
 
 
+def send_line_reply(access_token: str, reply_token: str, text: str) -> None:
+    """Compatibility helper for single-text callers."""
+    send_line_messages(access_token, reply_token, [{"type": "text", "text": text}])
+
+
 class LineBot:
     """One RAG worker keeps model initialization bounded on a local machine."""
 
@@ -138,7 +289,7 @@ class LineBot:
         mode: str = "auto",
         top_k: int = 4,
         service_factory: Callable[[], Any] = RAGChatService,
-        reply_sender: Callable[[str, str, str], None] = send_line_reply,
+        reply_sender: Callable[[str, str, list[dict[str, Any]]], None] = send_line_messages,
     ) -> None:
         self.channel_secret = channel_secret
         self.access_token = access_token
@@ -147,6 +298,8 @@ class LineBot:
         self.top_k = top_k
         self.service_factory = service_factory
         self.reply_sender = reply_sender
+        self.catalog = ExerciseCatalog()
+        self.chest_exercises = load_chest_exercises()
         self._service: Any | None = None
         self._executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="line-rag")
         self._capacity = threading.BoundedSemaphore(3)
@@ -184,27 +337,161 @@ class LineBot:
 
     def _process(self, event: dict[str, str]) -> None:
         try:
-            question = event["question"]
-            if len(question) > MAX_QUESTION_CHARS:
-                message = "คำถามยาวเกิน 800 ตัวอักษร กรุณาย่อคำถามแล้วส่งใหม่"
-            else:
-                try:
-                    self.warmup()
-                    result = self._service.answer(
-                        question, provider=self.provider, mode=self.mode, top_k=self.top_k
-                    )
-                    message = format_answer(result)
-                except Exception as exc:
-                    print(f"RAG processing failed: {type(exc).__name__}", file=sys.stderr)
-                    message = "ขออภัย ระบบยังตอบคำถามนี้ไม่ได้ กรุณาลองใหม่ภายหลัง"
             try:
-                self.reply_sender(self.access_token, event["reply_token"], message)
+                messages = self._messages_for_event(event)
+            except Exception as exc:
+                print(f"LINE processing failed: {type(exc).__name__}", file=sys.stderr)
+                messages = [{"type": "text", "text": "ขออภัย ระบบยังตอบคำถามนี้ไม่ได้ กรุณาลองใหม่ภายหลัง"}]
+            try:
+                self.reply_sender(self.access_token, event["reply_token"], messages)
             except HTTPError as exc:
                 print(f"LINE reply failed: HTTP {exc.code}", file=sys.stderr)
             except (URLError, TimeoutError, OSError, RuntimeError) as exc:
                 print(f"LINE reply failed: {type(exc).__name__}", file=sys.stderr)
         finally:
             self._capacity.release()
+
+    def _messages_for_event(self, event: dict[str, str]) -> list[dict[str, Any]]:
+        question = event.get("question", "")
+        if len(question) > MAX_QUESTION_CHARS:
+            return [{"type": "text", "text": "คำถามยาวเกิน 800 ตัวอักษร กรุณาย่อคำถามแล้วส่งใหม่"}]
+        if question and (notice := unsupported_topic(question)):
+            return [{"type": "text", "text": notice,
+                     "quickReply": navigation_quick_reply()}]
+        # Explicit names must bypass multi-chunk retrieval: a similarly named
+        # exercise can otherwise leak its instructions or photo into the reply.
+        if question and not safety_sensitive(question) and (named := self.catalog.named_exercise(question)):
+            return self._exercise_messages(named)
+        action = event.get("action") or text_action(question)
+        if action == "menu:groups":
+            return self._menu_messages()
+        if action == "menu:arms":
+            return self._menu_messages(("biceps", "triceps"))
+        if action in ("chest:menu", "chest:all"):
+            return self._group_messages("chest")
+        if action in ("chest:upper", "chest:middle", "chest:lower"):
+            page = {"chest:upper": 20, "chest:middle": 21, "chest:lower": 45}[action]
+            return self._exercise_messages(self.catalog.by_page[page])
+        if action and action.startswith("group:") and action[6:] in GROUPS:
+            return self._group_messages(action[6:])
+        if action and action.startswith("sub:"):
+            parts = action.split(":")
+            if len(parts) == 3 and parts[1] in SUBGROUPS and parts[2] in SUBGROUPS[parts[1]]:
+                items = self.catalog.subgroup(parts[1], parts[2])
+                if len(items) == 1:
+                    return self._exercise_messages(items[0])
+                label = SUBGROUPS[parts[1]][parts[2]][0]
+                return self._selection_messages(label, items, parts[1])
+        if action and action.startswith("exercise:"):
+            exercise = self.catalog.by_id.get(action[9:])
+            if exercise:
+                return self._exercise_messages(exercise)
+        if not question:
+            return self._menu_messages()
+        return self._rag_messages(question)
+
+    def _rag_messages(self, question: str) -> list[dict[str, Any]]:
+        self.warmup()
+        result = self._service.answer(
+            question, provider=self.provider, mode=self.mode, top_k=self.top_k
+        )
+        # Unconstrained retrieval can include related-but-different exercises.
+        # Only deterministic catalogue selections receive a manual photo.
+        return [{"type": "text", "text": format_answer(result)}]
+
+    def _exercise_messages(self, exercise: ChestExercise | Exercise) -> list[dict[str, Any]]:
+        try:
+            generated = generate_answer(prompt_for_exercise(exercise), self.provider)
+            text = limit_line_text(
+                f"{generated['answer']}\n\nอ้างอิง: {exercise.title} (คู่มือหน้า {exercise.page})"
+            )
+        except Exception as exc:
+            print(f"Exercise guide generation failed: {type(exc).__name__}", file=sys.stderr)
+            text = (
+                f"ขออภัย ยังสรุปวิธีฝึก {exercise.label} ไม่สำเร็จ "
+                f"ท่าที่ตรงกับคู่มือคือ {exercise.title} (หน้า {exercise.page})"
+            )
+        messages: list[dict[str, Any]] = [{"type": "text", "text": text}]
+        base = public_base_url()
+        group = getattr(exercise, "group", "chest")
+        if base:
+            card = exercise_card(exercise, base, selected=isinstance(exercise, Exercise))
+            card["quickReply"] = navigation_quick_reply(group)
+            messages.append(card)
+        else:
+            messages[0]["text"] = limit_line_text(text + "\n\nยังส่งรูปไม่ได้: กรุณาเปิดระบบผ่าน START_PROJECT.cmd หรือกำหนด LINE_PUBLIC_BASE_URL")
+            messages[0]["quickReply"] = navigation_quick_reply(group)
+        return messages
+
+    def _all_chest_messages(self) -> list[dict[str, Any]]:
+        """Compatibility entry point for older chest menu callers."""
+        return self._group_messages("chest")
+
+    def _selection_messages(self, label: str, items: list[Exercise], group: str) -> list[dict[str, Any]]:
+        pages = ", ".join(str(item.page) for item in items)
+        try:
+            generated = generate_answer(overview_prompt(label, items), self.provider)
+            summary = generated["answer"]
+        except Exception as exc:
+            print(f"Exercise overview generation failed: {type(exc).__name__}", file=sys.stderr)
+            summary = "เลือกการ์ดท่าที่สนใจเพื่อดูวิธีฝึกจากคู่มือได้เลย"
+        text = limit_line_text(f"{label}: พบ {len(items)} ท่าในคู่มือ (หน้า {pages})\n{summary}")
+        base = public_base_url()
+        if not base:
+            listing = "\n".join(f"• {item.title} (หน้า {item.page})" for item in items)
+            return [{"type": "text", "text": limit_line_text(text + "\n" + listing),
+                     "quickReply": navigation_quick_reply(group)}]
+        return [
+            {"type": "text", "text": text},
+            self._carousel_message(items, base, f"ท่า{label}จากคู่มือ", group),
+        ]
+
+    def _group_messages(self, group: str) -> list[dict[str, Any]]:
+        return self._selection_messages(GROUPS[group][0], self.catalog.group(group), group)
+
+    def _carousel_message(
+        self, items: list[Exercise], base: str, alt_text: str, group: str | None,
+    ) -> dict[str, Any]:
+        bubbles = [exercise_card(item, base)["contents"] for item in items[:12]]
+        return {
+            "type": "flex", "altText": alt_text[:400],
+            "contents": {"type": "carousel", "contents": bubbles} if len(bubbles) > 1 else bubbles[0],
+            "quickReply": navigation_quick_reply(group),
+        }
+
+    def _menu_messages(self, groups: tuple[str, ...] | None = None) -> list[dict[str, Any]]:
+        groups = groups or tuple(GROUPS)
+        base = public_base_url()
+        text = "เลือกหมวดที่อยากฝึก: " + ", ".join(GROUPS[key][0] for key in groups)
+        if not base:
+            return [{"type": "text", "text": text, "quickReply": navigation_quick_reply()}]
+        bubbles = []
+        for key in groups:
+            representative = self.catalog.group(key)[0]
+            bubbles.append({
+                "type": "bubble",
+                "hero": {"type": "image", "url": f"{base}/images/{representative.image_name}",
+                         "size": "full", "aspectRatio": "20:13", "aspectMode": "fit"},
+                "body": {"type": "box", "layout": "vertical", "contents": [
+                    {"type": "text", "text": GROUPS[key][0], "weight": "bold", "size": "lg", "wrap": True},
+                    {"type": "text", "text": f"{len(GROUPS[key][1])} ท่า/เครื่องในคู่มือ",
+                     "size": "sm", "margin": "md"},
+                    {"type": "text", "text": f"ภาพตัวอย่าง: หน้า {representative.page}",
+                     "size": "xs", "color": "#666666", "margin": "sm"},
+                ]},
+                "footer": {"type": "box", "layout": "vertical", "contents": [{
+                    "type": "button", "style": "primary", "action": {
+                        "type": "postback", "label": "ดูท่าในหมวด", "data": f"group:{key}",
+                        "displayText": GROUPS[key][0],
+                    },
+                }]},
+            })
+        return [
+            {"type": "text", "text": text},
+            {"type": "flex", "altText": "เลือกหมวดออกกำลังกายจากคู่มือ",
+             "contents": {"type": "carousel", "contents": bubbles},
+             "quickReply": navigation_quick_reply()},
+        ]
 
     def close(self) -> None:
         self._executor.shutdown(wait=True)
@@ -228,6 +515,19 @@ class WebhookHandler(BaseHTTPRequestHandler):
     def do_GET(self) -> None:
         if self.path == "/healthz":
             self.respond(200, {"ok": True, "service": "fitness-rag-line"})
+        elif self.path.startswith("/images/"):
+            filename = self.path.removeprefix("/images/")
+            path = self.bot.catalog.image_path(filename)
+            if path is None:
+                self.respond(404, {"error": "not_found"})
+                return
+            image = path.read_bytes()
+            self.send_response(200)
+            self.send_header("Content-Type", "image/jpeg")
+            self.send_header("Content-Length", str(len(image)))
+            self.send_header("Cache-Control", "public, max-age=3600")
+            self.end_headers()
+            self.wfile.write(image)
         else:
             self.respond(404, {"error": "not_found"})
 
@@ -254,7 +554,7 @@ class WebhookHandler(BaseHTTPRequestHandler):
             payload = json.loads(body)
             if not isinstance(payload, dict):
                 raise ValueError("webhook body must be an object")
-            events = text_events(payload)
+            events = chat_events(payload)
         except (UnicodeDecodeError, json.JSONDecodeError, ValueError):
             self.respond(400, {"error": "invalid_payload"})
             return

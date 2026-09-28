@@ -340,6 +340,11 @@ def start() -> int:
     port = ensure_webhook(base, state)
     ensure_ui(base, state)
     endpoint = ensure_tunnel(port, base, state)
+    # The webhook process was started before the Quick Tunnel existed.  It reads
+    # this non-secret URL on each reply so image cards use the current tunnel.
+    (RUNTIME / "line_public_base_url.txt").write_text(
+        endpoint.removesuffix("/webhook") + "\n", encoding="utf-8"
+    )
     print("\nProject ready:")
     print("  Web UI: http://127.0.0.1:8501")
     print(f"  LINE webhook: {endpoint}")
@@ -365,6 +370,7 @@ def stop() -> int:
                 continue
         state.pop(name, None)
     save_state(state)
+    (RUNTIME / "line_public_base_url.txt").unlink(missing_ok=True)
     print("Docker Desktop and Neo4j container were left running. LINE still points to the old tunnel until restart.")
     return 0
 

@@ -9,17 +9,23 @@ import json
 import threading
 import unittest
 from http.server import ThreadingHTTPServer
+from unittest.mock import patch
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
 from scripts.line_webhook import (
     LineBot,
     WebhookHandler,
+    chat_events,
+    exercise_card,
     format_answer,
     limit_line_text,
+    menu_message,
     text_events,
     valid_signature,
 )
+from src.line_catalog import ExerciseCatalog, GROUPS, SUBGROUPS, text_action, unsupported_topic
+from src.line_chest import chest_intent, load_chest_exercises, safe_image_path
 
 
 SECRET = "test-channel-secret"
@@ -47,6 +53,96 @@ class LineWebhookTests(unittest.TestCase):
             "reply_token": "r1", "question": "วิธีเล่น Bike", "replay_key": "e1"
         }])
 
+    def test_postback_events_are_explicitly_allowlisted(self) -> None:
+        payload = {"events": [
+            {"type": "postback", "webhookEventId": "p1", "replyToken": "r1",
+             "postback": {"data": "chest:upper"}},
+            {"type": "postback", "webhookEventId": "p2", "replyToken": "r3",
+             "postback": {"data": "group:legs"}},
+            {"type": "postback", "webhookEventId": "p3", "replyToken": "r4",
+             "postback": {"data": "exercise:08_leg_extension"}},
+            {"type": "postback", "replyToken": "r2", "postback": {"data": "admin:delete"}},
+        ]}
+        self.assertEqual(chat_events(payload), [
+            {"reply_token": "r1", "action": "chest:upper", "replay_key": "p1"},
+            {"reply_token": "r3", "action": "group:legs", "replay_key": "p2"},
+            {"reply_token": "r4", "action": "exercise:08_leg_extension", "replay_key": "p3"},
+        ])
+
+    def test_chest_intent_avoids_symptom_messages(self) -> None:
+        self.assertEqual(chest_intent("อยากเล่นอก"), "menu")
+        self.assertEqual(chest_intent("อกกลาง"), "middle")
+        self.assertEqual(chest_intent("อยากเล่นอกล่าง"), "lower")
+        self.assertIsNone(chest_intent("เจ็บหน้าอก อยากเล่นอก"))
+        self.assertIsNone(chest_intent("ปวดอก อยากเล่นอก"))
+
+    def test_catalogue_covers_all_eight_groups_and_pictured_pages(self) -> None:
+        catalog = ExerciseCatalog()
+        self.assertEqual(len(GROUPS), 8)
+        self.assertEqual(set(catalog.by_page), set(range(6, 46)))
+        self.assertEqual(len({item.image_name for item in catalog.by_id.values()}), 40)
+        self.assertEqual(catalog.by_page[11].group, "core")
+        self.assertEqual(len(catalog.group("legs")), 7)
+        self.assertEqual(len(catalog.group("chest")), 7)
+        self.assertEqual(len(catalog.group("core")), 4)
+        self.assertEqual(len(catalog.group("triceps")), 5)
+        self.assertEqual(catalog.named_exercise("วิธีเล่น Leg Extension").page, 13)
+        self.assertEqual(catalog.named_exercise("วิธีใช้เครื่องเดินวงรี").page, 8)
+        self.assertEqual(catalog.named_exercise("วิธีใช้เครื่องบริหารต้นขาด้านหน้า").page, 13)
+        self.assertEqual(catalog.named_exercise("เครื่องบริหารกล้ามเนื้อหลังส่วนบนใช้อย่างไร").page, 24)
+        self.assertEqual(catalog.named_exercise("Dumbbell Row").page, 40)
+        self.assertEqual(catalog.named_exercise("Two Arm Dumbbell Row").page, 41)
+        for group, subgroups in SUBGROUPS.items():
+            for subkey in subgroups:
+                with self.subTest(group=group, subgroup=subkey):
+                    self.assertTrue(set(catalog.subgroup(group, subkey)) <= set(catalog.group(group)))
+
+    def test_all_body_part_inputs_route_to_menus(self) -> None:
+        expected = {
+            "อยากเล่นขา": "group:legs", "อยากเล่นอก": "group:chest",
+            "อยากเล่นหลัง": "group:back", "อยากเล่นไหล่": "group:shoulders",
+            "อยากเล่นหน้าแขน": "group:biceps", "อยากเล่นหลังแขน": "group:triceps",
+            "อยากเล่นท้อง": "group:core", "อยากเล่นคาร์ดิโอ": "group:cardio",
+            "เล่นน่อง": "sub:legs:calf", "เล่นอกล่าง": "sub:chest:lower",
+            "เล่นแขน": "menu:arms", "เมนู": "menu:groups",
+        }
+        for query, action in expected.items():
+            with self.subTest(query=query):
+                self.assertEqual(text_action(query), action)
+        self.assertIsNone(text_action("ปวดเข่า อยากเล่นขา"))
+        self.assertIsNone(text_action("มือใหม่อยากเล่นอก"))
+
+    def test_unsupported_request_does_not_invent_exercises(self) -> None:
+        self.assertIsNotNone(unsupported_topic("อยากบริหารคอ"))
+        self.assertIsNotNone(unsupported_topic("แนะนำยี่ห้อโปรตีน"))
+        self.assertIsNone(unsupported_topic("วิธีล็อคข้อมือขณะเล่นอก"))
+        bot = LineBot(SECRET, "test-access-token", service_factory=lambda: None)
+        try:
+            messages = bot._messages_for_event({"question": "อยากบริหารคอ"})
+        finally:
+            bot.close()
+        self.assertEqual(len(messages), 1)
+        self.assertIn("ไม่พบ", messages[0]["text"])
+        self.assertIsNone(chest_intent("อกหัก"))
+
+    def test_verified_exercises_and_image_allowlist(self) -> None:
+        exercises = load_chest_exercises()
+        self.assertEqual({key: item.page for key, item in exercises.items()},
+                         {"upper": 20, "middle": 21, "lower": 45})
+        self.assertIsNotNone(safe_image_path("15_incline_press.jpg", exercises))
+        self.assertIsNone(safe_image_path("../.env", exercises))
+        self.assertIsNone(safe_image_path("39_pullovers.jpg", exercises))
+
+    def test_menu_and_card_have_structured_actions(self) -> None:
+        menu = menu_message()
+        actions = [item["action"]["data"] for item in menu["quickReply"]["items"]]
+        self.assertEqual(actions, ["chest:upper", "chest:middle", "chest:lower", "chest:all"])
+        exercise = load_chest_exercises()["lower"]
+        card = exercise_card(exercise, "https://example.com")
+        self.assertEqual(card["contents"]["hero"]["url"],
+                         "https://example.com/images/40_decline_dumbbell_press.jpg")
+        self.assertIn("45", card["altText"])
+
     def test_format_answer_includes_sources_and_respects_utf16_limit(self) -> None:
         answer = format_answer({
             "answer": "เริ่มจากปรับเบาะ",
@@ -67,14 +163,98 @@ class LineWebhookTests(unittest.TestCase):
 
         bot = LineBot(SECRET, "test-access-token", service_factory=FakeService,
                       reply_sender=lambda *_args: replies.append(_args))
-        event = {"reply_token": "r1", "question": "วิธีเล่น Bike", "replay_key": "e1"}
+        event = {"reply_token": "r1", "question": "คำถามทดสอบ", "replay_key": "e1"}
         try:
             self.assertTrue(bot.enqueue([event]))
             self.assertTrue(bot.enqueue([event]))
         finally:
             bot.close()
         self.assertEqual(len(replies), 1)
-        self.assertIn("วิธีเล่น Bike", replies[0][2])
+        self.assertIn("คำถามทดสอบ", replies[0][2][0]["text"])
+
+    def test_chest_button_generates_from_one_chunk_and_attaches_image(self) -> None:
+        replies = []
+        bot = LineBot(SECRET, "test-access-token", service_factory=lambda: None,
+                      reply_sender=lambda *_args: replies.append(_args))
+        try:
+            with patch("scripts.line_webhook.generate_answer") as generate, \
+                 patch("scripts.line_webhook.public_base_url", return_value="https://example.com"):
+                generate.return_value = {"answer": "ดันแขนขึ้นและหายใจออก"}
+                self.assertTrue(bot.enqueue([{
+                    "reply_token": "r1", "action": "chest:upper", "replay_key": "p1"
+                }]))
+                bot.close()
+        finally:
+            # shutdown is idempotent and also handles assertion failures above.
+            bot.close()
+        self.assertEqual(len(replies), 1)
+        self.assertEqual(len(replies[0][2]), 2)
+        self.assertIn("หน้า 20", replies[0][2][0]["text"])
+        self.assertIn("15_incline_press.jpg", replies[0][2][1]["contents"]["hero"]["url"])
+        prompt = generate.call_args.args[0][1]["content"]
+        self.assertIn("Incline Press", prompt)
+        self.assertNotIn("Decline Dumbbell", prompt)
+
+    def test_all_chest_is_one_swipeable_carousel(self) -> None:
+        bot = LineBot(SECRET, "test-access-token", service_factory=lambda: None)
+        try:
+            with patch("scripts.line_webhook.public_base_url", return_value="https://example.com"), \
+                 patch("scripts.line_webhook.generate_answer", return_value={"answer": "เลือกท่า"}):
+                messages = bot._all_chest_messages()
+        finally:
+            bot.close()
+        self.assertEqual(len(messages), 2)
+        carousel = messages[1]
+        self.assertEqual(carousel["type"], "flex")
+        self.assertEqual(carousel["contents"]["type"], "carousel")
+        bubbles = carousel["contents"]["contents"]
+        self.assertEqual(len(bubbles), 7)
+        self.assertEqual(
+            [bubble["footer"]["contents"][0]["action"]["data"] for bubble in bubbles],
+            [f"exercise:{item.exercise_id}" for item in bot.catalog.group("chest")],
+        )
+        self.assertEqual(len(carousel["quickReply"]["items"]), 6)
+
+    def test_leg_group_has_llm_overview_and_seven_photo_cards(self) -> None:
+        bot = LineBot(SECRET, "test-access-token", service_factory=lambda: None)
+        try:
+            with patch("scripts.line_webhook.public_base_url", return_value="https://example.com"), \
+                 patch("scripts.line_webhook.generate_answer", return_value={"answer": "คู่มือมีหลายท่า"}) as generate:
+                messages = bot._messages_for_event({"question": "อยากเล่นขา"})
+        finally:
+            bot.close()
+        self.assertIn("คู่มือมีหลายท่า", messages[0]["text"])
+        self.assertEqual(len(messages[1]["contents"]["contents"]), 7)
+        self.assertIn("Leg press", generate.call_args.args[0][1]["content"])
+
+    def test_named_exercise_bypasses_multi_source_rag(self) -> None:
+        class FakeService:
+            def answer(self, _query: str, **_kwargs: object) -> dict:
+                raise AssertionError("named exercise must not use broad RAG")
+        bot = LineBot(SECRET, "test-access-token", service_factory=FakeService)
+        try:
+            with patch("scripts.line_webhook.public_base_url", return_value="https://example.com"), \
+                 patch("scripts.line_webhook.generate_answer", return_value={"answer": "วิธีจากหน้า 13"}) as generate:
+                messages = bot._messages_for_event({"question": "วิธีเล่น Leg Extension"})
+        finally:
+            bot.close()
+        self.assertEqual(len(messages), 2)
+        self.assertIn("08_leg_extension.jpg", messages[1]["contents"]["hero"]["url"])
+        prompt = generate.call_args.args[0][1]["content"]
+        self.assertIn("Leg Extension", prompt)
+        self.assertNotIn("Hyper Extension", prompt)
+
+    def test_safety_query_does_not_open_named_exercise_card(self) -> None:
+        class FakeService:
+            def answer(self, _query: str, **_kwargs: object) -> dict:
+                return {"answer": "ควรตรวจสอบอาการก่อน", "sources": []}
+        bot = LineBot(SECRET, "test-access-token", service_factory=FakeService)
+        try:
+            messages = bot._messages_for_event({"question": "ปวดเข่า เล่น Leg Extension ได้ไหม"})
+        finally:
+            bot.close()
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(messages[0]["type"], "text")
 
     def test_http_verify_empty_events_and_reject_bad_signature(self) -> None:
         class FakeBot:
@@ -108,6 +288,30 @@ class LineWebhookTests(unittest.TestCase):
             self.assertEqual(failure.exception.code, 401)
             failure.exception.close()
             self.assertEqual(bot.received, [[]])
+        finally:
+            server.shutdown()
+            server.server_close()
+            thread.join(timeout=3)
+
+    def test_http_serves_only_verified_manual_images(self) -> None:
+        class FakeBot:
+            catalog = ExerciseCatalog()
+
+        WebhookHandler.bot = FakeBot()  # type: ignore[assignment]
+        server = ThreadingHTTPServer(("127.0.0.1", 0), WebhookHandler)
+        thread = threading.Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        base = f"http://127.0.0.1:{server.server_port}"
+        try:
+            with urlopen(base + "/images/15_incline_press.jpg", timeout=3) as response:
+                self.assertEqual(response.headers.get_content_type(), "image/jpeg")
+                self.assertTrue(response.read(3).startswith(b"\xff\xd8"))
+            with urlopen(base + "/images/09_leg_curl.jpg", timeout=3) as response:
+                self.assertEqual(response.headers.get_content_type(), "image/jpeg")
+            with self.assertRaises(HTTPError) as failure:
+                urlopen(base + "/images/not_in_manual.jpg", timeout=3)
+            self.assertEqual(failure.exception.code, 404)
+            failure.exception.close()
         finally:
             server.shutdown()
             server.server_close()
