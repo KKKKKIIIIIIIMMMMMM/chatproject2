@@ -67,8 +67,15 @@ def main() -> None:
 
     with st.sidebar:
         st.header("ตั้งค่าการถาม")
-        provider_label = st.selectbox("โมเดลตอบ", ["Local: Qwen2.5 3B", "API: OpenRouter"])
+        provider_label = st.selectbox(
+            "โมเดลตอบ",
+            ["Local: Qwen2.5 3B", "Local: Qwen3.5 9B (Q4_K_M)", "API: OpenRouter"],
+        )
         provider = "local" if provider_label.startswith("Local") else "openrouter"
+        local_model = {
+            "Local: Qwen2.5 3B": "qwen2.5:3b",
+            "Local: Qwen3.5 9B (Q4_K_M)": "qwen3.5:9b-q4_K_M",
+        }.get(provider_label)
         mode = st.selectbox("วิธีค้น", ["auto", "dense", "graph", "hybrid"], index=0)
         top_k = st.slider("จำนวนแหล่งข้อมูล", min_value=1, max_value=8, value=4)
         if provider == "openrouter" and not os.getenv("OPENROUTER_API_KEY", "").strip():
@@ -109,7 +116,7 @@ def main() -> None:
                 if "rag_chat_service" not in st.session_state:
                     st.session_state["rag_chat_service"] = RAGChatService()
                 result = st.session_state["rag_chat_service"].answer(
-                    query, provider=provider, mode=mode, top_k=top_k
+                    query, provider=provider, mode=mode, top_k=top_k, local_model=local_model
                 )
             except LLMServiceError as exc:
                 st.error(str(exc))

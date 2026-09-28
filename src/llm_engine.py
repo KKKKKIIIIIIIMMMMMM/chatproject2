@@ -29,10 +29,11 @@ class LLMServiceError(RuntimeError):
     """A safe, user-facing model or configuration error."""
 
 
-def load_project_env() -> None:
+def load_project_env(override_keys: set[str] | None = None) -> None:
     """Read simple KEY=VALUE entries from .env without adding a dependency.
 
-    Existing process environment values take precedence. Secrets are never logged.
+    Existing process environment values take precedence by default. A caller can
+    explicitly prefer non-empty .env values for selected keys. Secrets are never logged.
     """
     env_path = PROJECT_ROOT / ".env"
     if not env_path.is_file():
@@ -48,7 +49,10 @@ def load_project_env() -> None:
         value = value.strip()
         if len(value) >= 2 and value[0] == value[-1] and value[0] in ("'", '"'):
             value = value[1:-1]
-        os.environ.setdefault(key, value)
+        if override_keys and key in override_keys and value:
+            os.environ[key] = value
+        else:
+            os.environ.setdefault(key, value)
 
 
 def _post_json(url: str, payload: dict[str, Any], headers: dict[str, str] | None = None) -> dict[str, Any]:
@@ -77,20 +81,25 @@ def _post_json(url: str, payload: dict[str, Any], headers: dict[str, str] | None
     return data
 
 
-def generate_answer(messages: list[dict[str, str]], provider: str) -> dict[str, Any]:
+def generate_answer(
+    messages: list[dict[str, str]], provider: str, *, local_model: str | None = None
+) -> dict[str, Any]:
     """Call Ollama or OpenRouter and return text, model and token usage."""
     load_project_env()
     if provider == "local":
-        model = os.getenv("OLLAMA_MODEL", "qwen2.5:3b")
+        model = local_model or os.getenv("OLLAMA_MODEL", "qwen2.5:3b")
         base_url = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434").rstrip("/")
+        payload = {
+            "model": model,
+            "messages": messages,
+            "stream": False,
+            "options": {"temperature": 0.1, "num_ctx": 4096, "num_predict": 512},
+        }
+        if model.startswith("qwen3.5:"):
+            payload["think"] = False
         data = _post_json(
             f"{base_url}/api/chat",
-            {
-                "model": model,
-                "messages": messages,
-                "stream": False,
-                "options": {"temperature": 0.1, "num_ctx": 4096, "num_predict": 512},
-            },
+            payload,
         )
         answer = data.get("message", {}).get("content", "")
         usage = {
@@ -130,7 +139,10 @@ class RAGChatService:
             retriever = HybridRAG()
         self.retriever = retriever
 
-    def answer(self, query: str, provider: str = "local", mode: str = "auto", top_k: int = 4) -> dict[str, Any]:
+    def answer(
+        self, query: str, provider: str = "local", mode: str = "auto",
+        top_k: int = 4, local_model: str | None = None,
+    ) -> dict[str, Any]:
         if not query.strip():
             raise ValueError("กรุณาใส่คำถาม")
         if provider not in ("local", "openrouter"):
@@ -178,7 +190,7 @@ class RAGChatService:
             {"role": "user", "content": f"คำถาม: {query}\n\nCONTEXT จากคู่มือ:\n{context}"},
         ]
         llm_started = time.perf_counter()
-        generated = generate_answer(messages, provider)
+        generated = generate_answer(messages, provider, local_model=local_model)
         llm_latency_ms = round((time.perf_counter() - llm_started) * 1000, 2)
         answer_text = generated["answer"]
         if avoid and "ปรึกษา" not in answer_text:

@@ -15,10 +15,14 @@ from src.llm_engine import LLMServiceError, RAGChatService
 def main() -> int:
     parser = argparse.ArgumentParser(description="Fitness RAG chat via Ollama or OpenRouter")
     parser.add_argument("--provider", choices=["local", "openrouter"], default="local")
+    parser.add_argument("--local-model", choices=["qwen2.5:3b", "qwen3.5:9b-q4_K_M"],
+                        help="Optional Ollama model; only used with --provider local")
     parser.add_argument("--mode", choices=["auto", "dense", "graph", "hybrid"], default="auto")
     parser.add_argument("--top-k", type=int, default=4)
     parser.add_argument("--query", help="One question; omit to enter interactive mode")
     args = parser.parse_args()
+    if args.local_model and args.provider != "local":
+        parser.error("--local-model can only be used with --provider local")
     if args.top_k < 1:
         parser.error("--top-k must be at least 1")
 
@@ -29,7 +33,8 @@ def main() -> int:
         return 1
 
     def ask(query: str) -> None:
-        result = chat.answer(query, provider=args.provider, mode=args.mode, top_k=args.top_k)
+        result = chat.answer(query, provider=args.provider, mode=args.mode,
+                             top_k=args.top_k, local_model=args.local_model)
         print("\nคำตอบ:\n" + result["answer"])
         print("\nข้อมูลการทำงาน:")
         print(json.dumps({key: result[key] for key in (

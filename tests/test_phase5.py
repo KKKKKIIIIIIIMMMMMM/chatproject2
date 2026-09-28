@@ -2,10 +2,12 @@
 
 import json
 import os
+import tempfile
 import unittest
+from pathlib import Path
 from unittest.mock import patch
 
-from src.llm_engine import LLMServiceError, RAGChatService, generate_answer
+from src.llm_engine import LLMServiceError, RAGChatService, generate_answer, load_project_env
 
 
 class FakeResponse:
@@ -36,6 +38,23 @@ class FakeRetriever:
 
 
 class Phase5Tests(unittest.TestCase):
+    def test_explicit_env_override_uses_private_line_credentials(self):
+        with tempfile.TemporaryDirectory() as folder:
+            Path(folder, ".env").write_text(
+                "LINE_CHANNEL_SECRET=new-secret\nLINE_CHANNEL_ACCESS_TOKEN=\nOLLAMA_MODEL=file-model\n",
+                encoding="utf-8",
+            )
+            with patch("src.llm_engine.PROJECT_ROOT", Path(folder)):
+                with patch.dict(os.environ, {
+                    "LINE_CHANNEL_SECRET": "stale-secret",
+                    "LINE_CHANNEL_ACCESS_TOKEN": "stale-token",
+                    "OLLAMA_MODEL": "process-model",
+                }):
+                    load_project_env(override_keys={"LINE_CHANNEL_SECRET", "LINE_CHANNEL_ACCESS_TOKEN"})
+                    self.assertEqual(os.environ["LINE_CHANNEL_SECRET"], "new-secret")
+                    self.assertEqual(os.environ["LINE_CHANNEL_ACCESS_TOKEN"], "stale-token")
+                    self.assertEqual(os.environ["OLLAMA_MODEL"], "process-model")
+
     def test_local_ollama_payload_and_usage(self):
         response = FakeResponse({
             "message": {"content": "คำตอบจากคู่มือ"},
@@ -52,6 +71,33 @@ class Phase5Tests(unittest.TestCase):
         self.assertFalse(body["stream"])
         self.assertEqual(result["answer"], "คำตอบจากคู่มือ")
         self.assertEqual(result["usage"]["prompt_tokens"], 42)
+
+    def test_qwen35_override_disables_thinking(self):
+        response = FakeResponse({"message": {"content": "คำตอบจาก Qwen3.5"}})
+        with patch("src.llm_engine.urlopen", return_value=response) as send:
+            result = generate_answer(
+                [{"role": "user", "content": "ทดสอบ"}], "local",
+                local_model="qwen3.5:9b-q4_K_M",
+            )
+        body = json.loads(send.call_args.args[0].data)
+        self.assertEqual(body["model"], "qwen3.5:9b-q4_K_M")
+        self.assertIs(body["think"], False)
+        self.assertEqual(result["model"], "qwen3.5:9b-q4_K_M")
+
+    def test_answer_passes_selected_local_model_to_llm(self):
+        retriever = FakeRetriever({
+            "selected_mode": "dense", "total_latency_ms": 2,
+            "graph_summary": "", "avoid_exercises": [],
+            "ranked_items": [{"title": "Leg press", "page_number": 12}],
+        })
+        with patch("src.llm_engine.generate_answer", return_value={
+            "answer": "วิธีเล่นจากคู่มือ", "model": "qwen3.5:9b-q4_K_M", "usage": {},
+        }) as generate:
+            result = RAGChatService(retriever).answer(
+                "วิธีเล่น Leg press", local_model="qwen3.5:9b-q4_K_M"
+            )
+        self.assertEqual(generate.call_args.kwargs["local_model"], "qwen3.5:9b-q4_K_M")
+        self.assertEqual(result["model"], "qwen3.5:9b-q4_K_M")
 
     def test_openrouter_key_and_payload(self):
         response = FakeResponse({
