@@ -182,11 +182,14 @@ def ensure_ollama(base: dict[str, str], state: dict) -> None:
         launch("ollama", [ollama, "serve"], base, state)
         wait_until("Ollama", lambda: _json_available(url), 60, state=state, process_name="ollama")
         tags = http_json(url)
-    model = base.get("OLLAMA_MODEL", "qwen2.5:3b")
     installed = {item.get("name") for item in tags.get("models", [])}
-    if model not in installed:
-        raise RuntimeError(f"Ollama model {model} is not installed. Run: ollama pull {model}")
-    print(f"Ollama model: {model}")
+    models = {base.get("OLLAMA_MODEL", "qwen2.5:3b")}
+    if base.get("LINE_PROVIDER", "auto").lower() in {"auto", "local"}:
+        models.add(base.get("LINE_LOCAL_MODEL", "qwen3.5:9b-q4_K_M"))
+    for model in sorted(models):
+        if model not in installed:
+            raise RuntimeError(f"Ollama model {model} is not installed. Run: ollama pull {model}")
+        print(f"Ollama model: {model}")
 
 
 def _json_available(url: str) -> bool:

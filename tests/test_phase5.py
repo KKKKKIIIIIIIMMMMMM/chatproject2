@@ -8,6 +8,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 from src.llm_engine import LLMServiceError, RAGChatService, generate_answer, load_project_env
+from src.model_routing import choose_auto_provider, is_complex_query
 
 
 class FakeResponse:
@@ -152,6 +153,76 @@ class Phase5Tests(unittest.TestCase):
             result = RAGChatService(retriever).answer("คำถามที่ไม่มีข้อมูล")
         generate.assert_not_called()
         self.assertIn("ไม่พบข้อมูล", result["answer"])
+
+    def test_auto_router_requires_complexity_and_multiple_sources(self):
+        sources = [
+            {"title": "Leg Press", "page_number": 12},
+            {"title": "Leg Extension", "page_number": 13},
+        ]
+        self.assertTrue(is_complex_query("เปรียบเทียบ Leg Press กับ Leg Extension"))
+        self.assertEqual(choose_auto_provider("เปรียบเทียบ Leg Press กับ Leg Extension", sources,
+                                              api_available=True)[0], "openrouter")
+        self.assertEqual(choose_auto_provider("วิธีเล่น Leg Press", sources,
+                                              api_available=True)[0], "local")
+        self.assertEqual(choose_auto_provider("เปรียบเทียบ Leg Press กับ Leg Extension",
+                                              sources[:1], api_available=True)[0], "local")
+        self.assertEqual(choose_auto_provider("เปรียบเทียบ Leg Press กับ Leg Extension", sources,
+                                              api_available=False)[0], "local")
+        self.assertEqual(choose_auto_provider("ผมปวดเข่า เปรียบเทียบสองท่านี้", sources,
+                                              api_available=True)[0], "local")
+        long_simple = "วิธีเล่น Leg Press " + "กรุณาอธิบายขั้นตอน " * 20
+        long_multi = "วิธีเล่น Leg Press และ Leg Extension พร้อมอธิบายทั้งสองท่า " + "รายละเอียด " * 25
+        self.assertEqual(choose_auto_provider(long_simple, sources, api_available=True)[0], "local")
+        self.assertEqual(choose_auto_provider(long_multi, sources, api_available=True)[0], "openrouter")
+
+    def test_auto_service_retrieves_before_using_api_and_passes_same_context(self):
+        retriever = FakeRetriever({
+            "selected_mode": "hybrid", "total_latency_ms": 3,
+            "graph_summary": "", "avoid_exercises": [],
+            "ranked_items": [
+                {"title": "Leg Press", "page_number": 12},
+                {"title": "Leg Extension", "page_number": 13},
+            ],
+        })
+        with patch.dict(os.environ, {"OPENROUTER_API_KEY": "test-only-key"}):
+            with patch("src.llm_engine.generate_answer", return_value={
+                "answer": "คำตอบจากสองหน้า", "model": "test-api", "usage": {"total_tokens": 20},
+            }) as generate:
+                result = RAGChatService(retriever).answer(
+                    "เปรียบเทียบ Leg Press กับ Leg Extension", provider="auto",
+                    local_model="qwen3.5:9b-q4_K_M",
+                )
+        self.assertEqual(generate.call_args.args[1], "openrouter")
+        self.assertEqual(generate.call_args.kwargs["timeout"], 18)
+        self.assertIn("Leg Press, Leg Extension", generate.call_args.args[0][1]["content"])
+        self.assertEqual(result["provider"], "openrouter")
+        self.assertEqual(result["requested_provider"], "auto")
+        self.assertEqual(result["routing_reason"], "multi_source_synthesis")
+
+    def test_auto_api_failure_retries_same_evidence_locally(self):
+        retriever = FakeRetriever({
+            "selected_mode": "hybrid", "total_latency_ms": 3,
+            "graph_summary": "", "avoid_exercises": [],
+            "ranked_items": [
+                {"title": "Leg Press", "page_number": 12},
+                {"title": "Leg Extension", "page_number": 13},
+            ],
+        })
+        def generate(messages, provider, **_kwargs):
+            if provider == "openrouter":
+                raise LLMServiceError("temporary API failure")
+            return {"answer": "คำตอบ Local", "model": "qwen3.5:9b-q4_K_M", "usage": {}}
+
+        with patch.dict(os.environ, {"OPENROUTER_API_KEY": "test-only-key"}):
+            with patch("src.llm_engine.generate_answer", side_effect=generate) as call:
+                result = RAGChatService(retriever).answer(
+                    "เปรียบเทียบ Leg Press กับ Leg Extension", provider="auto",
+                    local_model="qwen3.5:9b-q4_K_M",
+                )
+        self.assertEqual([c.args[1] for c in call.call_args_list], ["openrouter", "local"])
+        self.assertEqual(call.call_args_list[0].args[0], call.call_args_list[1].args[0])
+        self.assertEqual(result["provider"], "local")
+        self.assertTrue(result["api_fallback"])
 
 
 if __name__ == "__main__":

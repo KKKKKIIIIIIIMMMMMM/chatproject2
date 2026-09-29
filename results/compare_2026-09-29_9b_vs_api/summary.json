@@ -1,0 +1,34 @@
+{
+  "dataset_questions": 20,
+  "expected_full_run": 120,
+  "recorded_runs": 40,
+  "configurations": {
+    "local+hybrid": {
+      "completed_questions": 20,
+      "failed_attempts": 0,
+      "mean_latency_ms": 10905.147,
+      "p95_latency_ms": 13672.13,
+      "mean_retrieval_coverage": 0.98,
+      "mean_avoid_recall": 1.0,
+      "cases_with_avoid_page_overlap": 0,
+      "cases_with_unsupported_page": 6,
+      "prompt_tokens": 36132,
+      "completion_tokens": 7177,
+      "reported_api_cost_usd": null
+    },
+    "openrouter+hybrid": {
+      "completed_questions": 20,
+      "failed_attempts": 0,
+      "mean_latency_ms": 8940.0685,
+      "p95_latency_ms": 14597.19,
+      "mean_retrieval_coverage": 0.98,
+      "mean_avoid_recall": 1.0,
+      "cases_with_avoid_page_overlap": 0,
+      "cases_with_unsupported_page": 2,
+      "prompt_tokens": 188333,
+      "completion_tokens": 19465,
+      "reported_api_cost_usd": 0.024954
+    }
+  },
+  "note": "Automated retrieval metrics do not measure factual answer accuracy; fill human_review.csv."
+}

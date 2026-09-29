@@ -15,6 +15,8 @@ from typing import Any
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
+from src.model_routing import choose_auto_provider
+
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 SYSTEM_PROMPT = """คุณเป็นผู้ช่วยอธิบายการใช้เครื่องออกกำลังกายจากคู่มือสถานกีฬาและสุขภาพ
@@ -55,7 +57,10 @@ def load_project_env(override_keys: set[str] | None = None) -> None:
             os.environ.setdefault(key, value)
 
 
-def _post_json(url: str, payload: dict[str, Any], headers: dict[str, str] | None = None) -> dict[str, Any]:
+def _post_json(
+    url: str, payload: dict[str, Any], headers: dict[str, str] | None = None,
+    timeout: float = 120,
+) -> dict[str, Any]:
     request = Request(
         url,
         data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
@@ -63,13 +68,13 @@ def _post_json(url: str, payload: dict[str, Any], headers: dict[str, str] | None
         method="POST",
     )
     try:
-        with urlopen(request, timeout=120) as response:
+        with urlopen(request, timeout=timeout) as response:
             raw = response.read()
     except HTTPError as exc:
         # Do not include the response body: it could contain submitted prompt data.
         raise LLMServiceError(f"บริการ LLM ส่ง HTTP {exc.code} กลับมา") from exc
     except (TimeoutError, socket.timeout) as exc:
-        raise LLMServiceError("LLM ตอบช้าเกิน 120 วินาที") from exc
+        raise LLMServiceError("LLM ตอบช้าเกินเวลาที่กำหนด") from exc
     except URLError as exc:
         raise LLMServiceError("เชื่อมต่อบริการ LLM ไม่ได้ ตรวจสอบว่าเซิร์ฟเวอร์ทำงานอยู่และเข้าถึงเครือข่ายได้") from exc
     try:
@@ -82,7 +87,8 @@ def _post_json(url: str, payload: dict[str, Any], headers: dict[str, str] | None
 
 
 def generate_answer(
-    messages: list[dict[str, str]], provider: str, *, local_model: str | None = None
+    messages: list[dict[str, str]], provider: str, *, local_model: str | None = None,
+    timeout: float = 120,
 ) -> dict[str, Any]:
     """Call Ollama or OpenRouter and return text, model and token usage."""
     load_project_env()
@@ -115,6 +121,7 @@ def generate_answer(
             "https://openrouter.ai/api/v1/chat/completions",
             {"model": model, "messages": messages, "temperature": 0.1, "max_tokens": 512},
             headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
+            timeout=timeout,
         )
         choices = data.get("choices") or []
         answer = choices[0].get("message", {}).get("content", "") if choices else ""
@@ -145,8 +152,8 @@ class RAGChatService:
     ) -> dict[str, Any]:
         if not query.strip():
             raise ValueError("กรุณาใส่คำถาม")
-        if provider not in ("local", "openrouter"):
-            raise ValueError("provider ต้องเป็น 'local' หรือ 'openrouter'")
+        if provider not in ("local", "openrouter", "auto"):
+            raise ValueError("provider ต้องเป็น 'local', 'openrouter' หรือ 'auto'")
         if mode not in ("auto", "dense", "graph", "hybrid"):
             raise ValueError("mode ต้องเป็น auto, dense, graph หรือ hybrid")
         if top_k < 1 or top_k > 20:
@@ -185,12 +192,30 @@ class RAGChatService:
             query, safe_items, graph_context, retrieval.get("selected_mode", mode)
         )
         context = context[:12000]
+        selected_provider = provider
+        routing_reason = "manual_provider"
+        if provider == "auto":
+            load_project_env()
+            selected_provider, routing_reason = choose_auto_provider(
+                query, safe_items, api_available=bool(os.getenv("OPENROUTER_API_KEY", "").strip()),
+            )
         messages = [
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": f"คำถาม: {query}\n\nCONTEXT จากคู่มือ:\n{context}"},
         ]
         llm_started = time.perf_counter()
-        generated = generate_answer(messages, provider, local_model=local_model)
+        api_fallback = False
+        if provider == "auto" and selected_provider == "openrouter":
+            try:
+                # Bound the API attempt so a local fallback can still use LINE's reply token.
+                generated = generate_answer(messages, "openrouter", timeout=18)
+            except LLMServiceError:
+                selected_provider = "local"
+                routing_reason = "api_failure_fallback"
+                api_fallback = True
+                generated = generate_answer(messages, "local", local_model=local_model)
+        else:
+            generated = generate_answer(messages, selected_provider, local_model=local_model)
         llm_latency_ms = round((time.perf_counter() - llm_started) * 1000, 2)
         answer_text = generated["answer"]
         if avoid and "ปรึกษา" not in answer_text:
@@ -201,7 +226,10 @@ class RAGChatService:
         ]
         return {
             "answer": answer_text,
-            "provider": provider,
+            "provider": selected_provider,
+            "requested_provider": provider,
+            "routing_reason": routing_reason,
+            "api_fallback": api_fallback,
             "model": generated["model"],
             "retrieval_mode": retrieval.get("selected_mode", mode),
             "graph_backend": retrieval.get("graph_backend"),

@@ -13,10 +13,13 @@ from unittest.mock import patch
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
+from PIL import Image
+
 from scripts.line_webhook import (
     LineBot,
     WebhookHandler,
     chat_events,
+    contextual_followup,
     exercise_card,
     format_answer,
     limit_line_text,
@@ -68,6 +71,72 @@ class LineWebhookTests(unittest.TestCase):
             {"reply_token": "r3", "action": "group:legs", "replay_key": "p2"},
             {"reply_token": "r4", "action": "exercise:08_leg_extension", "replay_key": "p3"},
         ])
+
+    def test_conversation_keys_are_private_and_scoped(self) -> None:
+        payload = {"events": [
+            {"type": "message", "replyToken": "r1", "source": {"type": "user", "userId": "Ualice"},
+             "message": {"type": "text", "text": "ท่านี้หายใจยังไง"}},
+            {"type": "message", "replyToken": "r2", "source": {"type": "user", "userId": "Ubob"},
+             "message": {"type": "text", "text": "ท่านี้หายใจยังไง"}},
+            {"type": "message", "replyToken": "r3", "source": {"type": "group", "groupId": "G1", "userId": "Ualice"},
+             "message": {"type": "text", "text": "ท่านี้หายใจยังไง"}},
+            {"type": "message", "replyToken": "r4", "source": {"type": "group", "groupId": "G1"},
+             "message": {"type": "text", "text": "ท่านี้หายใจยังไง"}},
+        ]}
+        events = chat_events(payload, SECRET)
+        keys = [event.get("conversation_key") for event in events]
+        self.assertEqual(len(set(keys[:3])), 3)
+        self.assertTrue(all("Ualice" not in key for key in keys[:3]))
+        self.assertNotIn("conversation_key", events[3])
+
+    def test_short_context_resolves_last_exercise_without_chat_history(self) -> None:
+        bot = LineBot(SECRET, "test-access-token", service_factory=lambda: None)
+        try:
+            with patch("scripts.line_webhook.generate_answer", return_value={"answer": "ตามคู่มือ"}) as generate, \
+                 patch("scripts.line_webhook.public_base_url", return_value=None):
+                bot._messages_for_event({"question": "วิธีเล่น Leg Extension", "conversation_key": "user-a"})
+                self.assertEqual(len(bot._last_exercise), 1)
+                self.assertIsInstance(bot._last_exercise["user-a"][0], str)
+                followup = bot._messages_for_event({"question": "แล้วท่านี้หายใจอย่างไร", "conversation_key": "user-a"})
+                self.assertIn("หน้า 13", followup[0]["text"])
+                self.assertIn("แล้วท่านี้หายใจอย่างไร", generate.call_args.args[0][1]["content"])
+                self.assertIn("CONTEXT จากคู่มือหน้า 13", generate.call_args.args[0][1]["content"])
+                self.assertNotIn("CONTEXT จากคู่มือหน้า 14", generate.call_args.args[0][1]["content"])
+                self.assertIsNone(bot._recall_exercise("user-b"))
+                bot._messages_for_event({"action": "menu:groups", "conversation_key": "user-a"})
+                self.assertIsNone(bot._recall_exercise("user-a"))
+        finally:
+            bot.close()
+
+    def test_short_context_expires_and_does_not_guess_medical_safety(self) -> None:
+        self.assertTrue(contextual_followup("แล้วท่านี้หายใจอย่างไร"))
+        self.assertFalse(contextual_followup("ขอข้อมูลเครื่องเดินวงรี"))
+        bot = LineBot(SECRET, "test-access-token", service_factory=lambda: None)
+        try:
+            exercise = bot.catalog.by_page[13]
+            bot._remember_exercise("user-a", exercise)
+            with patch("scripts.line_webhook.generate_answer") as generate:
+                response = bot._messages_for_event({
+                    "question": "ท่านี้ปวดเข่าฝึกต่อได้ไหม", "conversation_key": "user-a",
+                })
+                generate.assert_not_called()
+            self.assertIn("ปรึกษา", response[0]["text"])
+            bot._last_exercise["user-a"] = (exercise.exercise_id, 0)
+            self.assertIsNone(bot._recall_exercise("user-a"))
+        finally:
+            bot.close()
+
+    def test_line_accepts_moderately_long_questions_but_caps_excessive_input(self) -> None:
+        class FakeService:
+            def answer(self, _query: str, **_kwargs: object) -> dict:
+                return {"answer": "จากคู่มือ", "sources": []}
+
+        bot = LineBot(SECRET, "test-access-token", service_factory=FakeService)
+        try:
+            self.assertIn("จากคู่มือ", bot._messages_for_event({"question": "ทดสอบ" * 250})[0]["text"])
+            self.assertIn("1500", bot._messages_for_event({"question": "ก" * 1501})[0]["text"])
+        finally:
+            bot.close()
 
     def test_chest_intent_avoids_symptom_messages(self) -> None:
         self.assertEqual(chest_intent("อยากเล่นอก"), "menu")
@@ -132,6 +201,14 @@ class LineWebhookTests(unittest.TestCase):
         self.assertIsNotNone(safe_image_path("15_incline_press.jpg", exercises))
         self.assertIsNone(safe_image_path("../.env", exercises))
         self.assertIsNone(safe_image_path("39_pullovers.jpg", exercises))
+        catalog = ExerciseCatalog()
+        self.assertIsNotNone(catalog.preview_path("15_incline_press.jpg"))
+        self.assertIsNone(catalog.preview_path("../.env"))
+        for item in catalog.by_id.values():
+            preview = catalog.preview_path(item.image_name)
+            self.assertIsNotNone(preview)
+            with Image.open(preview) as picture:
+                self.assertEqual(picture.size, (960, 720))
 
     def test_menu_and_card_have_structured_actions(self) -> None:
         menu = menu_message()
@@ -140,7 +217,11 @@ class LineWebhookTests(unittest.TestCase):
         exercise = load_chest_exercises()["lower"]
         card = exercise_card(exercise, "https://example.com")
         self.assertEqual(card["contents"]["hero"]["url"],
-                         "https://example.com/images/40_decline_dumbbell_press.jpg")
+                         "https://example.com/previews/40_decline_dumbbell_press.jpg")
+        self.assertEqual(card["contents"]["body"]["contents"][1]["text"],
+                         "Decline Dumbbell Press")
+        self.assertEqual(card["contents"]["hero"]["aspectRatio"], "4:3")
+        self.assertEqual(card["contents"]["footer"]["contents"][0]["height"], "sm")
         self.assertIn("45", card["altText"])
 
     def test_format_answer_includes_sources_and_respects_utf16_limit(self) -> None:
@@ -172,6 +253,42 @@ class LineWebhookTests(unittest.TestCase):
         self.assertEqual(len(replies), 1)
         self.assertIn("คำถามทดสอบ", replies[0][2][0]["text"])
 
+    def test_line_uses_9b_for_rag_and_exercise_answers(self) -> None:
+        calls: list[dict] = []
+
+        class FakeService:
+            def answer(self, _query: str, **kwargs: object) -> dict:
+                calls.append(kwargs)
+                return {"answer": "คำตอบจากคู่มือ", "sources": []}
+
+        bot = LineBot(SECRET, "test-access-token", service_factory=FakeService)
+        try:
+            bot._rag_messages("มีวิธีฝึกอย่างไร")
+            with patch("scripts.line_webhook.generate_answer",
+                       return_value={"answer": "คำตอบจากคู่มือ"}) as generate:
+                bot._selection_messages("ขา", bot.catalog.group("legs"), "legs")
+                generate.assert_not_called()
+                bot._exercise_messages(bot.catalog.group("legs")[0])
+                self.assertEqual(generate.call_args.kwargs["local_model"],
+                                 "qwen3.5:9b-q4_K_M")
+        finally:
+            bot.close()
+        self.assertEqual(calls[0]["local_model"], "qwen3.5:9b-q4_K_M")
+
+    def test_line_local_model_can_be_overridden(self) -> None:
+        class FakeService:
+            def answer(self, _query: str, **kwargs: object) -> dict:
+                self.kwargs = kwargs
+                return {"answer": "คำตอบ", "sources": []}
+
+        bot = LineBot(SECRET, "test-access-token", local_model="qwen2.5:3b",
+                      service_factory=FakeService)
+        try:
+            bot._rag_messages("คำถาม")
+            self.assertEqual(bot._service.kwargs["local_model"], "qwen2.5:3b")
+        finally:
+            bot.close()
+
     def test_chest_button_generates_from_one_chunk_and_attaches_image(self) -> None:
         replies = []
         bot = LineBot(SECRET, "test-access-token", service_factory=lambda: None,
@@ -190,7 +307,8 @@ class LineWebhookTests(unittest.TestCase):
         self.assertEqual(len(replies), 1)
         self.assertEqual(len(replies[0][2]), 2)
         self.assertIn("หน้า 20", replies[0][2][0]["text"])
-        self.assertIn("15_incline_press.jpg", replies[0][2][1]["contents"]["hero"]["url"])
+        self.assertIn("/previews/15_incline_press.jpg",
+                      replies[0][2][1]["contents"]["hero"]["url"])
         prompt = generate.call_args.args[0][1]["content"]
         self.assertIn("Incline Press", prompt)
         self.assertNotIn("Decline Dumbbell", prompt)
@@ -215,17 +333,20 @@ class LineWebhookTests(unittest.TestCase):
         )
         self.assertEqual(len(carousel["quickReply"]["items"]), 6)
 
-    def test_leg_group_has_llm_overview_and_seven_photo_cards(self) -> None:
+    def test_leg_group_has_short_intro_and_seven_photo_cards(self) -> None:
         bot = LineBot(SECRET, "test-access-token", service_factory=lambda: None)
         try:
             with patch("scripts.line_webhook.public_base_url", return_value="https://example.com"), \
-                 patch("scripts.line_webhook.generate_answer", return_value={"answer": "คู่มือมีหลายท่า"}) as generate:
+                 patch("scripts.line_webhook.generate_answer") as generate:
                 messages = bot._messages_for_event({"question": "อยากเล่นขา"})
+                generate.assert_not_called()
         finally:
             bot.close()
-        self.assertIn("คู่มือมีหลายท่า", messages[0]["text"])
+        self.assertIn("7 ท่าจากคู่มือ", messages[0]["text"])
+        self.assertNotIn("Leg press", messages[0]["text"])
         self.assertEqual(len(messages[1]["contents"]["contents"]), 7)
-        self.assertIn("Leg press", generate.call_args.args[0][1]["content"])
+        self.assertIn("/previews/07_leg_press.jpg",
+                      messages[1]["contents"]["contents"][0]["hero"]["url"])
 
     def test_named_exercise_bypasses_multi_source_rag(self) -> None:
         class FakeService:
@@ -239,10 +360,34 @@ class LineWebhookTests(unittest.TestCase):
         finally:
             bot.close()
         self.assertEqual(len(messages), 2)
-        self.assertIn("08_leg_extension.jpg", messages[1]["contents"]["hero"]["url"])
+        self.assertIn("/previews/08_leg_extension.jpg", messages[1]["contents"]["hero"]["url"])
         prompt = generate.call_args.args[0][1]["content"]
         self.assertIn("Leg Extension", prompt)
         self.assertNotIn("Hyper Extension", prompt)
+
+    def test_auto_line_keeps_selected_exercise_local_and_compares_through_rag(self) -> None:
+        calls = []
+
+        class FakeService:
+            def answer(self, query: str, **kwargs: object) -> dict:
+                calls.append((query, kwargs))
+                return {"answer": "เปรียบเทียบจากคู่มือ", "provider": "openrouter", "sources": []}
+
+        bot = LineBot(SECRET, "test-access-token", provider="auto", service_factory=FakeService)
+        try:
+            with patch("scripts.line_webhook.generate_answer", return_value={"answer": "วิธีเล่น"}) as generate, \
+                 patch("scripts.line_webhook.public_base_url", return_value=None):
+                bot._messages_for_event({"question": "วิธีเล่น Leg Extension"})
+                self.assertEqual(generate.call_args.args[1], "local")
+                comparison = bot._messages_for_event({
+                    "question": "เปรียบเทียบ Leg Press กับ Leg Extension",
+                })
+        finally:
+            bot.close()
+        self.assertEqual(len(calls), 1)
+        self.assertEqual(calls[0][1]["provider"], "auto")
+        self.assertEqual(calls[0][1]["local_model"], "qwen3.5:9b-q4_K_M")
+        self.assertIn("API", comparison[0]["text"])
 
     def test_safety_query_does_not_open_named_exercise_card(self) -> None:
         class FakeService:
@@ -308,8 +453,15 @@ class LineWebhookTests(unittest.TestCase):
                 self.assertTrue(response.read(3).startswith(b"\xff\xd8"))
             with urlopen(base + "/images/09_leg_curl.jpg", timeout=3) as response:
                 self.assertEqual(response.headers.get_content_type(), "image/jpeg")
+            with urlopen(base + "/previews/15_incline_press.jpg", timeout=3) as response:
+                self.assertEqual(response.headers.get_content_type(), "image/jpeg")
+                self.assertTrue(response.read(3).startswith(b"\xff\xd8"))
             with self.assertRaises(HTTPError) as failure:
                 urlopen(base + "/images/not_in_manual.jpg", timeout=3)
+            self.assertEqual(failure.exception.code, 404)
+            failure.exception.close()
+            with self.assertRaises(HTTPError) as failure:
+                urlopen(base + "/previews/not_in_manual.jpg", timeout=3)
             self.assertEqual(failure.exception.code, 404)
             failure.exception.close()
         finally:

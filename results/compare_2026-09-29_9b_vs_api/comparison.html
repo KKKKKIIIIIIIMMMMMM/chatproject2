@@ -1,0 +1,843 @@
+<!doctype html><html lang="th"><head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"><title>Local 9B vs API — 20 คำถาม</title>
+    <style>
+    :root{font-family:Arial,'Noto Sans Thai',sans-serif;color:#17212b;background:#f2f5f8}
+    body{margin:0 auto;max-width:1450px;padding:30px 24px 80px}
+    h1{font-size:2rem;margin:0 0 8px}h2{font-size:1.13rem;margin:0}h3{margin:0;font-size:1.12rem}
+    small{font-size:.78rem;font-weight:400;color:#536475;display:block;margin-top:5px}
+    .subtitle,.note,.expected,.metrics{color:#526476}.note{background:#fff1d4;padding:14px 18px;border-radius:10px}
+    .stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:22px 0}
+    .stat,.question{background:white;border:1px solid #dce4ed;border-radius:14px;padding:20px}
+    .stat strong{font-size:1.3rem;display:block;margin:8px 0}.stat span{color:#536475}
+    table{border-collapse:collapse;width:100%;background:white;font-size:.9rem}
+    th,td{padding:9px 11px;text-align:left;border-bottom:1px solid #e3e8ee}th{background:#dfe8f2;position:sticky;top:0}
+    a{color:#1258a4}.question{margin-top:24px;scroll-margin-top:20px;break-inside:avoid}
+    .question-head{display:flex;gap:10px;align-items:flex-start}.qid{background:#173b63;color:white;border-radius:6px;padding:4px 8px;font-weight:bold}
+    .columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+    .answer{border:1px solid #dce4ed;border-radius:10px;padding:16px;min-width:0}
+    .answer:nth-child(1){border-top:5px solid #229d77}.answer:nth-child(2){border-top:5px solid #4774ca}
+    .metrics{font-size:.86rem}.flag{color:#8c351e;background:#fff0e8;border-radius:6px;padding:8px 10px;font-size:.85rem}
+    .response{overflow-wrap:anywhere;line-height:1.58}.response p{margin:0 0 .75em}.response ul,.response ol{padding-left:1.5em}
+    @media(max-width:800px){.columns,.stats{grid-template-columns:1fr}body{padding:18px 12px}table{font-size:.76rem}}
+    @media print{body{background:white;max-width:none;padding:0}.question{box-shadow:none}.note{background:#fff5dc}th{position:static}}
+    </style></head><body><h1>เปรียบเทียบ Local 9B กับ API: 20 คำถาม</h1>
+    <p class="subtitle">คำถามชุดเดียวกัน · Hybrid Retrieval · top-k 4 · Local: qwen3.5:9b-q4_K_M
+    · API: openai/gpt-6-luna-pro · Backend: json_fallback</p>
+    <div class="stats"><div class="stat"><span>Local</span><strong>10.91 วินาทีเฉลี่ย</strong>
+    พบหน้าที่คาดหวังเฉลี่ย 98.0% · สำเร็จ 20/20
+    · ควรตรวจเลขหน้าที่อ้าง 6 กรณี</div>
+    <div class="stat"><span>API</span><strong>8.94 วินาทีเฉลี่ย</strong>
+    พบหน้าที่คาดหวังเฉลี่ย 98.0% · สำเร็จ 20/20
+    · ควรตรวจเลขหน้าที่อ้าง 2 กรณี · ค่าใช้จ่ายที่ API รายงาน $0.0250</div></div>
+    <p class="note">ตัวเลข “พบหน้าที่คาดหวัง” เป็นผลการค้นเอกสาร ไม่ใช่คะแนนความถูกต้องของคำตอบหรือการตัดสินว่าโมเดลใดดีกว่า
+    ตัวตรวจเลขหน้าเป็นกฎอัตโนมัติ อาจมีทั้งผลบวกลวงและข้อผิดพลาดที่ตรวจไม่พบ
+    ควรอ่านคำตอบคู่กันและให้คนตรวจความถูกต้อง การอ้างหลักฐาน และความปลอดภัยก่อนสรุปคุณภาพ</p>
+    <h2>ภาพรวม 20 คำถาม</h2><table><thead><tr><th>ID</th><th>ประเภท</th><th>Local</th><th>API</th>
+    <th>พบหน้า Local</th><th>พบหน้า API</th></tr></thead><tbody><tr><td><a href="#P01">P01</a></td><td>procedural</td><td>14.18 วินาที</td><td>10.56 วินาที</td><td>100%</td><td>100%</td></tr><tr><td><a href="#P02">P02</a></td><td>procedural</td><td>6.38 วินาที</td><td>6.26 วินาที</td><td>100%</td><td>100%</td></tr><tr><td><a href="#P03">P03</a></td><td>procedural</td><td>7.10 วินาที</td><td>5.81 วินาที</td><td>100%</td><td>100%</td></tr><tr><td><a href="#P04">P04</a></td><td>procedural</td><td>7.39 วินาที</td><td>7.12 วินาที</td><td>100%</td><td>100%</td></tr><tr><td><a href="#P05">P05</a></td><td>procedural</td><td>12.90 วินาที</td><td>5.86 วินาที</td><td>100%</td><td>100%</td></tr><tr><td><a href="#R01">R01</a></td><td>relational</td><td>9.60 วินาที</td><td>6.49 วินาที</td><td>100%</td><td>100%</td></tr><tr><td><a href="#R02">R02</a></td><td>relational</td><td>10.01 วินาที</td><td>7.63 วินาที</td><td>100%</td><td>100%</td></tr><tr><td><a href="#R03">R03</a></td><td>relational</td><td>6.01 วินาที</td><td>6.19 วินาที</td><td>100%</td><td>100%</td></tr><tr><td><a href="#R04">R04</a></td><td>relational</td><td>13.58 วินาที</td><td>6.17 วินาที</td><td>100%</td><td>100%</td></tr><tr><td><a href="#R05">R05</a></td><td>relational</td><td>13.38 วินาที</td><td>9.68 วินาที</td><td>60%</td><td>60%</td></tr><tr><td><a href="#C01">C01</a></td><td>complex</td><td>13.59 วินาที</td><td>10.24 วินาที</td><td>100%</td><td>100%</td></tr><tr><td><a href="#C02">C02</a></td><td>complex</td><td>13.67 วินาที</td><td>8.70 วินาที</td><td>100%</td><td>100%</td></tr><tr><td><a href="#C03">C03</a></td><td>complex</td><td>7.93 วินาที</td><td>7.41 วินาที</td><td>100%</td><td>100%</td></tr><tr><td><a href="#C04">C04</a></td><td>complex</td><td>10.61 วินาที</td><td>9.19 วินาที</td><td>100%</td><td>100%</td></tr><tr><td><a href="#C05">C05</a></td><td>complex</td><td>12.80 วินาที</td><td>14.60 วินาที</td><td>100%</td><td>100%</td></tr><tr><td><a href="#C06">C06</a></td><td>complex</td><td>13.54 วินาที</td><td>9.27 วินาที</td><td>100%</td><td>100%</td></tr><tr><td><a href="#C07">C07</a></td><td>complex</td><td>13.07 วินาที</td><td>13.41 วินาที</td><td>100%</td><td>100%</td></tr><tr><td><a href="#C08">C08</a></td><td>complex</td><td>11.11 วินาที</td><td>7.78 วินาที</td><td>100%</td><td>100%</td></tr><tr><td><a href="#C09">C09</a></td><td>complex</td><td>13.14 วินาที</td><td>10.69 วินาที</td><td>100%</td><td>100%</td></tr><tr><td><a href="#C10">C10</a></td><td>complex</td><td>8.11 วินาที</td><td>15.75 วินาที</td><td>100%</td><td>100%</td></tr></tbody></table>
+    <section class="question" id="P01"><div class="question-head"><span class="qid">P01</span><h2>วิธีใช้จักรยานคอมพิวเตอร์ Bike แบบ Program Manual เป็นอย่างไร</h2></div><p class="expected">หน้าคู่มือที่คาดหวัง: 6 · Graph backend: json_fallback</p><div class="columns"><article class="answer"><h3>Local <small>qwen3.5:9b-q4_K_M</small></h3><p class="metrics">เวลา 14.18 วินาที · พบหน้าที่คาดหวัง 100% · หน้าที่ค้นได้ 6, 7, 8, 9</p><div class="response"><p><strong>วิธีใช้จักรยานคอมพิวเตอร์ (Bike) แบบ Program Manual</strong>
+<em>(อ้างอิงจากคู่มือ หน้า 6)</em></p>
+<p><strong>ขั้นตอนการใช้งาน:</strong></p>
+<ol>
+<li>ปรับระยะห่างให้เหมาะสมกับสรีระโดยไม่ให้เข่าตึงหรือหย่อนเกินไป (ดึงคานเหล็กบริเวณด้านหน้าเบาะนั่ง)</li>
+<li>กดปุ่ม Quick Start</li>
+<li>ตั้งอายุ (กดลูกศรลง) และตั้งเวลา (กดลูกศรลง)</li>
+<li>กดปุ่ม Start เพื่อเริ่มโปรแกรม</li>
+<li>ควบคุมความเร็วในการปั่นให้อยู่ในช่วง 50-60 รอบ/นาที</li>
+</ol>
+<p><strong>ข้อควรระวัง:</strong></p>
+<ul>
+<li><strong>ระวังอย่าให้เข่าตึงหรือหย่อนเกินไป</strong> ขณะปรับระยะห่างเบาะนั่งและขณะใช้งาน</li>
+</ul>
+</div></article><article class="answer"><h3>API <small>openai/gpt-6-luna-pro</small></h3><p class="metrics">เวลา 10.56 วินาที · พบหน้าที่คาดหวัง 100% · หน้าที่ค้นได้ 6, 7, 8, 9</p><div class="response"><p>วิธีใช้ <strong>จักรยานคอมพิวเตอร์ (Bike) – Program Manual</strong> (หน้า 6)</p>
+<ol>
+<li>ปรับระยะห่างของเบาะให้เหมาะกับสรีระ โดยดึงคานเหล็กบริเวณด้านหน้าเบาะ และปรับไม่ให้เข่าตึงหรือหย่อนเกินไป</li>
+<li>กด <strong>Quick Start</strong></li>
+<li>ตั้งอายุ แล้วกดลูกศรลง จากนั้นตั้งเวลา แล้วกดลูกศรลง</li>
+<li>กด <strong>Start</strong> เพื่อเริ่มโปรแกรม</li>
+<li>ควบคุมความเร็วในการปั่นให้อยู่ที่ <strong>50–60 รอบต่อนาที</strong></li>
+</ol>
+<p><strong>ข้อควรระวัง:</strong> คู่มือระบุให้ปรับเบาะเพื่อไม่ให้เข่าตึงหรือหย่อนเกินไป؛ ไม่พบข้อควรระวังอื่นสำหรับจักรยานรุ่นนี้ในข้อมูลคู่มือที่ให้มา.</p>
+</div></article></div></section><section class="question" id="P02"><div class="question-head"><span class="qid">P02</span><h2>วิธีเล่นเครื่องเดินวงรี Elliptical และจัดท่าทางอย่างไร</h2></div><p class="expected">หน้าคู่มือที่คาดหวัง: 8 · Graph backend: json_fallback</p><div class="columns"><article class="answer"><h3>Local <small>qwen3.5:9b-q4_K_M</small></h3><p class="metrics">เวลา 6.38 วินาที · พบหน้าที่คาดหวัง 100% · หน้าที่ค้นได้ 6, 7, 8, 16</p><div class="response"><h3>วิธีเล่นเครื่องเดินวงรี (Elliptical) และจัดท่าทาง</h3>
+<p><strong>ขั้นตอนการใช้งาน:</strong></p>
+<ol>
+<li>กดปุ่มเลือกโปรแกรม <strong>Manual</strong> แล้วกดปุ่ม <strong>OK</strong></li>
+<li>ตั้งเวลา, Enter ตั้งน้ำหนัก, Enter ตั้งอายุ, Enter</li>
+<li>เลือก Program <strong>Manual</strong></li>
+<li>กด <strong>Enter</strong> อีกครั้ง</li>
+<li>ขึ้นเหยียบบนที่วางเท้าแล้วก้าวเดินสลับขาซ้าย-ขวา (ระวังอย่าให้เข่าตึง)</li>
+<li>เพิ่มลดความหนัก-เบา โดยกดปุ่มบวก (+) หรือลบ (-) ตามต้องการ</li>
+</ol>
+<p><strong>ข้อควรระวัง:</strong></p>
+<ul>
+<li>เมื่อขึ้นเหยียบบนที่วางเท้าแล้วก้าวเดินสลับขา ให้ระวังอย่าให้เข่าตึง</li>
+</ul>
+</div></article><article class="answer"><h3>API <small>openai/gpt-6-luna-pro</small></h3><p class="metrics">เวลา 6.26 วินาที · พบหน้าที่คาดหวัง 100% · หน้าที่ค้นได้ 6, 7, 8, 16</p><div class="response"><h3>วิธีเล่นเครื่องเดินวงรี Elliptical</h3>
+<p>อ้างอิงท่า <strong>3. เครื่องเดินวงรี (Elliptical), หน้า 8</strong></p>
+<ol>
+<li>กดเลือกโปรแกรม <strong>Manual</strong> แล้วกด <strong>OK</strong></li>
+<li>ตั้งเวลา น้ำหนัก และอายุ โดยกด <strong>Enter</strong> หลังตั้งแต่ละรายการ</li>
+<li>เลือกโปรแกรม <strong>Manual</strong> แล้วกด <strong>Enter</strong> อีกครั้ง</li>
+<li>ขึ้นเหยียบบนที่วางเท้า แล้วก้าวเดินสลับขาซ้าย–ขวา</li>
+<li>ปรับความหนักเบาด้วยปุ่มบวก (+) หรือลบ (-) ตามต้องการ</li>
+</ol>
+<p><strong>ข้อควรระวัง:</strong> ระหว่างก้าวเดิน อย่าเหยียดเข่าจนตึง<br />
+<strong>การจัดท่าทาง:</strong> คู่มือไม่ได้ระบุรายละเอียดท่าทางเพิ่มเติมนอกเหนือจากการขึ้นเหยียบที่วางเท้าและก้าวสลับขา หากต้องการทราบเรื่องท่าทางเฉพาะ เช่น การวางมือหรือการเอนตัว โปรดระบุเพิ่มเติมค่ะ</p>
+</div></article></div></section><section class="question" id="P03"><div class="question-head"><span class="qid">P03</span><h2>วิธีเล่นเครื่อง Leg press ต้องวางเท้าและหายใจอย่างไร</h2></div><p class="expected">หน้าคู่มือที่คาดหวัง: 12 · Graph backend: json_fallback</p><div class="columns"><article class="answer"><h3>Local <small>qwen3.5:9b-q4_K_M</small></h3><p class="metrics">เวลา 7.10 วินาที · พบหน้าที่คาดหวัง 100% · หน้าที่ค้นได้ 12, 13, 14, 16</p><div class="response"><p><strong>วิธีเล่นเครื่อง Leg Press (เครื่องบริหารต้นขาด้านหน้าและสะโพก)</strong>
+<em>อ้างอิงจากคู่มือ หน้า 12</em></p>
+<p><strong>1. การวางเท้าและท่าทาง</strong></p>
+<ul>
+<li><strong>ปรับเบาะ:</strong> ปรับให้เหมาะสมกับสรีระ</li>
+<li><strong>ตำแหน่งร่างกาย:</strong> เหยียบวางฝ่าเท้าทั้งสองข้างบนแผ่นยันสะโพก โดยให้หลังและศีรษะแนบชิดกับเบาะตลอดเวลาที่ฝึก</li>
+<li><strong>การจับ:</strong> มือทั้งสองข้างจับแกนมือจับด้านข้างสะโพกเพื่อช่วยในการทรงตัว</li>
+</ul>
+<p><strong>2. การหายใจ</strong></p>
+<ul>
+<li><strong>จังหวะเหยียดขาไปข้างหน้า:</strong> หายใจออก</li>
+<li><strong>จังหวะผ่อนแรงกลับด้านหลัง:</strong> หายใจเข้า</li>
+</ul>
+<hr />
+<p><strong>ข้อควรระวังและคำแนะนำเพิ่มเติม</strong></p>
+<ul>
+<li>ห้ามให้แผ่นเหล็กกระทบกันเมื่อผ่อนแรงกลับมา</li>
+<li>ควรปฏิบัติซ้ำๆ จนครบจำนวนที่กำหนด</li>
+</ul>
+</div></article><article class="answer"><h3>API <small>openai/gpt-6-luna-pro</small></h3><p class="metrics">เวลา 5.81 วินาที · พบหน้าที่คาดหวัง 100% · หน้าที่ค้นได้ 12, 13, 14, 16</p><div class="response"><p><strong>เครื่อง Leg press — คู่มือหน้า 12</strong></p>
+<ol>
+<li>ปรับเบาะให้เหมาะกับสรีระ วางฝ่าเท้าทั้งสองบนแผ่นยัน และให้สะโพก หลัง และศีรษะแนบกับเบาะตลอดการฝึก</li>
+<li>เหยียดขาไปข้างหน้า แล้วผ่อนกลับสู่ท่าเริ่มต้น โดยไม่ให้แผ่นเหล็กกระทบกัน ทำซ้ำตามจำนวนที่กำหนด</li>
+<li>หายใจออกขณะเหยียดขาไปข้างหน้า และหายใจเข้าขณะผ่อนแรงกลับ</li>
+</ol>
+<p><strong>ข้อควรระวัง:</strong> รักษาสะโพก หลัง และศีรษะให้แนบเบาะตลอดเวลา และอย่าให้แผ่นเหล็กกระทบกัน】【。</p>
+</div></article></div></section><section class="question" id="P04"><div class="question-head"><span class="qid">P04</span><h2>วิธีเล่น Chest Press และการปรับเบาะทำอย่างไร</h2></div><p class="expected">หน้าคู่มือที่คาดหวัง: 21 · Graph backend: json_fallback</p><div class="columns"><article class="answer"><h3>Local <small>qwen3.5:9b-q4_K_M</small></h3><p class="metrics">เวลา 7.39 วินาที · พบหน้าที่คาดหวัง 100% · หน้าที่ค้นได้ 19, 20, 21, 42</p><div class="response"><p><strong>วิธีเล่น Chest Press (เครื่องบริหารอกกลาง)</strong>
+อ้างอิงจากคู่มือหน้า <strong>21</strong>:</p>
+<ol>
+<li>นั่งหลังตรง ชิดกับเบาะ หน้าตรง</li>
+<li>มือจับทั้งสองข้าง ออกแรงผลัก ขณะออกแรง ให้หายใจออก ดึงกลับให้หายใจเข้า<ul>
+<li>ขณะที่ดันแขนไปด้านหน้าให้หายใจออก</li>
+<li>ขณะที่ผ่อนแรงกลับให้หายใจเข้า</li>
+</ul>
+</li>
+</ol>
+<p><strong>การปรับเบาะและข้อควรระวัง</strong></p>
+<ul>
+<li><strong>ข้อมูลในคู่มือ:</strong> คู่มือระบุเฉพาะขั้นตอนการนั่ง (ชิดกับเบาะ) และวิธีการจับแฮนด์สำหรับเครื่อง Chest Press หน้า 21 เท่านั้น <strong>ไม่พบข้อมูล</strong> เกี่ยวกับการปรับระดับความสูงของเบาะหรือตำแหน่งมือสำหรับเครื่องนี้โดยเฉพาะในบริบทนี้ (ต่างจาก Incline Press ที่ระบุวิธีปรับเป็น 45 องศา หรือ Pec Dek ที่ระบุการปรับความสูงให้ข้อศอกตั้งฉาก)</li>
+<li><strong>คำเตือน:</strong> หากมีอาการบาดเจ็บระหว่างใช้งาน ให้หยุดทันทีและปรึกษาผู้เชี่ยวชาญ</li>
+</ul>
+</div></article><article class="answer"><h3>API <small>openai/gpt-6-luna-pro</small></h3><p class="metrics">เวลา 7.12 วินาที · พบหน้าที่คาดหวัง 100% · หน้าที่ค้นได้ 19, 20, 21, 42</p><div class="response"><h3>Chest Press (หน้า 21)</h3>
+<ol>
+<li>นั่งหลังตรง ชิดกับเบาะ และมองตรง</li>
+<li>จับมือจับทั้งสองข้าง แล้วผลักแขนไปด้านหน้า</li>
+<li>ขณะผลักให้หายใจออก และขณะผ่อนแรงกลับให้หายใจเข้า</li>
+</ol>
+<p><strong>การปรับเบาะ:</strong> ไม่พบวิธีหรือระดับการปรับเบาะของ Chest Press ในคู่มือที่ให้มา หากต้องการให้ช่วยระบุการปรับ กรุณาส่งภาพเครื่องหรือข้อมูลรุ่นเพิ่มเติมมาให้ครับ</p>
+</div></article></div></section><section class="question" id="P05"><div class="question-head"><span class="qid">P05</span><h2>วิธีเล่น Dumbbell Curl สำหรับต้นแขนด้านหน้าเป็นอย่างไร</h2></div><p class="expected">หน้าคู่มือที่คาดหวัง: 32 · Graph backend: json_fallback</p><div class="columns"><article class="answer"><h3>Local <small>qwen3.5:9b-q4_K_M</small></h3><p class="metrics">เวลา 12.90 วินาที · พบหน้าที่คาดหวัง 100% · หน้าที่ค้นได้ 26, 31, 32, 33</p><div class="response"><p>ตามข้อมูลในคู่มือ <strong>ไม่พบขั้นตอนการเล่นเฉพาะสำหรับท่า &quot;Dumbbell Curl&quot;</strong> ที่ระบุชื่อตรงตัวเพียงอย่างเดียว แต่มีรายละเอียดของท่าที่ใกล้เคียงและใช้ดัมเบลล์ดังนี้:</p>
+<h3>1. ท่า Alternative Dumbbell Curl (หน้า 31)</h3>
+<ul>
+<li><strong>กล้ามเนื้อเป้าหมาย:</strong> Biceps Brachialis, Brachioradialis</li>
+<li><strong>วิธีการเล่น:</strong><ol>
+<li>ยืนตรง เข่างอเล็กน้อย ถือดัมเบลล์ไว้ในมือข้างลำตัวห้อยลงสุดแขน โดยให้ฝ่ามือหันไปข้างหน้า</li>
+<li>งอแขนข้างหนึ่งยกดัมเบลล์ขึ้นมาหาหัวไหล่ แล้วจึงลดกลับไปที่เดิม ทำสลับกันข้างละเที่ยว จนครบเซท</li>
+</ol>
+</li>
+<li><strong>หมายเหตุ:</strong> สามารถเปลี่ยนจากท่ายืนเป็นท่านั่งได้ (ALT. DB.CURL (sit)) โดยวิธีปฏิบัติต่อไปเหมือนท่ายืน</li>
+</ul>
+<h3>2. ท่า Dumbbell Curl (หน้า 32)</h3>
+<ul>
+<li><strong>กล้ามเนื้อเป้าหมาย:</strong> Biceps Brachialis, Brachioradialis</li>
+<li><strong>วิธีการเล่น:</strong><ol>
+<li>ยืนตรง เข่างอเล็กน้อย หงายฝ่ามือ ถือดัมเบลล์ห้อยลงสุดแขนบริเวณด้านหน้าต้นขา โดยให้มือทั้งสองห่างกันประมาณช่วงไหล่</li>
+<li>พับแขนยกดัมเบลล์ขึ้นมาหาหัวไหล่ โดยให้ข้อศอกแนบลำตัวตลอดเวลา (หายใจออก)</li>
+<li>ลดดัมเบลล์กลับไปที่เดิม (หายใจเข้า) ทำซ้ำจนครบจำนวนครั้งและเซทที่ต้องการ</li>
+</ol>
+</li>
+<li><strong>หมายเหตุ:</strong> สามารถเปลี่ยนจากท่ายืนเป็นท่านั่งเก้าอี้แทนได้ หรือทำท่า INCLINE DUMBELL CURL โดยนอนบนม้าเอียงแล้วถือดัมเบลล์ไว้ในมือข้างลำตัวห้อยลงสุดแขนโดยให้ฝ่ามือหันไปข้างหน้า จากนั้นงอแขนข้างหนึ่งยกดัมเบลล์ขึ้นมาหาหัวไหล่ แล้วจึงลดกลับไปที่เดิม ทำสลับข้างละเที่ยวจนครบเซท</li>
+</ul>
+<h3>ข้อควรระวังและความปลอดภัย</h3>
+<ul>
+<li>คู่มือระบุเพียงว่ามีการสาธิตท่าเริ่มต้นและท่าออกแรงพร้อมใช้งานในรูปภาพประกอบ</li>
+<li>หากมีอาการบาดเจ็บหรือข้อสงสัยเกี่ยวกับท่าทาง ควรปรึกษาผู้เชี่ยวชาญก่อนเริ่มฝึก</li>
+</ul>
+</div></article><article class="answer"><h3>API <small>openai/gpt-6-luna-pro</small></h3><p class="metrics">เวลา 5.86 วินาที · พบหน้าที่คาดหวัง 100% · หน้าที่ค้นได้ 26, 31, 32, 33</p><div class="response"><p><strong>Dumbbell Curl</strong> (Free Weight Zone, หน้า 32) บริหารกล้ามเนื้อ Biceps Brachialis และ Brachioradialis</p>
+<ol>
+<li>ยืนตรง งอเข่าเล็กน้อย หงายฝ่ามือ ถือดัมเบลล์ห้อยลงด้านหน้าต้นขา โดยมือห่างกันประมาณช่วงไหล่</li>
+<li>พับแขนยกดัมเบลล์ขึ้นมาหาหัวไหล่ โดยให้ข้อศอกแนบลำตัวตลอดเวลา <strong>หายใจออก</strong></li>
+<li>ลดดัมเบลล์กลับไปที่เดิม <strong>หายใจเข้า</strong> ทำซ้ำจนครบจำนวนครั้งและเซตที่ต้องการ</li>
+</ol>
+<p><strong>ข้อควรทราบ:</strong> คู่มือระบุว่าทำแบบนั่งเก้าอี้ได้ โดยเปลี่ยนจากท่ายืนเป็นท่านั่งและปฏิบัติต่อเหมือนท่ายืน</p>
+</div></article></div></section><section class="question" id="R01"><div class="question-head"><span class="qid">R01</span><h2>ถ้าปวดข้อเข่า กราฟระบุให้หลีกเลี่ยงเครื่องไหน และแนะนำท่าใด</h2></div><p class="expected">หน้าคู่มือที่คาดหวัง: 6, 8 · Graph backend: json_fallback</p><div class="columns"><article class="answer"><h3>Local <small>qwen3.5:9b-q4_K_M</small></h3><p class="metrics">เวลา 9.60 วินาที · พบหน้าที่คาดหวัง 100% · หน้าที่ค้นได้ 6, 8, 15, 16</p><div class="response"><p><strong>เครื่องที่ควรหลีกเลี่ยง (เมื่อมีอาการปวดข้อเข่า):</strong>
+ตามคู่มือระบุให้ <strong>ห้าม/หลีกเลี่ยง</strong> เครื่องออกกำลังกายต่อไปนี้เนื่องจากเสี่ยงต่อการบาดเจ็บเมื่อมีอาการปวดข้อเข่า:</p>
+<ul>
+<li><ol start="3">
+<li>เครื่องบริหารต้นขาด้านหน้าและสะโพก (Leg press) <em>(พบในคำเตือนความปลอดภัย และ Knowledge Graph)</em></li>
+</ol>
+</li>
+<li><ol start="4">
+<li>เครื่องบริหารต้นขาด้านหน้า (Leg Extension) <em>(พบในคำเตือนความปลอดภัย และ Knowledge Graph)</em></li>
+</ol>
+</li>
+<li><ol start="2">
+<li>เครื่องเดิน - วิ่งคอมพิวเตอร์ (Treadmill) การใช้ Program Manual <em>(พบในคำเตือนความปลอดภัย และ Knowledge Graph)</em></li>
+</ol>
+</li>
+</ul>
+<p><strong>ท่าที่แนะนำให้ฝึกทดแทน:</strong>
+คู่มือแนะนำท่าออกกำลังกายทางเลือกดังนี้:</p>
+<ol>
+<li><strong>1. จักรยานคอมพิวเตอร์ (Bike)</strong> โดยใช้ Program Manual <em>(ระบุรายละเอียดวิธีเล่นและข้อควรระวังในหน้า 6)</em></li>
+<li><strong>3. เครื่องเดินวงรี (Elliptical)</strong> <em>(ระบุรายละเอียดวิธีเล่นและข้อควรระวังในหน้า 8)</em></li>
+<li><strong>6. เครื่องบริหารน่อง (Calf Raise)</strong> <em>(ระบุรายละเอียดวิธีเล่นในหน้า 15)</em></li>
+</ol>
+<p><strong>คำแนะนำเพิ่มเติม:</strong></p>
+<ul>
+<li><strong>ข้อควรระวัง:</strong> เมื่อใช้เครื่องเดินวงรี ให้ระวังอย่าให้เข่าตึงขณะก้าวเดินสลับขาซ้าย-ขวา</li>
+<li><strong>คำเตือนสำคัญ:</strong> คู่มือระบุว่ากราฟต้นแบบระบุเป็นทางเลือก โปรดตรวจสอบความเหมาะสมกับผู้เชี่ยวชาญก่อนเริ่มฝึก โดยเฉพาะเมื่อมีอาการบาดเจ็บ</li>
+</ul>
+<p>หากมีอาการปวดหรือบาดเจ็บ ควรปรึกษาแพทย์หรือนักกายภาพก่อนฝึก</p>
+</div></article><article class="answer"><h3>API <small>openai/gpt-6-luna-pro</small></h3><p class="metrics">เวลา 6.49 วินาที · พบหน้าที่คาดหวัง 100% · หน้าที่ค้นได้ 6, 8, 15, 16</p><div class="response"><p>กราฟระบุให้หลีกเลี่ยง:</p>
+<ul>
+<li>เครื่องบริหารต้นขาด้านหน้าและสะโพก (Leg press)</li>
+<li>เครื่องบริหารต้นขาด้านหน้า (Leg Extension)</li>
+<li>เครื่องเดิน–วิ่งคอมพิวเตอร์ (Treadmill) ในโหมด Program Manual</li>
+</ul>
+<p>ท่าที่กราฟแนะนำเป็นทางเลือก:</p>
+<ul>
+<li>จักรยานคอมพิวเตอร์ (Bike) ใช้ Program Manual — หน้า 6</li>
+<li>เครื่องเดินวงรี (Elliptical) — หน้า 8</li>
+<li>เครื่องบริหารน่อง (Calf Raise) — หน้า 15</li>
+</ul>
+<p>กราฟระบุว่าควรตรวจสอบความเหมาะสมกับผู้เชี่ยวชาญก่อนเลือกฝึก และควรปรึกษาผู้เชี่ยวชาญเกี่ยวกับอาการปวดเข่าด้วยครับ</p>
+</div></article></div></section><section class="question" id="R02"><div class="question-head"><span class="qid">R02</span><h2>ถ้าปวดหลังล่าง กราฟระบุให้เลี่ยงท่าไหนและมีท่าใดเป็นทางเลือก</h2></div><p class="expected">หน้าคู่มือที่คาดหวัง: 8, 23, 24 · Graph backend: json_fallback</p><div class="columns"><article class="answer"><h3>Local <small>qwen3.5:9b-q4_K_M</small></h3><p class="metrics">เวลา 10.01 วินาที · พบหน้าที่คาดหวัง 100% · หน้าที่ค้นได้ 8, 23, 24, 44</p><div class="response"><p><strong>ข้อควรระวัง (สำหรับผู้ที่ปวดหลังล่าง)</strong></p>
+<ul>
+<li><strong>ห้าม/หลีกเลี่ยง:</strong><ul>
+<li><ol start="16">
+<li>เครื่องบริหารกล้ามเนื้อหลังส่วนล่าง (Hyper Extension) (หน้าคู่มือระบุสาเหตุว่าเสี่ยงบาดเจ็บเมื่อมีอาการปวดหลังล่าง)</li>
+</ol>
+</li>
+<li><ol>
+<li>ท่าบริหารกล้ามเนื้อปีกและหลัง Dumbbell Row (หน้าคู่มือระบุสาเหตุว่าเสี่ยงบาดเจ็บเมื่อมีอาการปวดหลังล่าง)</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>ทางเลือกที่แนะนำ</strong></p>
+<ul>
+<li><strong>14. เครื่องมือบริการกล้ามเนื้อปีกและสะบักหลัง (Lat Pulldown)</strong> (หน้า 23)<ul>
+<li><em>วิธีเล่น:</em> ปรับที่นั่งให้เหมาะสม วางเท้าที่พื้น ก้มศีรษะเล็กน้อย จับ Hand grips ให้เสมอกัน นั่งตัวตรง ดึงคานลงมาบริเวณท้ายทอยแล้วหายใจออก เหยียดแขนขึ้นผ่อนแรงและหายใจเข้า</li>
+</ul>
+</li>
+<li><strong>15. เครื่องบริหารกล้ามเนื้อหลังส่วนบน Seated Row</strong> (หน้า 24)<ul>
+<li><em>วิธีเล่น:</em> จับที่จับของอุปกรณ์ หลังตั้งฉาก ออกแรงดึงโดยให้ศอกทั้งสองด้านเลยแผ่นหลัง ขณะออกแรงดึงให้หายใจออก และขณะผ่อนแรงให้หายใจเข้า</li>
+</ul>
+</li>
+<li><strong>3. เครื่องเดินวงรี (Elliptical)</strong> (หน้า 8)<ul>
+<li><em>วิธีเล่น:</em> กดปุ่มเลือกโปรแกรม Manual ตั้งเวลาและน้ำหนัก เลือก Program Manual ขึ้นเหยียบบนที่วางเท้าแล้วก้าวเดินสลับขาซ้าย-ขวา (ระวังอย่าให้เข่าตึง) เพิ่มลดความหนัก-เบา ตามต้องการ</li>
+</ul>
+</li>
+</ul>
+<p><strong>คำเตือน:</strong> หากมีอาการบาดเจ็บหรือปวดหลังล่าง ควรปรึกษาผู้เชี่ยวชาญก่อนเริ่มฝึกเพื่อตรวจสอบความเหมาะสมของท่าทาง</p>
+</div></article><article class="answer"><h3>API <small>openai/gpt-6-luna-pro</small></h3><p class="metrics">เวลา 7.63 วินาที · พบหน้าที่คาดหวัง 100% · หน้าที่ค้นได้ 8, 23, 24, 44</p><div class="response"><p>เมื่อมีอาการปวดหลังล่าง กราฟระบุให้ <strong>หลีกเลี่ยง</strong>:</p>
+<ul>
+<li>เครื่องบริหารกล้ามเนื้อหลังส่วนล่าง <strong>Hyper Extension</strong> (เลขหน้าไม่ระบุในข้อมูล)</li>
+<li>ท่าบริหารกล้ามเนื้อปีกและหลัง <strong>Dumbbell Row</strong> (เลขหน้าไม่ระบุในข้อมูล)</li>
+</ul>
+<p>กราฟระบุเป็น <strong>ทางเลือกที่ควรตรวจสอบความเหมาะสมกับผู้เชี่ยวชาญ</strong>:</p>
+<ul>
+<li><strong>Lat Pulldown (Front / Back)</strong> — หน้า 23</li>
+<li><strong>Seated Row</strong> — หน้า 24</li>
+<li><strong>เครื่องเดินวงรี (Elliptical)</strong> — หน้า 8</li>
+</ul>
+<p>ข้อควรระวัง: ท่าเหล่านี้เป็นเพียงทางเลือกตามกราฟ ไม่ได้ยืนยันว่าปลอดภัยสำหรับอาการของคุณ ควรปรึกษาผู้เชี่ยวชาญก่อนฝึกเมื่อมีอาการปวดหลังล่างครับ/ค่ะ</p>
+</div></article></div></section><section class="question" id="R03"><div class="question-head"><span class="qid">R03</span><h2>ถ้าปวดหัวไหล่ กราฟระบุให้หลีกเลี่ยงท่าใด</h2></div><p class="expected">หน้าคู่มือที่คาดหวัง: 21, 26 · Graph backend: json_fallback</p><div class="columns"><article class="answer"><h3>Local <small>qwen3.5:9b-q4_K_M</small></h3><p class="metrics">เวลา 6.01 วินาที · พบหน้าที่คาดหวัง 100% · หน้าที่ค้นได้ 21, 26, 38, 39</p><p class="flag">ควรตรวจเลขหน้าที่โมเดลอ้าง: 1, 13</p><div class="response"><p>หากมีอาการปวดหัวไหล่ ตามข้อมูลในคู่มือ <strong>ห้ามหรือหลีกเลี่ยง</strong> ท่าออกกำลังกายต่อไปนี้:</p>
+<ul>
+<li><strong>13. เครื่องมือบริการกล้ามเนื้อหัวไหล่ (Shoulder Press)</strong> (หน้า 13)<ul>
+<li><em>สาเหตุ:</em> ตรวจพบอาการปวดหัวไหล่ / ข้อต่อไหล่ติด เสี่ยงต่อการบาดเจ็บ</li>
+</ul>
+</li>
+<li><strong>1. ท่าบริหารหัวไหล่ Dumbbell Press</strong> (หน้า 1)<ul>
+<li><em>สาเหตุ:</em> ตรวจพบอาการปวดหัวไหล่ / ข้อต่อไหล่ติด เสี่ยงต่อการบาดเจ็บ</li>
+</ul>
+</li>
+</ul>
+<p><strong>ข้อควรระวัง:</strong>
+กรุณาปรึกษาผู้เชี่ยวชาญก่อนเริ่มฝึกซ้อม หากท่านมีอาการบาดเจ็บหรือความกังวลเกี่ยวกับความปลอดภัยของท่าออกกำลังกายดังกล่าว</p>
+</div></article><article class="answer"><h3>API <small>openai/gpt-6-luna-pro</small></h3><p class="metrics">เวลา 6.19 วินาที · พบหน้าที่คาดหวัง 100% · หน้าที่ค้นได้ 21, 26, 38, 39</p><div class="response"><p>กราฟระบุให้หลีกเลี่ยง:</p>
+<ul>
+<li><strong>เครื่องมือบริการกล้ามเนื้อหัวไหล่ (Shoulder Press)</strong> — ไม่พบเลขหน้าในข้อมูลที่ให้มา</li>
+<li><strong>ท่าบริหารหัวไหล่ Dumbbell Press</strong> — ไม่พบเลขหน้าในข้อมูลที่ให้มา</li>
+</ul>
+<p>หากมีอาการปวดหัวไหล่ ควรปรึกษาผู้เชี่ยวชาญก่อนเลือกท่าออกกำลังกายทดแทน.</p>
+</div></article></div></section><section class="question" id="R04"><div class="question-head"><span class="qid">R04</span><h2>ผู้เริ่มต้นฝึกออกกำลังกาย กราฟแนะนำและห้ามเล่นท่าใด</h2></div><p class="expected">หน้าคู่มือที่คาดหวัง: 6, 12, 21 · Graph backend: json_fallback</p><div class="columns"><article class="answer"><h3>Local <small>qwen3.5:9b-q4_K_M</small></h3><p class="metrics">เวลา 13.58 วินาที · พบหน้าที่คาดหวัง 100% · หน้าที่ค้นได้ 6, 12, 21, 23</p><p class="flag">ควรตรวจเลขหน้าที่โมเดลอ้าง: 3, 4</p><div class="response"><p>สำหรับ <strong>ผู้เริ่มต้นฝึกออกกำลังกาย</strong> ตามข้อมูลในคู่มือ มีคำแนะนำและข้อห้ามดังนี้ครับ:</p>
+<h3>🚫 ท่าที่ห้ามเล่น (ควรหลีกเลี่ยง)</h3>
+<p>เนื่องจากตรวจพบความเสี่ยงต่อการบาดเจ็บสำหรับผู้เริ่มต้น:</p>
+<ol>
+<li><strong>ท่าบริหารหัวไหล่ด้านข้าง (Dumbbell Side Rosie &amp; Lateral Raise)</strong> <em>(หน้า 3)</em></li>
+<li><strong>การบริหารกล้ามเนื้ออกล่าง (Decline Dumbbell Bent press)</strong> <em>(หน้า 4)</em></li>
+</ol>
+<h3>✅ ท่าที่แนะนำสำหรับฝึกทดแทน</h3>
+<p>กราฟต้นแบบระบุเป็นทางเลือกสำหรับผู้เริ่มต้น (โปรดตรวจสอบความเหมาะสมกับผู้เชี่ยวชาญ):</p>
+<ol>
+<li><strong>จักรยานคอมพิวเตอร์ (Bike) การใช้ Program Manual</strong> <em>(หน้า 6)</em></li>
+<li><strong>เครื่องบริหารต้นขาด้านหน้าและสะโพก (Leg press)</strong> <em>(หน้า 12)</em></li>
+<li><strong>เครื่องบริหารอกกลาง (Chest Press)</strong> <em>(หน้า 21)</em></li>
+<li><strong>เครื่องมือบริการกล้ามเนื้อปีกและสะบักหลัง (Lat Pulldown (Front / Back))</strong> <em>(หน้า 23)</em></li>
+</ol>
+<hr />
+<h3>📝 ขั้นตอนการฝึก (สำหรับท่าที่แนะนำ)</h3>
+<p><strong>1. จักรยานคอมพิวเตอร์ (Bike)</strong> <em>(หน้า 6)</em></p>
+<ul>
+<li>ปรับระยะห่างให้เหมาะสมกับสรีระโดยไม่ให้เข่าตึงหรือหย่อนเกินไป (ดึงคานเหล็กด้านหน้าเบาะนั่ง)</li>
+<li>กดปุ่ม Quick Start</li>
+<li>ตั้งเวลาและอายุ (ตามเมนูโปรแกรม)</li>
+<li>กด Start และควบคุมความเร็วปั่นอยู่ที่ 50-60 รอบ/นาที</li>
+</ul>
+<p><strong>2. เครื่องบริหารต้นขาด้านหน้าและสะโพก (Leg press)</strong> <em>(หน้า 12)</em></p>
+<ul>
+<li>ปรับเบาะให้เหมาะสม เหยียบวางฝ่าเท้าบนแผ่นยัน สะโพกและหลังแนบชิดเบาะตลอดเวลา</li>
+<li>จับแกนมือจับด้านข้างสะโพกเพื่อช่วยทรงตัว</li>
+<li>ออกแรงเหยียดขาไปข้างหน้า แล้วผ่อนกลับมายังจุดเริ่มต้น (ไม่ให้แผ่นเหล็กกระทบกัน)</li>
+<li><strong>การหายใจ:</strong> เหยียดขาให้หายใจออก / ผ่อนกลับให้หายใจเข้า</li>
+</ul>
+<p><strong>3. เครื่องบริหารอกกลาง (Chest Press)</strong> <em>(หน้า 21)</em></p>
+<ul>
+<li>นั่งหลังตรง ชิดเบาะ หน้าตรง</li>
+<li>มือทั้งสองข้างจับที่ตำแหน่งที่กำหนด ออกแรงผลักแขนไปด้านหน้า</li>
+<li><strong>การหายใจ:</strong> ดันแขนออกให้หายใจออก / ผ่อนกลับให้หายใจเข้า</li>
+</ul>
+<p>**4. เครื่องมือบริการกล้ามเนื้อ</p>
+<p>หากมีอาการปวดหรือบาดเจ็บ ควรปรึกษาแพทย์หรือนักกายภาพก่อนฝึก</p>
+</div></article><article class="answer"><h3>API <small>openai/gpt-6-luna-pro</small></h3><p class="metrics">เวลา 6.17 วินาที · พบหน้าที่คาดหวัง 100% · หน้าที่ค้นได้ 6, 12, 21, 23</p><div class="response"><p><strong>ท่าที่กราฟแนะนำเป็นทางเลือก</strong> <em>(โปรดตรวจสอบความเหมาะสมกับผู้เชี่ยวชาญ)</em></p>
+<ul>
+<li>จักรยานคอมพิวเตอร์ (Bike) โปรแกรม Manual — หน้า 6</li>
+<li>เครื่องบริหารต้นขาด้านหน้าและสะโพก (Leg press) — หน้า 12</li>
+<li>เครื่องบริหารอกกลาง (Chest Press) — หน้า 21</li>
+<li>เครื่องบริหารกล้ามเนื้อปีกและสะบักหลัง (Lat Pulldown) — หน้า 23</li>
+</ul>
+<p><strong>ท่าที่ผู้เริ่มต้นควรหลีกเลี่ยง</strong></p>
+<ul>
+<li>ท่าบริหารหัวไหล่ด้านข้าง (Dumbbell Side Rosie &amp; Lateral Raise)</li>
+<li>บริหารกล้ามเนื้ออกล่าง (Decline Dumbbell Bent press)</li>
+</ul>
+<p>คู่มือส่วนที่ให้มาไม่ได้ระบุเลขหน้าของสองท่าที่ควรหลีกเลี่ยงข้างต้น จึงไม่สามารถยืนยันเลขหน้าได้จากข้อมูลนี้ครับ</p>
+<p>หากมีอาการปวดหรือบาดเจ็บ ควรปรึกษาแพทย์หรือนักกายภาพก่อนฝึก</p>
+</div></article></div></section><section class="question" id="R05"><div class="question-head"><span class="qid">R05</span><h2>ท่าไหนบ้างที่บริหารกลุ่มกล้ามเนื้ออก</h2></div><p class="expected">หน้าคู่มือที่คาดหวัง: 19, 20, 21, 42, 43 · Graph backend: json_fallback</p><div class="columns"><article class="answer"><h3>Local <small>qwen3.5:9b-q4_K_M</small></h3><p class="metrics">เวลา 13.38 วินาที · พบหน้าที่คาดหวัง 60% · หน้าที่ค้นได้ 20, 42, 43, 44</p><p class="flag">ควรตรวจเลขหน้าที่โมเดลอ้าง: 19, 21, 45</p><div class="response"><p>ตามข้อมูลในคู่มือสถานกีฬาและสุขภาพ มทส. ท่าออกกำลังกายที่บริหารกลุ่มกล้ามเนื้ออก (Chest Group) มีดังนี้ครับ:</p>
+<h3>🏋️ รายการท่าออกกำลังกายสำหรับกลุ่มกล้ามเนื้ออก</h3>
+<ol>
+<li><strong>เครื่องบริหารกล้ามเนื้อหน้าอกใน (Pec Dek)</strong> (หน้า 19)</li>
+<li><strong>เครื่องบริหารอกบน (Incline Press)</strong> (หน้า 20)</li>
+<li><strong>เครื่องบริหารอกกลาง (Chest Press)</strong> (หน้า 21)</li>
+<li><strong>ท่าบริหารกล้ามเนื้ออก (Dumbbell Bench Press)</strong> (หน้า 42)</li>
+<li><strong>บริหารกล้ามเนื้ออกใน (Dumbbell Flies)</strong> (หน้า 43)</li>
+<li><strong>บริหารกล้ามเนื้ออกล่าง (Pullovers)</strong> (หน้า 44)</li>
+<li><strong>บริหารกล้ามเนื้ออกล่าง (Decline Dumbbell Bent press)</strong> (หน้า 45)</li>
+</ol>
+<hr />
+<h3>📝 วิธีปฏิบัติ (ขั้นตอนการฝึก)</h3>
+<p><strong>1. ท่าบริหารกล้ามเนื้ออก (Dumbbell Bench Press)</strong> <em>(ดูรายละเอียดเพิ่มเติม หน้า 42)</em></p>
+<ul>
+<li><strong>อุปกรณ์:</strong> Dumbbell &amp; Flat Bench</li>
+<li><strong>ขั้นตอน:</strong><ol>
+<li>นอนหงายบนเบาะแบนราบ ใช้มือทั้งสองจับดัมบ์เบลล์ หงายฝ่ามือขึ้นถือลูกดัมบ์เบลล์ อยู่ด้านข้างไหล่ทั้งสอง เปิดแขนออกด้านข้างให้กว้าง</li>
+<li>ยกดัมบ์เบลล์ขึ้นไปด้านบน ลักษณะแขนตึงดัมบ์เบลล์ชิดกันเหนือระดับอก</li>
+<li>ปล่อยแขนลงกลับท่าเริ่มต้น</li>
+</ol>
+</li>
+<li><strong>การหายใจ:</strong> ยกดัมบ์เบลขึ้นหายใจออก / ปล่อยแขนลงหายใจเข้า</li>
+</ul>
+<p><strong>2. เครื่องบริหารอกบน (Incline Press)</strong> <em>(ดูรายละเอียดเพิ่มเติม หน้า 20)</em></p>
+<ul>
+<li><strong>อุปกรณ์:</strong> Machine (Incline Chest Press)</li>
+<li><strong>ขั้นตอน:</strong><ol>
+<li>ปรับเก้าอี้เฉียง 45 องศา ปรับระดับของ Hand grips ให้อยู่ระดับหัวไหล่หรือแนวรักแร้</li>
+<li>จับแฮนด์ ล็อคข้อมือ ออกแรงเหยียดแขนขึ้น</li>
+</ol>
+</li>
+<li><strong>การหายใจ:</strong> ดันแขนขึ้นให้หายใจออก / ผ่อนแรงลดแขนลงให้หายใจเข้า</li>
+</ul>
+<p><strong>3. บริหารกล้ามเนื้ออกใน (Dumbbell Flies)</strong> <em>(ดูรายละเอียดเพิ่มเติม หน้า 43)</em></p>
+<hr />
+</div></article><article class="answer"><h3>API <small>openai/gpt-6-luna-pro</small></h3><p class="metrics">เวลา 9.68 วินาที · พบหน้าที่คาดหวัง 60% · หน้าที่ค้นได้ 20, 42, 43, 44</p><p class="flag">ควรตรวจเลขหน้าที่โมเดลอ้าง: 19, 21, 45</p><div class="response"><p>ท่าที่บริหารกลุ่มกล้ามเนื้ออกตามคู่มือ ได้แก่</p>
+<p><strong>เครื่องออกกำลังกาย</strong></p>
+<ul>
+<li>เครื่องบริหารกล้ามเนื้อหน้าอกใน (Pec Dek) — หน้า 19</li>
+<li>เครื่องบริหารอกบน (Incline Press) — หน้า 20</li>
+<li>เครื่องบริหารอกกลาง (Chest Press) — หน้า 21</li>
+</ul>
+<p><strong>ดัมบ์เบลล์และม้านั่ง</strong></p>
+<ul>
+<li>ท่าบริหารกล้ามเนื้ออก (Dumbbell Bench Press) — หน้า 42</li>
+<li>บริหารกล้ามเนื้ออกใน (Dumbbell Flies) — หน้า 43</li>
+<li>บริหารกล้ามเนื้ออกล่าง (Pullovers) — หน้า 44</li>
+<li>บริหารกล้ามเนื้ออกล่าง (Decline Dumbbell Bent press) — หน้า 45</li>
+</ul>
+</div></article></div></section><section class="question" id="C01"><div class="question-head"><span class="qid">C01</span><h2>ปวดเข่าแต่อยากทำคาร์ดิโอ ควรหลีกเลี่ยงเครื่องไหนและวิธีใช้เครื่องที่แนะนำเป็นอย่างไร</h2></div><p class="expected">หน้าคู่มือที่คาดหวัง: 6, 8 · Graph backend: json_fallback</p><div class="columns"><article class="answer"><h3>Local <small>qwen3.5:9b-q4_K_M</small></h3><p class="metrics">เวลา 13.59 วินาที · พบหน้าที่คาดหวัง 100% · หน้าที่ค้นได้ 6, 8, 9, 15</p><p class="flag">ควรตรวจเลขหน้าที่โมเดลอ้าง: 3</p><div class="response"><p><strong>ข้อควรระวังและเครื่องที่ควรหลีกเลี่ยง (เมื่อมีอาการปวดเข่า)</strong></p>
+<ul>
+<li><strong>ห้ามใช้:</strong> เครื่องบริหารต้นขาด้านหน้าและสะโพก (Leg press), เครื่องบริหารต้นขาด้านหน้า (Leg Extension), และเครื่องเดิน - วิ่งคอมพิวเตอร์ (Treadmill) ที่ใช้โปรแกรม Manual เนื่องจากเสี่ยงต่อการบาดเจ็บจากอาการปวดข้อเข่า<ul>
+<li><em>อ้างอิง:</em> หน้า 3, 4, และ 2 ในส่วนคำเตือนความปลอดภัยทางการแพทย์และข้อห้าม</li>
+</ul>
+</li>
+</ul>
+<p><strong>เครื่องที่แนะนำสำหรับทำคาร์ดิโอและวิธีใช้งาน</strong>
+เนื่องจากมีอาการปวดเข่า แนะนำให้ใช้เครื่องต่อไปนี้แทน (โปรดตรวจสอบความเหมาะสมกับผู้เชี่ยวชาญก่อนเริ่ม):</p>
+<ol>
+<li><p><strong>จักรยานคอมพิวเตอร์ (Bike) การใช้ Program Manual</strong></p>
+<ul>
+<li><em>อ้างอิง:</em> หน้า 6</li>
+<li><strong>วิธีใช้งาน:</strong><ol>
+<li>ปรับระยะห่างให้เหมาะสมกับสรีระโดยไม่ให้เข่าตึงหรือหย่อนเกินไป (ดึงคานเหล็กด้านหน้าเบาะนั่ง)</li>
+<li>กดปุ่ม Quick Start</li>
+<li>ตั้งอายุและตั้งเวลา (กดลูกศรลง)</li>
+<li>กด Start</li>
+<li>ควบคุมความเร็วในการปั่นอยู่ที่ 50-60 รอบ/นาที</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p><strong>เครื่องเดินวงรี (Elliptical)</strong></p>
+<ul>
+<li><em>อ้างอิง:</em> หน้า 8</li>
+<li><strong>วิธีใช้งาน:</strong><ol>
+<li>กดปุ่มเลือกโปรแกรม Manual แล้วกด OK</li>
+<li>ตั้งเวลา, Enter ตั้งน้ำหนัก, Enter ตั้งอายุ</li>
+<li>เลือก Program Manual</li>
+<li>กด Enter อีกครั้ง</li>
+<li>ขึ้นเหยียบบนที่วางเท้าแล้วก้าวเดินสลับขาซ้าย-ขวา (<strong>ระวังอย่าให้เข่าตึง</strong>)</li>
+<li>เพิ่มหรือลดความหนัก-เบา โดยกดปุ่ม (+) หรือ (-) ตามต้องการ</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p><strong>เครื่องกรรเชียง (Rower)</strong></p>
+<ul>
+<li><em>อ้างอิง:</em> หน้า 9</li>
+<li><strong>วิธีใช้งาน:</strong><ol>
+<li>ปรับระดับที่วางเท้าดึงสายรัดให้กระชับกับเท้าพอดี</li>
+<li>กดปุ่ม Menu / Back</li>
+<li>เลือก Program Just Row</li>
+<li>เริ่มดึงแขนทั้งสองข้างเข้าหาอก พร้อมยืดอกขึ้น หลังตรง เหยียดขาจนเข่าเกือบตึง แล้วผ่อนแรงกลับท่าเริ่มต้น</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+<p>*(หมายเหตุ: เครื่องบริหารน่อง (Calf Raise) ที่ระบุในคู่มือจัดอยู่ในกลุ่ม</p>
+<p>หากมีอาการปวดหรือบาดเจ็บ ควรปรึกษาแพทย์หรือนักกายภาพก่อนฝึก</p>
+</div></article><article class="answer"><h3>API <small>openai/gpt-6-luna-pro</small></h3><p class="metrics">เวลา 10.24 วินาที · พบหน้าที่คาดหวัง 100% · หน้าที่ค้นได้ 6, 8, 9, 15</p><div class="response"><p><strong>ควรหลีกเลี่ยงเมื่อปวดเข่า</strong></p>
+<ul>
+<li>เครื่องบริหารต้นขาด้านหน้าและสะโพก (Leg press)</li>
+<li>เครื่องบริหารต้นขาด้านหน้า (Leg Extension)</li>
+<li>เครื่องเดิน–วิ่งคอมพิวเตอร์ (Treadmill) ในโหมด Program Manual</li>
+</ul>
+<p><strong>ตัวเลือกคาร์ดิโอที่คู่มือระบุเป็นทางเลือก</strong> แต่ให้ตรวจสอบความเหมาะสมกับผู้เชี่ยวชาญก่อนใช้:</p>
+<p><strong>จักรยานคอมพิวเตอร์ (Bike) — หน้า 6</strong></p>
+<ol>
+<li>ปรับระยะเบาะให้เหมาะกับสรีระ โดยเข่าไม่ตึงหรือหย่อนเกินไป</li>
+<li>กด Quick Start</li>
+<li>ตั้งอายุและเวลาโดยใช้ลูกศรลง</li>
+<li>กด Start</li>
+<li>ปั่นที่ความเร็ว 50–60 รอบต่อนาที</li>
+</ol>
+<p><strong>เครื่องเดินวงรี (Elliptical) — หน้า 8</strong></p>
+<ol>
+<li>เลือกโปรแกรม Manual แล้วกด OK</li>
+<li>ตั้งเวลา น้ำหนัก และอายุ โดยกด Enter ตามคู่มือ</li>
+<li>เลือก Program Manual แล้วกด Enter</li>
+<li>ขึ้นเหยียบที่วางเท้าและก้าวสลับซ้าย–ขวา โดยระวังอย่าให้เข่าตึง</li>
+<li>ปรับความหนักด้วยปุ่มบวก (+) หรือลบ (-)</li>
+</ol>
+<p><strong>ข้อควรระวัง:</strong> คู่มือไม่ได้ยืนยันว่าเครื่องทางเลือกเหล่านี้เหมาะกับอาการปวดเข่</p>
+<p>หากมีอาการปวดหรือบาดเจ็บ ควรปรึกษาแพทย์หรือนักกายภาพก่อนฝึก</p>
+</div></article></div></section><section class="question" id="C02"><div class="question-head"><span class="qid">C02</span><h2>ปวดหลังล่างแต่อยากฝึกกล้ามเนื้อหลัง มีท่าใดควรเลี่ยงและเล่นเครื่องทดแทนอย่างไร</h2></div><p class="expected">หน้าคู่มือที่คาดหวัง: 23, 24 · Graph backend: json_fallback</p><div class="columns"><article class="answer"><h3>Local <small>qwen3.5:9b-q4_K_M</small></h3><p class="metrics">เวลา 13.67 วินาที · พบหน้าที่คาดหวัง 100% · หน้าที่ค้นได้ 8, 23, 24, 41</p><div class="response"><p><strong>⚠️ คำเตือนสำคัญ:</strong> เนื่องจากคุณมีอาการ <strong>ปวดหลังล่าง (Lower Back Pain)</strong> คู่มือระบุชัดเจนว่าห้ามใช้เครื่องหรือท่าต่อไปนี้เพื่อป้องกันอาการบาดเจ็บรุนแรงขึ้น:</p>
+<ul>
+<li><strong>🚫 ห้ามเล่น:</strong><ul>
+<li><strong>16. เครื่องบริหารกล้ามเนื้อหลังส่วนล่าง (Hyper Extension)</strong> (หน้า 23)</li>
+<li><strong>1. ท่าบริหารกล้ามเนื้อปีกและหลัง Dumbbell Row</strong> (หน้า 41)</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3>🔄 ทางเลือกทดแทนที่แนะนำ</h3>
+<p>หากต้องการฝึกกล้ามเนื้อหลังโดยหลีกเลี่ยงการปวดหลังล่าง ให้พิจารณาใช้ท่าต่อไปนี้แทน (โปรดตรวจสอบความเหมาะสมกับผู้เชี่ยวชาญก่อนเริ่ม):</p>
+<ol>
+<li><strong>14. เครื่องมือบริการกล้ามเนื้อปีกและสะบักหลัง (Lat Pulldown)</strong> (หน้า 23)<ul>
+<li><em>เหมาะสำหรับ:</em> ฝึกกล้ามเนื้อหลังหรือปีก (Latissimus Dorsi) โดยไม่กระทบหลังล่างโดยตรง</li>
+</ul>
+</li>
+<li><strong>15. เครื่องบริหารกล้ามเนื้อหลังส่วนบน Seated Row</strong> (หน้า 24)<ul>
+<li><em>เหมาะสำหรับ:</em> ฝึกกล้ามเนื้อหลังส่วนบน (Trapezius, Rear deltoid, Lattissimus dorsi)</li>
+</ul>
+</li>
+<li><strong>3. เครื่องเดินวงรี (Elliptical)</strong> (หน้า 8)<ul>
+<li><em>เหมาะสำหรับ:</em> ฝึกกล้ามเนื้อหัวใจ ขา แขน หลัง และหัวไหล่แบบคาร์ดิโอ</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h3>📝 ขั้นตอนการปฏิบัติ (สำหรับท่าทดแทน)</h3>
+<p><strong>1. ท่า Lat Pulldown (หน้า 23)</strong></p>
+<ul>
+<li><strong>การตั้งค่า:</strong> ปรับที่นั่งให้เหมาะสม วางหน้าขาด้านบนตั้งฉากกับขาส่วนล่าง เท้าวางที่พื้นกว้างเท่าหัวไหล่ จับ Hand grips ให้เสมอกัน นั่งตัวตรง ก้มศีรษะเล็กน้อย มองกระจก</li>
+<li><strong>การเคลื่อนไหว:</strong> ดึงคานลงมาบริเวณท้ายทอย (หายใจออก) -&gt; เหยียดแขนขึ้นผ่อนแรง (หายใจเข้า)</li>
+</ul>
+<p><strong>2. ท่า Seated Row (หน้า 24)</strong></p>
+<ul>
+<li><strong>การตั้งค่า:</strong> มือสองข้างจับที่จับของอุปกรณ์ หลังตั้งฉาก</li>
+<li><strong>การเคลื่อนไหว:</strong> ออกแรงดึงโดยให้ข้อศอกทั้งสองด้านเลยแผ่นหลัง (หายใจออกขณะดึง) -&gt; ผ่อนแรงเหยียดแขนกลับ (หายใจเข้า) <em>ระวังไม่ให้แผ่นเหล็กกระทบกัน</em></li>
+</ul>
+<p><strong>3. ท่า Elliptical (หน้า 8)</strong></p>
+<ul>
+<li><strong>การตั้งค่า:</strong> กดปุ่มเลือกโปรแกรม Manual แล้วกด OK ตั้งเวลา</li>
+</ul>
+<p>หากมีอาการปวดหรือบาดเจ็บ ควรปรึกษาแพทย์หรือนักกายภาพก่อนฝึก</p>
+</div></article><article class="answer"><h3>API <small>openai/gpt-6-luna-pro</small></h3><p class="metrics">เวลา 8.70 วินาที · พบหน้าที่คาดหวัง 100% · หน้าที่ค้นได้ 8, 23, 24, 41</p><div class="response"><p>เมื่อมีอาการปวดหลังล่าง คู่มือระบุให้ <strong>หลีกเลี่ยง</strong>:</p>
+<ul>
+<li><strong>เครื่องบริหารกล้ามเนื้อหลังส่วนล่าง (Hyper Extension)</strong> — ห้าม/หลีกเลี่ยงเมื่อปวดหลังล่าง</li>
+<li><strong>ท่าบริหารกล้ามเนื้อปีกและหลัง Dumbbell Row</strong> — ห้าม/หลีกเลี่ยงเมื่อปวดหลังล่าง</li>
+</ul>
+<p><strong>เครื่องที่คู่มือเสนอเป็นทางเลือก</strong> แต่ไม่ได้ยืนยันว่าปลอดภัยสำหรับอาการของคุณ จึงควรตรวจสอบความเหมาะสมกับผู้เชี่ยวชาญก่อน</p>
+<ul>
+<li><strong>Lat Pulldown (หน้า 23):</strong> ปรับที่นั่งให้เหมาะสม วางเท้าบนพื้น จับมือจับให้เสมอกัน แล้วนั่งตัวตรงตามคู่มือ ดึงคานลงบริเวณท้ายทอยพร้อมหายใจออก จากนั้นเหยียดแขนขึ้นพร้อมหายใจเข้า</li>
+<li><strong>Seated Row (หน้า 24):</strong> จับที่จับโดยตั้งหลังฉาก ดึงจนข้อศอกทั้งสองข้างเลยแผ่นหลังพร้อมหายใจออก แล้วผ่อนแขนกลับพร้อมหายใจเข้า ระวังอย่าให้แผ่นเหล็กกระทบกัน</li>
+</ul>
+<p>คู่มือยังระ</p>
+<p>หากมีอาการปวดหรือบาดเจ็บ ควรปรึกษาแพทย์หรือนักกายภาพก่อนฝึก</p>
+</div></article></div></section><section class="question" id="C03"><div class="question-head"><span class="qid">C03</span><h2>ปวดหัวไหล่และอยากฝึกอก มีท่าใดควรหลีกเลี่ยงและวิธีเล่น Chest Press เป็นอย่างไร</h2></div><p class="expected">หน้าคู่มือที่คาดหวัง: 21 · Graph backend: json_fallback</p><div class="columns"><article class="answer"><h3>Local <small>qwen3.5:9b-q4_K_M</small></h3><p class="metrics">เวลา 7.93 วินาที · พบหน้าที่คาดหวัง 100% · หน้าที่ค้นได้ 19, 20, 21, 42</p><div class="response"><p><strong>ข้อควรระวังและท่าที่ควรหลีกเลี่ยง</strong>
+เนื่องจากคุณมีอาการปวดหัวไหล่และข้อต่อไหล่ติด (Shoulder Impingement):</p>
+<ul>
+<li><strong>ห้าม/หลีกเลี่ยง:</strong> 13. เครื่องมือบริการกล้ามเนื้อหัวไหล่ (Shoulder Press) และ 1. ท่าบริหารหัวไหล่ Dumbbell Press (หน้าคู่มือระบุว่าเป็นท่าที่เสี่ยงต่อการบาดเจ็บจากอาการดังกล่าว)</li>
+</ul>
+<p><strong>วิธีเล่น Chest Press</strong></p>
+<ul>
+<li><strong>ชื่อท่า:</strong> 12. เครื่องบริหารอกกลาง (Chest Press) (พบในหน้า 21 ของคู่มือ)</li>
+<li><strong>ขั้นตอนการปฏิบัติ:</strong><ol>
+<li>นั่งหลังตรง ชิดกับเบาะ หน้าตรง</li>
+<li>มือจับทั้งสองข้าง ออกแรงผลัก ขณะออกแรงให้หายใจออก และดึงกลับให้หายใจเข้า</li>
+<li>ขณะที่ดันแขนไปด้านหน้าให้หายใจออก</li>
+<li>ขณะที่ผ่อนแรงกลับให้หายใจเข้า</li>
+</ol>
+</li>
+</ul>
+<p><em>หมายเหตุ: คู่มือระบุให้ตรวจสอบความเหมาะสมของท่านี้กับผู้เชี่ยวชาญก่อนเริ่มฝึกเนื่องจากมีกราฟต้นแบบระบุเป็นทางเลือกแต่ต้องพิจารณาอาการบาดเจ็บของผู้ใช้</em></p>
+<p>หากมีอาการปวดหรือบาดเจ็บ ควรปรึกษาแพทย์หรือนักกายภาพก่อนฝึก</p>
+</div></article><article class="answer"><h3>API <small>openai/gpt-6-luna-pro</small></h3><p class="metrics">เวลา 7.41 วินาที · พบหน้าที่คาดหวัง 100% · หน้าที่ค้นได้ 19, 20, 21, 42</p><div class="response"><p><strong>ท่าที่ควรหลีกเลี่ยง:</strong></p>
+<ul>
+<li>เครื่องบริหารกล้ามเนื้อหัวไหล่ <strong>Shoulder Press</strong></li>
+<li>ท่าบริหารหัวไหล่ <strong>Dumbbell Press</strong></li>
+</ul>
+<p>คู่มือระบุให้หลีกเลี่ยงท่าเหล่านี้เมื่อมีอาการปวดหัวไหล่หรือข้อต่อไหล่ติด เนื่องจากเสี่ยงบาดเจ็บ</p>
+<p><strong>วิธีเล่น Chest Press — หน้า 21</strong></p>
+<ol>
+<li>นั่งหลังตรง ให้หลังชิดเบาะและมองตรง</li>
+<li>จับมือจับทั้งสองข้าง แล้วผลักไปด้านหน้า พร้อมหายใจออก</li>
+<li>ผ่อนแรงกลับ พร้อมหายใจเข้า</li>
+</ol>
+<p><strong>ข้อควรระวัง:</strong> คู่มือเสนอ Chest Press เป็นทางเลือก แต่ให้ตรวจสอบความเหมาะสมกับผู้เชี่ยวชาญ หากมีอาการปวดหัวไหล่ ควรปรึกษาผู้เชี่ยวชาญก่อนฝึก】【。</p>
+</div></article></div></section><section class="question" id="C04"><div class="question-head"><span class="qid">C04</span><h2>มือใหม่อยากฝึกขา กราฟแนะนำ Leg press หรือไม่ และควรเล่นอย่างไร</h2></div><p class="expected">หน้าคู่มือที่คาดหวัง: 12 · Graph backend: json_fallback</p><div class="columns"><article class="answer"><h3>Local <small>qwen3.5:9b-q4_K_M</small></h3><p class="metrics">เวลา 10.61 วินาที · พบหน้าที่คาดหวัง 100% · หน้าที่ค้นได้ 12, 13, 14, 16</p><p class="flag">ควรตรวจเลขหน้าที่โมเดลอ้าง: 3</p><div class="response"><p>ตามข้อมูลในคู่มือ <strong>กราฟแนะนำ Leg press (เครื่องบริหารต้นขาด้านหน้าและสะโพก)</strong> เป็นทางเลือกที่เหมาะสมสำหรับผู้เริ่มต้นฝึกออกกำลังกายครับ โดยมีรายละเอียดดังนี้:</p>
+<h3>✅ คำแนะนำในการใช้เครื่อง Leg Press (หน้า 12)</h3>
+<p><strong>กล้ามเนื้อเป้าหมาย:</strong> กล้ามเนื้อต้นขาด้านหน้า (Quadriceps &amp; Gluteus)</p>
+<p><strong>ขั้นตอนการปฏิบัติ:</strong></p>
+<ol>
+<li><strong>ปรับเบาะ:</strong> ปรับให้เหมาะสมกับสรีระ โดยวางฝ่าเท้าทั้งสองข้างบนแผ่นยันสะโพก และแนบหลังและศีรษะชิดเบาะตลอดเวลาที่ฝึก</li>
+<li><strong>จับยึดทรงตัว:</strong> มือทั้งสองข้างจับแกนมือจับด้านข้างสะโพกเพื่อช่วยในการทรงตัว</li>
+<li><strong>การออกแรง:</strong><ul>
+<li>เหยียดขาไปข้างหน้าให้สุด แล้วผ่อนกลับมายังตำแหน่งเริ่มต้นโดยไม่ให้แผ่นเหล็กกระทบกัน</li>
+<li>ทำซ้ำจนครบจำนวนที่กำหนด</li>
+</ul>
+</li>
+<li><strong>การหายใจ:</strong><ul>
+<li><strong>หายใจออก:</strong> เมื่อเหยียดขาไปข้างหน้า</li>
+<li><strong>หายใจเข้า:</strong> เมื่อผ่อนแรงกลับด้านหลัง</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h3>⚠️ ข้อควรระวังและข้อห้าม (สำหรับมือใหม่)</h3>
+<ul>
+<li><strong>ท่าที่ห้ามเล่นเด็ดขาด:</strong> หากเป็นมือใหม่ (Beginner) <strong>ห้าม</strong> เล่นท่าบริหารหัวไหล่ด้านข้าง (Dumbbell Side Rosie &amp; Lateral Raise) และท่าบริหารกล้ามเนื้ออกล่าง (Decline Dumbbell Bent press) เพราะเสี่ยงต่อการบาดเจ็บ (หน้า 3 และ 4)</li>
+<li><strong>คำเตือนจากคู่มือ:</strong> กราฟต้นแบบระบุว่าเป็นทางเลือก โปรดตรวจสอบความเหมาะสมกับผู้เชี่ยวชาญก่อนเริ่มฝึกเสมอ</li>
+</ul>
+<p>หากมีข้อสงสัยเพิ่มเติมเกี่ยวกับอาการบาดเจ็บหรือการปรับท่าทางเฉพาะบุคคล กรุณาปรึกษาผู้เชี่ยวชาญครับ</p>
+</div></article><article class="answer"><h3>API <small>openai/gpt-6-luna-pro</small></h3><p class="metrics">เวลา 9.19 วินาที · พบหน้าที่คาดหวัง 100% · หน้าที่ค้นได้ 12, 13, 14, 16</p><div class="response"><p>ใช่ กราฟระบุ <strong>เครื่องบริหารต้นขาด้านหน้าและสะโพก (Leg press)</strong> เป็นท่าทางเลือกที่แนะนำ หน้า 12 แต่กราฟกำชับให้ตรวจสอบความเหมาะสมกับผู้เชี่ยวชาญ</p>
+<p><strong>วิธีเล่นตามคู่มือ (หน้า 12):</strong></p>
+<ol>
+<li>ปรับเบาะให้เหมาะกับสรีระ วางเท้าทั้งสองบนแผ่นยัน และให้สะโพก หลัง และศีรษะแนบเบาะตลอดการฝึก</li>
+<li>จับมือจับด้านข้างสะโพกเพื่อช่วยทรงตัว</li>
+<li>เหยียดขาไปข้างหน้า แล้วผ่อนกลับสู่ท่าเริ่มต้น โดยไม่ให้แผ่นเหล็กกระทบกัน ทำซ้ำจนครบจำนวน</li>
+<li>หายใจออกขณะเหยียดขา และหายใจเข้าขณะผ่อนกลับ</li>
+</ol>
+<p><strong>ข้อควรระวัง:</strong> คู่มือไม่ได้ระบุจำนวนครั้งหรือจำนวนเซตไว้ และแนะนำให้ตรวจสอบความเหมาะสมกับผู้เชี่ยวชาญก่อนฝึกค่ะ</p>
+<p>หากมีอาการปวดหรือบาดเจ็บ ควรปรึกษาแพทย์หรือนักกายภาพก่อนฝึก</p>
+</div></article></div></section><section class="question" id="C05"><div class="question-head"><span class="qid">C05</span><h2>อยากฝึกกล้ามเนื้อปีกและหลัง มีทั้งเครื่องและท่าดัมเบลใดบ้างพร้อมวิธีทำ</h2></div><p class="expected">หน้าคู่มือที่คาดหวัง: 23, 24, 40, 41 · Graph backend: json_fallback</p><div class="columns"><article class="answer"><h3>Local <small>qwen3.5:9b-q4_K_M</small></h3><p class="metrics">เวลา 12.80 วินาที · พบหน้าที่คาดหวัง 100% · หน้าที่ค้นได้ 23, 24, 40, 41</p><div class="response"><p>ตามข้อมูลในคู่มือสถานกีฬาและสุขภาพ มทส. สำหรับการฝึกกล้ามเนื้อปีกและหลัง มีเครื่องออกกำลังกายและท่าดัมเบลดังนี้ครับ:</p>
+<h3>1. เครื่องออกกำลังกาย (Weight Machine Zone)</h3>
+<ul>
+<li><strong>Lat Pulldown (Front / Back)</strong> (หน้า 23)<ul>
+<li><strong>วิธีทำ:</strong> ปรับที่นั่งให้เหมาะสม วางขาบนที่ระดับตั้งฉาก เท้าวางที่พื้น ก้มศีรษะเล็กน้อย จับมือจับ Hand grips ให้เสมอกัน นั่งตัวตรง ดึงคานลงมาบริเวณท้ายทอย แล้วค่อยๆ เหยียดแขนขึ้นผ่อนแรงกลับสู่ท่าเดิม</li>
+</ul>
+</li>
+<li><strong>Seated Row</strong> (หน้า 24)<ul>
+<li><strong>วิธีทำ:</strong> มือสองข้างจับที่จับของอุปกรณ์ หลังตั้งฉาก ออกแรงดึงโดยให้ข้อศอกทั้งสองด้านเลยแผ่นหลัง ขณะออกแรงดึงให้หายใจออก และขณะผ่อนแรงให้สังเกตแผ่นเหล็กไม่ให้กระทบกัน</li>
+</ul>
+</li>
+</ul>
+<h3>2. ท่าดัมเบล (Free Weight Zone)</h3>
+<ul>
+<li><strong>Dumbbell Row</strong> (หน้า 40)<ul>
+<li><strong>วิธีทำ:</strong> ยืนตรงวางขาซ้ายบนเก้าอี้ โน้มไปข้างหน้าใช้มือขวาจับขอบเก้าอี้ทรงตัว มือซ้ายถือดัมเบลล์ห้อยลงสุดแขนเฉียง 50 องศา ดึงดัมเบลล์ผ่านด้านข้างลำตัวให้สูงที่สุด แล้วค่อยๆ ลดกลับสู่ท่าเดิม</li>
+</ul>
+</li>
+<li><strong>Two Arm Dumbbell Row</strong> (หน้า 41)<ul>
+<li><strong>วิธีทำ:</strong> ยืนตรงแยกเท้าประมาณช่วงไหล่ ถือดัมเบลล์ทั้งสองข้าง เข่างอเล็กน้อยก้มตัวไปข้างหน้าขนานพื้น หลังตรง ทิ้งแขนที่ถือดัมเบลล์ แล้วดึงดัมเบลล์ขึ้นข้อศอกผ่านลำตัวด้านข้าง ค่อยๆ ลดดัมเบลล์ลงไปยังจุดเริ่มต้น</li>
+</ul>
+</li>
+</ul>
+<h3>ข้อควรระวังและคำแนะนำ</h3>
+<ul>
+<li><strong>การหายใจ:</strong><ul>
+<li>ขณะออกแรงดึง (ทั้งเครื่องและดัมเบล) ให้<strong>หายใจออก</strong></li>
+<li>ขณะผ่อนแรงหรือลดน้ำหนักกลับสู่ท่าเดิม ให้<strong>หายใจเข้า</strong></li>
+</ul>
+</li>
+<li><strong>ความปลอดภัย:</strong><ul>
+<li>ในท่า Seated Row ต้องระวังไม่ให้แผ่นเหล็กกระทบกันขณะผ่อนแรง (หน้า 24)</li>
+<li>ควรปรึกษาผู้เชี่ยวชาญหากมีอาการบาดเจ็บหรือไม่แน่ใจในเทคนิคการฝึก</li>
+</ul>
+</li>
+</ul>
+</div></article><article class="answer"><h3>API <small>openai/gpt-6-luna-pro</small></h3><p class="metrics">เวลา 14.60 วินาที · พบหน้าที่คาดหวัง 100% · หน้าที่ค้นได้ 23, 24, 40, 41</p><p class="flag">ควรตรวจเลขหน้าที่โมเดลอ้าง: 25</p><div class="response"><h2>เครื่องเล่น</h2>
+<ul>
+<li><p><strong>Lat Pulldown (Front / Back) — หน้า 23</strong><br />
+ปรับเบาะให้เหมาะกับขา วางต้นขาให้ขาท่อนบนตั้งฉากกับท่อนล่าง เท้าวางบนพื้นกว้างเท่าหัวไหล่ จับที่จับทั้งสองข้างให้เสมอกัน นั่งตัวตรง ก้มศีรษะเล็กน้อย แล้วดึงคานลงบริเวณท้ายทอย โดยออกแรงสองข้างให้สมดุล จากนั้นเหยียดแขนขึ้นและผ่อนแรง<br />
+<strong>หายใจ:</strong> ดึงคานลงหายใจออก เหยียดแขนขึ้นหายใจเข้า</p>
+</li>
+<li><p><strong>Seated Row — หน้า 24</strong><br />
+จับที่จับทั้งสองข้าง ตั้งหลังฉาก แล้วดึงโดยให้ข้อศอกทั้งสองข้างเลยแผ่นหลัง จากนั้นผ่อนแรงเหยียดแขนกลับ<br />
+<strong>หายใจ:</strong> ดึงแขนไปด้านหลังหายใจออก ผ่อนแรงหายใจเข้า</p>
+</li>
+<li><p><strong>Hyper Extension — หน้า 25</strong><br />
+คู่มือระบุชื่อเครื่องสำหรับบริหารหลังส่วนล่าง แต่ <strong>ไม่พบขั้นตอนการใช้งานในข้อมูลที่ให้มา</strong></p>
+</li>
+</ul>
+<h2>ท่าดัมเบล</h2>
+<ul>
+<li><strong>Dumbbell Row — หน้า 40</strong><br />
+วางขาซ้ายบนเก้าอี้ โน้มตัวไปข้างหน้า ใช้มือขวาจับขอบด้านสั้นของเก้าอี้เพื่อทรงตัว มือซ้ายถือดัมเบลห้อยลง แล้วดึงผ่านด้านข้างลำตัวให้สูงที่สุด ค่อย ๆ ลดกลับ ทำซ้ำตามจำนวนครั้งและเซต</li>
+</ul>
+</div></article></div></section><section class="question" id="C06"><div class="question-head"><span class="qid">C06</span><h2>อยากฝึกต้นแขนด้านหน้า มีเครื่อง Arms Curl และท่า Dumbbell Curl ต่างกันอย่างไร พร้อมวิธีทำ</h2></div><p class="expected">หน้าคู่มือที่คาดหวัง: 26, 32 · Graph backend: json_fallback</p><div class="columns"><article class="answer"><h3>Local <small>qwen3.5:9b-q4_K_M</small></h3><p class="metrics">เวลา 13.54 วินาที · พบหน้าที่คาดหวัง 100% · หน้าที่ค้นได้ 26, 31, 32, 33</p><div class="response"><p>จากข้อมูลในคู่มือสถานกีฬาและสุขภาพ มทส. (หน้า 26, 31, 32, 33) สรุปความแตกต่างและวิธีทำดังนี้ครับ:</p>
+<h3>ความแตกต่างระหว่าง Arms Curl และ Dumbbell Curl</h3>
+<ul>
+<li><strong>Arms Curl (หน้า 26):</strong> ใช้เครื่องออกกำลังกายแบบ Machine (Arm Curl) ในโซน Weight Machine Zone มีเบาะรองรับหลังและแขน ช่วยคงท่าทางให้มั่นคง</li>
+<li><strong>Dumbbell Curl (หน้า 32):</strong> ใช้ดัมเบลล์ในโซน Free Weight Zone ต้องใช้กล้ามเนื้อแกนกลางและข้อศอกช่วยทรงตัวขณะยกน้ำหนัก</li>
+</ul>
+<hr />
+<h3>วิธีทำท่าออกกำลังกาย</h3>
+<h4>1. ท่า Arms Curl (เครื่องบริหารกล้ามเนื้อต้นแขนด้านหน้า)</h4>
+<p><em>(อ้างอิง: หน้า 26)</em>
+<strong>อุปกรณ์:</strong> เครื่องมือบริหารกล้ามเนื้อต้นแขนด้านหน้า (Arms Curl)
+<strong>วิธีทำ:</strong></p>
+<ol>
+<li>ปรับเบาะนั่งให้พอดีกับตัวให้อกแนบสนิท</li>
+<li>วางแขนทั้งสองข้างลงบนเบาะ ห่างกันประมาณช่วงหัวไหล่</li>
+<li>จับ Hand Grip ลักษณะหงายมือขึ้น หลังตรง หน้ามองตรง</li>
+<li>ออกแรงพับแขนขึ้นประมาณ 90 องศา (ขณะออกแรงดึงแขนขึ้นให้หายใจออก)</li>
+<li>ผ่อนแรงเหยียดแขนกลับลงมา (ขณะผ่อนแรงให้หายใจเข้า)</li>
+</ol>
+<h4>2. ท่า Dumbbell Curl</h4>
+<p><em>(อ้างอิง: หน้า 32)</em>
+<strong>อุปกรณ์:</strong> ดัมเบลล์ (Dumbbell)
+<strong>วิธีทำ:</strong></p>
+<ol>
+<li>ยืนตรง เข่างอเล็กน้อย หงายฝ่ามือขึ้น</li>
+<li>ถือดัมเบลล์ห้อยลงสุดแขนบริเวณด้านหน้าต้นขา โดยให้มือทั้งสองห่างกันประมาณช่วงไหล่</li>
+<li>พับแขนยกดัมเบลล์ขึ้นมาหาหัวไหล่ โดยให้ข้อศอกแนบลำตัวตลอดเวลา (ขณะยกให้หายใจออก)</li>
+<li>ลดดัมเบลล์กลับไปที่เดิม (ขณะลดให้หายใจเข้า)</li>
+<li>ทำซ้ำจนครบจำนวนครั้งและเซทที่ต้องการ</li>
+</ol>
+<p><em>(หมายเหตุ: คู่มือระบุทางเลือกอื่นคือสามารถเปลี่ยนจากท่ายืนเป็นท่านั่งเก้าอี้แทนได้)</em></p>
+<hr />
+<h3>ข้อควรระวังและความปลอดภัย</h3>
+<ul>
+<li><strong>การหายใจ:</strong> ขณะออกแรงดึงแขนขึ้นหรือยกดัมเบลล์ให้หายใจออก และขณะผ่อนแรงเหยียดแขนกลับหรือลดดัมเบลล์ให้หายใจเข้า (หน้า 26,</li>
+</ul>
+</div></article><article class="answer"><h3>API <small>openai/gpt-6-luna-pro</small></h3><p class="metrics">เวลา 9.27 วินาที · พบหน้าที่คาดหวัง 100% · หน้าที่ค้นได้ 26, 31, 32, 33</p><div class="response"><p>ทั้งสองท่าฝึกต้นแขนด้านหน้า แต่ใช้อุปกรณ์และวิธีจัดท่าต่างกัน</p>
+<p><strong>Arms Curl — เครื่อง</strong> (หน้า 26)<br />
+คู่มือระบุกล้ามเนื้อเป้าหมายเป็นต้นแขนด้านหน้า (Biceps)</p>
+<ol>
+<li>ปรับเบาะนั่งให้พอดีกับตัว</li>
+<li>วางแขนทั้งสองข้างบนเบาะ ห่างกันประมาณช่วงไหล่</li>
+<li>จับด้ามโดยหงายมือ หลังตรง มองตรง แล้วพับแขนยกขึ้นประมาณ 90 องศา</li>
+<li>ขณะยกให้หายใจออก และขณะผ่อนแขนกลับให้หายใจเข้า</li>
+</ol>
+<p><strong>Dumbbell Curl — ดัมเบล</strong> (หน้า 32)<br />
+คู่มือระบุกล้ามเนื้อที่ใช้เป็น Biceps Brachialis และ Brachioradialis</p>
+<ol>
+<li>ยืนตรง งอเข่าเล็กน้อย ถือดัมเบลล์ห้อยไว้ด้านหน้าต้นขา หงายฝ่ามือ และให้มือห่างกันประมาณช่วงไหล่</li>
+<li>พับแขนยกดัมเบลล์เข้าหาหัวไหล่ โดยให้ข้อศอกแนบลำตัวตลอดเวลา</li>
+<li>ขณะยกให้หายใจออก และขณะลดกลับให้หายใจเข้า ทำซ้ำตามจำนวนครั้งและเซตที่ต้องการ</li>
+</ol>
+<p>**สรุปความต่าง</p>
+</div></article></div></section><section class="question" id="C07"><div class="question-head"><span class="qid">C07</span><h2>อยากฝึกหน้าท้อง มีเครื่อง Sit Up กับ Verticals Knee Raise อย่างไรและควรระวังอะไร</h2></div><p class="expected">หน้าคู่มือที่คาดหวัง: 29, 30 · Graph backend: json_fallback</p><div class="columns"><article class="answer"><h3>Local <small>qwen3.5:9b-q4_K_M</small></h3><p class="metrics">เวลา 13.07 วินาที · พบหน้าที่คาดหวัง 100% · หน้าที่ค้นได้ 10, 15, 29, 30</p><div class="response"><p>จากข้อมูลในคู่มือสถานกีฬาและสุขภาพ มทส. ขออธิบายวิธีการใช้เครื่อง Sit Up และ Verticals Knee Raise พร้อมข้อควรระวังดังนี้ครับ</p>
+<h3>1. เครื่องบริหารท้อง (Sit Up)</h3>
+<ul>
+<li><strong>กล้ามเนื้อเป้าหมาย:</strong> กล้ามเนื้อท้องส่วนบน (หน้า 29)</li>
+<li><strong>วิธีใช้งาน:</strong><ol>
+<li>ปรับระดับความสูงของเบาะรองขาให้หมุนได้ 90 องศา (หน้า 29)</li>
+<li>นอนหงายบนเบาะ ยกขาทั้งสองขึ้นวางไว้บนเบาะรองขา และล็อคปลายเท้าไว้ (หน้า 29)</li>
+<li>วางมือทั้งสองไว้ที่บริเวณหน้าอกหรือแตะบริเวณขมับ (หน้า 29)</li>
+<li>ยกตัวขึ้นมาให้ศอกแตะเข่า แล้วกลับสู่ท่าเริ่มต้น โดยต้องเกร็งกล้ามเนื้อท้องตลอดและ<strong>อย่าเกร็งคอ</strong> (หน้า 29)</li>
+</ol>
+</li>
+<li><strong>การหายใจ:</strong> หายใจออกขณะยกลำตัวขึ้น และหายใจเข้าขณะลดตัวลง (หน้า 29)</li>
+</ul>
+<h3>2. เครื่องบริหารกล้ามเนื้อหน้าท้องส่วนล่าง (Verticals Knee Raise)</h3>
+<ul>
+<li><strong>กล้ามเนื้อเป้าหมาย:</strong> กล้ามเนื้อหน้าท้องส่วนล่าง (หน้า 30)</li>
+<li><strong>วิธีใช้งาน:</strong><ol>
+<li>ขึ้นไปยืนบนที่พักเท้าทั้ง 2 ข้าง โดยให้หลังพิงอยู่กับเบาะตลอดเวลา (หน้า 30)</li>
+<li>วางท่อนแขนและข้อศอกทั้ง 2 ข้างบนเบาะรองรับน้ำหนัก แล้วปล่อยขาทั้ง 2 ข้างชิดกันให้เป็นเส้นตรงกับลำตัว (หน้า 30)</li>
+<li>ออกแรงเกร็งกล้ามเนื้อหน้าท้อง ยกขาทั้ง 2 ข้างขึ้นให้เป็นมุมฉากตรงด้านหน้า แล้วค่อยๆ ลดขาลงช้าๆ และปฏิบัติซ้ำจนครบเซต (หน้า 30)</li>
+</ol>
+</li>
+<li><strong>การหายใจ:</strong> หายใจออกขณะที่ออกแรงยกขาขึ้น และหายใจเข้าขณะที่ผ่อนแรงลดขาลง (หน้า 30)</li>
+</ul>
+<h3>⚠️ ข้อควรระวังและคำแนะนำสำคัญ</h3>
+<ul>
+<li><strong>ห้ามเกร็งคอ:</strong> ในท่า Sit Up ห้ามเกร็งกล้ามเนื้อบริเวณคอขณะยกตัว (หน้า 29)</li>
+<li><strong>การควบคุมจังหวะ:</strong> ควรลดขาลงช้าๆ ในท่า Verticals Knee Raise เพื่อความปลอดภัยของข้อต่อและกล้ามเนื้อ (หน้า 30)</li>
+<li>**คำแนะนำเพิ่มเติม</li>
+</ul>
+</div></article><article class="answer"><h3>API <small>openai/gpt-6-luna-pro</small></h3><p class="metrics">เวลา 13.41 วินาที · พบหน้าที่คาดหวัง 100% · หน้าที่ค้นได้ 10, 15, 29, 30</p><div class="response"><h3>Sit Up — เครื่องบริหารท้อง (หน้า 29)</h3>
+<ol>
+<li>ปรับเบาะรองขาให้หมุน 90 องศา</li>
+<li>นอนหงาย วางขาทั้งสองบนเบาะรองขาและล็อกปลายเท้าไว้</li>
+<li>วางมือที่หน้าอกหรือแตะขมับ</li>
+<li>เกร็งหน้าท้อง ยกลำตัวให้ศอกแตะเข่า แล้วลดกลับท่าเริ่มต้น</li>
+<li>หายใจออกตอนยกตัว และหายใจเข้าตอนลดตัว</li>
+</ol>
+<h3>Verticals Knee Raise — เครื่องบริหารกล้ามเนื้อหน้าท้องส่วนล่าง (หน้า 30)</h3>
+<ol>
+<li>ยืนบนที่พักเท้าทั้งสอง โดยให้หลังพิงเบาะตลอดเวลา</li>
+<li>วางท่อนแขนและข้อศอกบนเบาะรองรับ ปล่อยขาทั้งสองชิดและเหยียดตรงแนวลำตัว</li>
+<li>เกร็งหน้าท้อง ยกขาทั้งสองขึ้นด้านหน้าให้เป็นมุมฉาก แล้วค่อย ๆ ลดกลับท่าเริ่มต้น</li>
+<li>หายใจออกตอนยกขา และหายใจเข้าตอนลดขา</li>
+</ol>
+<h3>ข้อควรระวัง</h3>
+<p>สำหรับ Sit Up คู่มือระบุให้เกร็งหน้าท้องตลอด และ <strong>อย่าเกร็งคอ</strong> ส่วน Verticals Knee Raise ให้หลังพิงเบาะตลอดเวลา คู่มือไม่ได้ระบุข้อควรระวังอื่นเพิ่มเติมไว้ในข้อมูลที่ให้มา</p>
+</div></article></div></section><section class="question" id="C08"><div class="question-head"><span class="qid">C08</span><h2>อยากฝึกอก มีเครื่อง Chest Press และ Dumbbell Bench Press อย่างไร พร้อมวิธีเล่น</h2></div><p class="expected">หน้าคู่มือที่คาดหวัง: 21, 42 · Graph backend: json_fallback</p><div class="columns"><article class="answer"><h3>Local <small>qwen3.5:9b-q4_K_M</small></h3><p class="metrics">เวลา 11.11 วินาที · พบหน้าที่คาดหวัง 100% · หน้าที่ค้นได้ 20, 21, 42, 43</p><p class="flag">ควรตรวจเลขหน้าที่โมเดลอ้าง: 19</p><div class="response"><h3>วิธีเล่นเครื่อง Chest Press (หน้า 21)</h3>
+<p><strong>กล้ามเนื้อเป้าหมาย:</strong> กล้ามเนื้ออกส่วนกลาง (Pectorals Major)
+<strong>อุปกรณ์ที่ใช้:</strong> Machine (Chest Press)</p>
+<p><strong>ขั้นตอนการปฏิบัติ:</strong></p>
+<ol>
+<li>นั่งหลังตรง ชิดกับเบาะ และให้ตัวตั้งตรง</li>
+<li>มือจับแฮนด์ทั้งสองข้าง</li>
+<li>ออกแรงผลักแขนไปด้านหน้าขณะหายใจออก</li>
+<li>เมื่อผ่อนแรงกลับให้ดึงกลับมาและหายใจเข้า</li>
+</ol>
+<hr />
+<h3>วิธีเล่นท่า Dumbbell Bench Press (หน้า 42)</h3>
+<p><strong>กล้ามเนื้อเป้าหมาย:</strong> กล้ามเนื้ออกด้านหน้า (Pectrolaris)
+<strong>อุปกรณ์ที่ใช้:</strong> Dumbbell &amp; Flat Bench</p>
+<p><strong>ขั้นตอนการปฏิบัติ:</strong></p>
+<ol>
+<li>นอนหงายบนเบาะแบนราบ ใช้มือทั้งสองจับดัมบ์เบลล์ หงายฝ่ามือขึ้นถือลูกดัมบ์เบลล์อยู่ด้านข้างไหล่ทั้งสอง เปิดแขนออกด้านข้างให้กว้าง</li>
+<li>ยกดัมบ์เบลล์ขึ้นไปด้านบน ลักษณะแขนตึง ดัมบ์เบลล์ชิดกันเหนือระดับอก</li>
+<li>ปล่อยแขนลงกลับท่าเริ่มต้น</li>
+</ol>
+<p><strong>การหายใจ:</strong></p>
+<ul>
+<li><strong>ยกดัมบ์เบลขึ้น:</strong> หายใจออก</li>
+<li><strong>ปล่อยแขนลง:</strong> หายใจเข้า</li>
+</ul>
+<hr />
+<h3>ข้อควรระวังและคำแนะนำเพิ่มเติม</h3>
+<ul>
+<li><strong>ข้อห้าม (Avoid):</strong> ห้ามใช้ท่าอื่นแทนที่หากมีอาการบาดเจ็บหรือรู้สึกเจ็บบริเวณกล้ามเนื้ออก</li>
+<li><strong>คำแนะนำ:</strong> หากพบอาการผิดปกติระหว่างฝึก ให้หยุดทันทีและปรึกษาผู้เชี่ยวชาญก่อนกลับมาใช้งานอีกครั้ง</li>
+<li><strong>หมายเหตุ:</strong> คู่มือระบุรายละเอียดเฉพาะสำหรับเครื่อง Chest Press และท่า Dumbbell Bench Press เท่านั้น สำหรับท่าอื่นๆ เช่น Incline Press (หน้า 20), Dumbbell Flies (หน้า 43) หรือ Pec Dek (หน้า 19) ไม่สามารถนำมาใช้แทนได้ตามข้อมูลที่มี</li>
+</ul>
+</div></article><article class="answer"><h3>API <small>openai/gpt-6-luna-pro</small></h3><p class="metrics">เวลา 7.78 วินาที · พบหน้าที่คาดหวัง 100% · หน้าที่ค้นได้ 20, 21, 42, 43</p><div class="response"><p>ฝึกอกด้วยสองท่านี้ได้ โดยคู่มือระบุกล้ามเนื้อเป้าหมายต่างกันดังนี้</p>
+<h3>เครื่องบริหารอกกลาง (Chest Press) — หน้า 21</h3>
+<p>บริหารกล้ามเนื้ออกส่วนกลาง</p>
+<ol>
+<li>นั่งหลังตรงให้ชิดเบาะ และมองตรง</li>
+<li>จับมือจับทั้งสองข้าง แล้วผลักแขนไปด้านหน้า</li>
+<li>ผ่อนแรงและกลับสู่ท่าเริ่มต้น<br />
+<strong>การหายใจ:</strong> ขณะผลักให้หายใจออก และขณะผ่อนแรงกลับให้หายใจเข้า</li>
+</ol>
+<h3>ท่าบริหารกล้ามเนื้ออก (Dumbbell Bench Press) — หน้า 42</h3>
+<p>บริหารกล้ามเนื้ออกด้านหน้า</p>
+<ol>
+<li>นอนหงายบนเบาะแบน จับดัมบ์เบลล์ทั้งสองข้างโดยหงายฝ่ามือ วางดัมบ์เบลล์ไว้ข้างไหล่และเปิดแขนออก</li>
+<li>ยกดัมบ์เบลล์ขึ้นจนแขนตึง โดยให้ดัมบ์เบลล์ชิดกันเหนือระดับอก</li>
+<li>ลดแขนกลับสู่ท่าเริ่มต้น<br />
+<strong>การหายใจ:</strong> ขณะยกขึ้นให้หายใจออก และขณะลดแขนลงให้หายใจเข้า</li>
+</ol>
+<p>คู่มือที่ให้มาไม่ได้ระบุจำนวนครั้งหรือจำนวนเซตไว้ในรายละเอียดเหล่านี้</p>
+</div></article></div></section><section class="question" id="C09"><div class="question-head"><span class="qid">C09</span><h2>อยากฝึกขา มี Leg press และ Leg Extension บริหารส่วนไหนพร้อมวิธีใช้</h2></div><p class="expected">หน้าคู่มือที่คาดหวัง: 12, 13 · Graph backend: json_fallback</p><div class="columns"><article class="answer"><h3>Local <small>qwen3.5:9b-q4_K_M</small></h3><p class="metrics">เวลา 13.14 วินาที · พบหน้าที่คาดหวัง 100% · หน้าที่ค้นได้ 12, 13, 14, 15</p><div class="response"><p>ตามข้อมูลในคู่มือสถานกีฬาและสุขภาพ มทส. ขออธิบายการใช้งานเครื่องบริหารส่วนขาที่คุณสนใจดังนี้ครับ</p>
+<h3>1. เครื่องบริหารต้นขาด้านหน้าและสะโพก (Leg Press)</h3>
+<ul>
+<li><strong>บริหารส่วนไหน:</strong> กล้ามเนื้อต้นขาด้านหน้า (Quadriceps) และกล้ามเนื้อสะโพก (Gluteus) [หน้า 12]</li>
+<li><strong>วิธีใช้:</strong><ol>
+<li>ปรับเบาะให้เหมาะสมกับสรีระ โดยเหยียบวางฝ่าเท้าทั้งสองข้างบนแผ่นยัน และแนบหลังและศีรษะชิดเบาะตลอดเวลา [หน้า 12]</li>
+<li>จับแกนมือจับด้านข้างสะโพกเพื่อช่วยในการทรงตัว [หน้า 12]</li>
+<li>ออกแรงเหยียดขาไปข้างหน้าให้สุด แล้วผ่อนกลับมายังตำแหน่งเริ่มต้นโดยไม่ให้แผ่นเหล็กกระทบกัน [หน้า 12]</li>
+<li><strong>การหายใจ:</strong> เหยียดขาไปข้างหน้าให้หายใจออก, ผ่อนแรงกลับด้านหลังพร้อมกับการหายใจเข้า [หน้า 12]</li>
+</ol>
+</li>
+</ul>
+<h3>2. เครื่องบริหารต้นขาด้านหน้า (Leg Extension)</h3>
+<ul>
+<li><strong>บริหารส่วนไหน:</strong> กล้ามเนื้อต้นขาด้านหน้า (Quadriceps) [หน้า 13]</li>
+<li><strong>วิธีใช้:</strong><ol>
+<li>ปรับเบาะให้เหมาะสมกับความยาวของขา โดยบริเวณใต้เข่าติดกับเบาะที่นั่ง และหลังชิดเบาะพอดี [หน้า 13]</li>
+<li>ปรับเบาะด้านล่างให้อยู่ระดับเหนือข้อเท้าพอดี และงอปลายเท้าทั้งสองข้างให้เสมอกัน [หน้า 13]</li>
+<li>ยกน้ำหนักด้วยขาทั้งสองข้างเท่าๆ กัน โดยเกร็งกล้ามเนื้อต้นขาด้านบน ด้วยจังหวะการนับ 1-2 แล้วลงมาด้วยจังหวะการนับ 1-2-3-4 [หน้า 13]</li>
+<li><strong>การหายใจ:</strong> เมื่อยกเท้าขึ้นให้หายใจออก, เมื่อปล่อยเท้าลงหรือผ่อนแรงให้หายใจเข้า [หน้า 13]</li>
+</ol>
+</li>
+</ul>
+<h3>⚠️ ข้อควรระวังและความปลอดภัย (เฉพาะ Leg Extension)</h3>
+<ul>
+<li>เนื่องจากต้องยกน้ำหนักด้วยจังหวะการนับ 1-2 และลงมาด้วยจังหวะการนับ 1-2-3-4 จึงต้องระวังไม่ให้เครื่องไหวท่า [หน้า 13]</li>
+</ul>
+</div></article><article class="answer"><h3>API <small>openai/gpt-6-luna-pro</small></h3><p class="metrics">เวลา 10.69 วินาที · พบหน้าที่คาดหวัง 100% · หน้าที่ค้นได้ 12, 13, 14, 15</p><div class="response"><p>ทั้งสองเครื่องเน้น <strong>ต้นขาด้านหน้า</strong> แต่ Leg press บริหารสะโพกร่วมด้วย</p>
+<p><strong>Leg press — หน้า 12</strong><br />
+บริหารกล้ามเนื้อต้นขาด้านหน้าและสะโพก (Quadriceps &amp; Gluteus)</p>
+<ol>
+<li>ปรับเบาะให้เหมาะกับสรีระ วางเท้าทั้งสองบนแผ่นยัน และให้สะโพก หลัง และศีรษะแนบเบาะตลอดการฝึก</li>
+<li>จับมือจับด้านข้างเพื่อทรงตัว</li>
+<li>เหยียดขาไปข้างหน้า แล้วผ่อนกลับท่าเริ่มต้น โดยไม่ให้แผ่นเหล็กกระทบกัน</li>
+<li>หายใจออกขณะเหยียดขา และหายใจเข้าขณะผ่อนกลับ</li>
+</ol>
+<p><strong>Leg Extension — หน้า 13</strong><br />
+บริหารกล้ามเนื้อต้นขาด้านหน้า (Quadriceps)</p>
+<ol>
+<li>ปรับเบาะให้พอดีกับความยาวขา โดยให้หลังชิดพนัก และบริเวณใต้เข่าติดกับเบาะที่นั่ง</li>
+<li>ปรับเบาะด้านล่างให้อยู่เหนือข้อเท้าพอดี และจัดปลายเท้าทั้งสองข้างให้เสมอกัน</li>
+<li>ยกน้ำหนักด้วยขาทั้งสองข้างเท่า ๆ กัน นับ 1–2 ตอนยก และ 1–2–3–4 ตอนลดลง</li>
+<li>หายใจออกตอนยกเท้า และหายใจเข้าตอนผ่อนลง</li>
+</ol>
+<p><strong>ข้อควรระวัง:</strong> สำหรับ Leg Extension ให้ค่อย ๆ ควบคุมการเคลื่อนไหว ไม่ให้เครื่องไหวหรือแกว่งจากความเร็วในการทำท่า</p>
+</div></article></div></section><section class="question" id="C10"><div class="question-head"><span class="qid">C10</span><h2>ปวดเข่าแต่สนใจ Leg press กราฟเตือนอะไรและมีทางเลือกที่เล่นได้อย่างไร</h2></div><p class="expected">หน้าคู่มือที่คาดหวัง: 6, 8 · Graph backend: json_fallback</p><div class="columns"><article class="answer"><h3>Local <small>qwen3.5:9b-q4_K_M</small></h3><p class="metrics">เวลา 8.11 วินาที · พบหน้าที่คาดหวัง 100% · หน้าที่ค้นได้ 6, 8, 14, 16</p><div class="response"><p><strong>⚠️ คำเตือนสำคัญ:</strong>
+ตามคู่มือ <strong>ห้ามเล่นเครื่อง Leg press (เครื่องบริหารต้นขาด้านหน้าและสะโพก)</strong> หากมีอาการปวดเข่า เพราะมีความเสี่ยงต่อการบาดเจ็บ (พบข้อมูลในข้อห้ามทางการแพทย์)</p>
+<p><strong>ทางเลือกที่แนะนำแทน (สำหรับผู้ที่ปวดเข่า):</strong></p>
+<ol>
+<li><strong>จักรยานคอมพิวเตอร์ (Bike)</strong> (หน้า 6): ปรับระยะห่างให้เหมาะสมโดยไม่ให้เข่าตึงหรือหย่อนเกินไป</li>
+<li><strong>เครื่องเดินวงรี (Elliptical)</strong> (หน้า 8): ก้าวเดินสลับขาซ้าย-ขวา โดยระวังอย่าให้เข่าตึง</li>
+<li><strong>เครื่องบริหารต้นขาด้านหลัง (Leg Curl)</strong> (หน้า 14)</li>
+<li><strong>เครื่องบริหารต้นขาด้านใน-ด้านนอก (Inner Thigh &amp; Outer Thigh)</strong> (หน้า 16)</li>
+</ol>
+<p><strong>ข้อควรระวัง:</strong></p>
+<ul>
+<li>ห้ามเล่นท่า Leg press และ Leg Extension หากมีอาการปวดเข่า</li>
+<li>ขณะใช้งานเครื่องเดินวงรี ให้ระวังอย่าให้เข่าตึง</li>
+<li>โปรดตรวจสอบความเหมาะสมของทางเลือกเหล่านี้กับผู้เชี่ยวชาญก่อนเริ่มฝึก</li>
+</ul>
+<p>หากมีอาการปวดหรือบาดเจ็บ ควรปรึกษาแพทย์หรือนักกายภาพก่อนฝึก</p>
+</div></article><article class="answer"><h3>API <small>openai/gpt-6-luna-pro</small></h3><p class="metrics">เวลา 15.75 วินาที · พบหน้าที่คาดหวัง 100% · หน้าที่ค้นได้ 6, 8, 14, 16</p><div class="response"><p><strong>คำเตือน:</strong> กราฟระบุให้หลีกเลี่ยง <strong>เครื่องบริหารต้นขาด้านหน้าและสะโพก (Leg press)</strong> เพราะมีอาการปวดข้อเข่าและเสี่ยงบาดเจ็บ นอกจากนี้ยังระบุให้หลีกเลี่ยง <strong>Leg Extension</strong> และ <strong>Treadmill แบบ Program Manual</strong> ด้วย</p>
+<p><strong>ทางเลือกที่กราฟเสนอ</strong> แต่ไม่ได้ยืนยันว่าปลอดภัยสำหรับทุกคน—ควรตรวจสอบความเหมาะสมกับผู้เชี่ยวชาญก่อน โดยเฉพาะเมื่อมีอาการปวดเข่า:</p>
+<ul>
+<li><strong>จักรยานคอมพิวเตอร์ (Bike) แบบ Program Manual (หน้า 6):</strong> ปรับเบาะให้เข่าไม่ตึงหรือหย่อนเกินไป กด Quick Start ตั้งอายุและเวลา แล้วกด Start; คู่มือระบุให้ปั่นที่ 50–60 รอบ/นาที</li>
+<li>**</li>
+</ul>
+<p>หากมีอาการปวดหรือบาดเจ็บ ควรปรึกษาแพทย์หรือนักกายภาพก่อนฝึก</p>
+</div></article></div></section></body></html>

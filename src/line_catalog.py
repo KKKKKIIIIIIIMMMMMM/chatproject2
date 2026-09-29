@@ -15,6 +15,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 IMAGES_DIR = ROOT / "data" / "images"
+PREVIEWS_DIR = ROOT / "data" / "line_previews"
 CHUNKS_PATH = ROOT / "data" / "chunks.json"
 
 # Page ownership is reviewed against chunks.json, not copied from checklist.md.
@@ -144,6 +145,14 @@ class ExerciseCatalog:
             return None
         return path
 
+    def preview_path(self, filename: str) -> Path | None:
+        if filename not in {item.image_name for item in self.by_id.values()}:
+            return None
+        path = (PREVIEWS_DIR / filename).resolve()
+        if path.parent != PREVIEWS_DIR.resolve() or not path.is_file():
+            return None
+        return path
+
     def named_exercise(self, question: str) -> Exercise | None:
         """Resolve an explicitly named exercise; ties stay unresolved."""
         normalized = " " + re.sub(r"[^a-z0-9]+", " ", question.casefold()).strip() + " "
@@ -223,18 +232,3 @@ def unsupported_topic(text: str) -> str | None:
     )):
         return "ไม่พบท่าบริหารเฉพาะส่วนนั้นในคู่มือสถานกีฬาและสุขภาพ กรุณาถามหมวดที่มีในคู่มือ เช่น ขา อก หลัง ไหล่ แขน ท้อง หรือคาร์ดิโอ"
     return None
-
-
-def overview_prompt(label: str, exercises: list[Exercise]) -> list[dict[str, str]]:
-    facts = "\n".join(
-        f"- {item.title} (หน้า {item.page}); กล้ามเนื้อ: {item.target_muscles}; อุปกรณ์: {item.equipment}"
-        for item in exercises
-    )
-    return [
-        {"role": "system", "content": (
-            "คุณช่วยอธิบายหมวดท่าออกกำลังกายจากคู่มือ ตอบภาษาไทยไม่เกิน 3 ประโยค "
-            "ใช้เฉพาะรายการใน CONTEXT ห้ามแต่งท่า วิธีทำ ความปลอดภัย จำนวนเซต หรือเลขหน้าเพิ่ม "
-            "ให้ผู้ใช้เลือกการ์ดเพื่อดูวิธีฝึกของแต่ละท่า"
-        )},
-        {"role": "user", "content": f"สรุปหมวด {label} จากรายการต่อไปนี้\nCONTEXT:\n{facts}"},
-    ]
